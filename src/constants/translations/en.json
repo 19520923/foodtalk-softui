@@ -63,7 +63,10 @@
     "profile": "Profile",
     "settings": "Settings",
     "register": "Create account",
-    "extra": "Extra - Automotive"
+    "extra": "Extra - Automotive",
+    "login": "Login",
+    "search": "Search",
+    "news": "News"
   },
   "navigation": {
     "home": "Soft UI",
@@ -75,14 +78,15 @@
     "chat": "Chat",
     "profile": "Profile",
     "settings": "Settings",
-    "notifications": "Notifications",
+    "news": "News",
     "agreement": "User Agreement",
     "about": "About",
     "privacy": "Privacy",
     "register": "Register",
     "login": "Login",
     "extra": "Automotive",
-    "shopping": "Shopping Cart"
+    "shopping": "Shopping Cart",
+    "search": "Search"
   },
   "menu": {
     "started": "Getting Started",
@@ -94,15 +98,24 @@
     "trending": "Trending"
   },
   "register": {
-    "title": "Welcome",
+    "title": "Create new account",
     "subtitle": "Register with"
+  },
+  "login": {
+    "title": "Welcome",
+    "subtitle": "Login with"
+  },
+  "search": {
+    "title": "Search",
+    "subtitle": "Explore more"
   },
   "profile": {
     "title": "Profile",
     "posts": "Posts",
     "followers": "Followers",
     "following": "Following",
-    "aboutMe": "About me"
+    "aboutMe": "About me",
+    "foods": "Foods"
   },
   "pro": {
     "title": "Soft UI PRO",

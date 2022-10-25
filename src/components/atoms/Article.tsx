@@ -5,8 +5,8 @@ import {TouchableWithoutFeedback} from 'react-native';
 import Text from './Text';
 import Block from './Block';
 import Image from './Image';
-import {useTheme, useTranslation} from '../hooks/';
-import {IArticle} from '../constants/types';
+import {useTheme, useTranslation} from '../../hooks';
+import {IArticle} from '../../constants/types';
 
 const Article = ({
   title,

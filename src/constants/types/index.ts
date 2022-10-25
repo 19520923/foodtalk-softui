@@ -6,10 +6,10 @@ export * from './components';
 export * from './theme';
 
 export interface IUser {
-  id: number | string;
+  _id?: number | string;
   name?: string;
-  department?: string;
-  avatar?: string;
+  username?: string;
+  avatar_url?: string;
   stats?: {posts?: number; followers?: number; following?: number};
   social?: {twitter?: string; dribbble?: string};
   about?: string;
@@ -125,18 +125,22 @@ export interface IBasket {
 }
 
 export interface INotification {
-  id?: number;
-  subject?: string;
-  message?: string;
-  read?: boolean;
-  business?: boolean;
-  createdAt?: number | Date;
-  type:
-    | 'document'
-    | 'documentation'
-    | 'payment'
-    | 'notification'
-    | 'profile'
-    | 'extras'
-    | 'office';
+  _id?: string;
+  content?: string;
+  post_data?: IPost;
+  is_seen?: boolean;
+  food_data?: boolean;
+  created_at?: number | Date | string;
+  type: 'SYSTEM' | 'POST' | 'FOOD' | 'USER';
+  author: IUser;
+}
+
+export interface IPost {
+  _id: string;
+  author: IUser;
+  content?: string;
+  photos: Array<string>;
+  created_at: string;
+  num_comment?: number;
+  reactions: Array<string>;
 }

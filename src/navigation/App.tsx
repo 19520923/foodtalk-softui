@@ -6,6 +6,7 @@ import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 
 import Menu from './Menu';
 import {useData, ThemeProvider, TranslationProvider} from '../hooks';
+import BottomBar from './BottomBar';
 
 export default () => {
   const {isDark, theme, setTheme} = useData();

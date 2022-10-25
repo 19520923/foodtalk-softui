@@ -11,8 +11,8 @@ import {
 import Block from './Block';
 import Text from './Text';
 
-import useTheme from '../hooks/useTheme';
-import {IInputProps} from '../constants/types';
+import useTheme from '../../hooks/useTheme';
+import {IInputProps} from '../../constants/types';
 
 const Input = ({
   id = 'Input',
@@ -38,6 +38,7 @@ const Input = ({
   marginVertical,
   marginRight,
   marginLeft,
+  noBorder,
   onFocus,
   onBlur,
   ...props
@@ -98,7 +99,7 @@ const Input = ({
     {
       minHeight: sizes.inputHeight,
       borderRadius: sizes.inputRadius,
-      borderWidth: isFocused ? 2 : sizes.inputBorder,
+      borderWidth: !noBorder ? (isFocused ? 2 : sizes.inputBorder) : 0,
       borderColor: isFocused ? colors.focus : inputColor,
     },
   ]) as ViewStyle;

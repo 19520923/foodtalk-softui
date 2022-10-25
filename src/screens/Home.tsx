@@ -1,7 +1,49 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 
 import {useData, useTheme, useTranslation} from '../hooks/';
-import {Block, Button, Image, Input, Product, Text} from '../components/';
+import {Block, Button, Image, Input, Product, Text} from '../components/atoms';
+import {useNavigation} from '@react-navigation/native';
+import {IPost} from '../constants/types';
+import {Post} from '../components/organisms';
+
+const POST_DATA: Array<IPost> = [
+  {
+    _id: '10101',
+    author: {
+      _id: 'dasda',
+      username: 'nntan',
+      name: 'Nguyen Nhut Tan',
+      avatar_url:
+        'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
+    },
+    content: 'Hi there',
+    photos: [
+      'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
+      'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
+    ],
+    created_at: '12/10/2022',
+    num_comment: 1,
+    reactions: ['1220'],
+  },
+  {
+    _id: '10102',
+    author: {
+      _id: 'dasda',
+      username: 'nntan',
+      name: 'Nguyen Nhut Tan',
+      avatar_url:
+        'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
+    },
+    content: 'Hi there',
+    photos: [
+      'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
+      'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
+    ],
+    created_at: '12/10/2022',
+    num_comment: 1,
+    reactions: ['1220'],
+  },
+];
 
 const Home = () => {
   const {t} = useTranslation();
@@ -10,23 +52,23 @@ const Home = () => {
   const [products, setProducts] = useState(following);
   const {assets, colors, fonts, gradients, sizes} = useTheme();
 
-  const handleProducts = useCallback(
-    (tab: number) => {
-      setTab(tab);
-      setProducts(tab === 0 ? following : trending);
-    },
-    [following, trending, setTab, setProducts],
-  );
+  // const handleProducts = useCallback(
+  //   (tab: number) => {
+  //     setTab(tab);
+  //     setProducts(tab === 0 ? following : trending);
+  //   },
+  //   [following, trending, setTab, setProducts],
+  // );
 
   return (
     <Block>
       {/* search input */}
-      <Block color={colors.card} flex={0} padding={sizes.padding}>
+      {/* <Block color={colors.card} flex={0} padding={sizes.padding}>
         <Input search placeholder={t('common.search')} />
-      </Block>
+      </Block> */}
 
       {/* toggle products list */}
-      <Block
+      {/* <Block
         row
         flex={0}
         align="center"
@@ -80,17 +122,16 @@ const Home = () => {
             </Text>
           </Block>
         </Button>
-      </Block>
+      </Block> */}
 
       {/* products list */}
       <Block
         scroll
-        paddingHorizontal={sizes.padding}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: sizes.l}}>
-        <Block row wrap="wrap" justify="space-between" marginTop={sizes.sm}>
-          {products?.map((product) => (
-            <Product {...product} key={`card-${product?.id}`} />
+        <Block marginTop={sizes.sm}>
+          {POST_DATA?.map((post) => (
+            <Post post={post} />
           ))}
         </Block>
       </Block>

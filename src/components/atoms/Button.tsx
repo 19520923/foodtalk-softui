@@ -10,8 +10,8 @@ import {LinearGradient} from 'expo-linear-gradient';
 import {Ionicons} from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 
-import useTheme from '../hooks/useTheme';
-import {IButtonProps} from '../constants/types';
+import useTheme from '../../hooks/useTheme';
+import {IButtonProps} from '../../constants/types';
 
 const Button = ({
   id = 'Button',
@@ -64,7 +64,7 @@ const Button = ({
   left,
   top,
   bottom,
-  haptic = true,
+  haptic = false,
   vibrate,
   vibrateRepeat,
   onPress,

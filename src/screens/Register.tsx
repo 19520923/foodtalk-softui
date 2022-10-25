@@ -4,7 +4,7 @@ import {useNavigation} from '@react-navigation/core';
 
 import {useData, useTheme, useTranslation} from '../hooks/';
 import * as regex from '../constants/regex';
-import {Block, Button, Input, Image, Text, Checkbox} from '../components/';
+import {Block, Button, Input, Image, Text, Checkbox} from '../components/atoms';
 
 const isAndroid = Platform.OS === 'android';
 

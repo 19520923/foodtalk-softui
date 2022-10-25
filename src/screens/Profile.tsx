@@ -1,10 +1,50 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Platform, Linking} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import {useNavigation} from '@react-navigation/core';
 
-import {Block, Button, Image, Text} from '../components/';
+import {Block, Button, Image, Text} from '../components/atoms';
 import {useData, useTheme, useTranslation} from '../hooks/';
+import {Post} from '../components/organisms';
+
+const POST_DATA: Array<IPost> = [
+  {
+    _id: '10101',
+    author: {
+      _id: 'dasda',
+      username: 'nntan',
+      name: 'Nguyen Nhut Tan',
+      avatar_url:
+        'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
+    },
+    content: 'Hi there',
+    photos: [
+      'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
+      '',
+    ],
+    created_at: '12/10/2022',
+    num_comment: 1,
+    reactions: ['1220'],
+  },
+  {
+    _id: '10102',
+    author: {
+      _id: 'dasda',
+      username: 'nntan',
+      name: 'Nguyen Nhut Tan',
+      avatar_url:
+        'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
+    },
+    content: 'Hi there',
+    photos: [
+      'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
+      '',
+    ],
+    created_at: '12/10/2022',
+    num_comment: 1,
+    reactions: ['1220'],
+  },
+];
 
 const isAndroid = Platform.OS === 'android';
 
@@ -12,7 +52,8 @@ const Profile = () => {
   const {user} = useData();
   const {t} = useTranslation();
   const navigation = useNavigation();
-  const {assets, colors, sizes} = useTheme();
+  const {assets, colors, sizes, gradients} = useTheme();
+  const [selected, setSelected] = useState<string>('POST');
 
   const IMAGE_SIZE = (sizes.width - (sizes.padding + sizes.sm) * 2) / 3;
   const IMAGE_VERTICAL_SIZE =
@@ -37,11 +78,54 @@ const Profile = () => {
     [user],
   );
 
+  const Carories = () => {
+    return (
+      <Block row flex={0}>
+        <Block
+          scroll
+          horizontal
+          renderToHardwareTextureAndroid
+          showsHorizontalScrollIndicator={false}
+          contentOffset={{x: -sizes.padding, y: 0}}>
+          <Button
+            radius={sizes.m}
+            marginHorizontal={sizes.s}
+            onPress={() => setSelected('POST')}
+            gradient={gradients?.[selected === 'POST' ? 'primary' : 'light']}>
+            <Text
+              p
+              bold={selected === 'POST'}
+              white={selected === 'POST'}
+              black={selected !== 'POST'}
+              transform="capitalize"
+              marginHorizontal={sizes.m}>
+              Posts
+            </Text>
+          </Button>
+          <Button
+            radius={sizes.m}
+            marginHorizontal={sizes.s}
+            onPress={() => setSelected('FOOD')}
+            gradient={gradients?.[selected === 'FOOD' ? 'primary' : 'light']}>
+            <Text
+              p
+              bold={selected === 'FOOD'}
+              white={selected === 'FOOD'}
+              black={selected !== 'FOOD'}
+              transform="capitalize"
+              marginHorizontal={sizes.m}>
+              Foods
+            </Text>
+          </Button>
+        </Block>
+      </Block>
+    );
+  };
+
   return (
-    <Block safe marginTop={sizes.md}>
+    <Block safe>
       <Block
         scroll
-        paddingHorizontal={sizes.s}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: sizes.padding}}>
         <Block flex={0}>
@@ -50,25 +134,9 @@ const Profile = () => {
             resizeMode="cover"
             padding={sizes.sm}
             paddingBottom={sizes.l}
+            paddingTop={sizes.xxl}
             radius={sizes.cardRadius}
             source={assets.background}>
-            <Button
-              row
-              flex={0}
-              justify="flex-start"
-              onPress={() => navigation.goBack()}>
-              <Image
-                radius={0}
-                width={10}
-                height={18}
-                color={colors.white}
-                source={assets.arrow}
-                transform={[{rotate: '180deg'}]}
-              />
-              <Text p white marginLeft={sizes.s}>
-                {t('profile.title')}
-              </Text>
-            </Button>
             <Block flex={0} align="center">
               <Image
                 width={64}
@@ -154,6 +222,10 @@ const Profile = () => {
                 <Text>{t('profile.posts')}</Text>
               </Block>
               <Block align="center">
+                <Text h5>{user?.stats?.posts}</Text>
+                <Text>{t('profile.foods')}</Text>
+              </Block>
+              <Block align="center">
                 <Text h5>{(user?.stats?.followers || 0) / 1000}k</Text>
                 <Text>{t('profile.followers')}</Text>
               </Block>
@@ -215,6 +287,33 @@ const Profile = () => {
                 />
               </Block>
             </Block>
+          </Block>
+          <Block paddingHorizontal={sizes.sm} marginTop={sizes.m}>
+            <Block row align="center" justify="space-between">
+              <Text h5 semibold>
+                {t('common.album')}
+              </Text>
+            </Block>
+          </Block>
+          <Block
+            flex={0}
+            height={1}
+            marginRight={sizes.md}
+            marginVertical={sizes.sm}
+            gradient={gradients.menu}
+          />
+          {Carories()}
+          <Block
+            flex={0}
+            height={1}
+            marginRight={sizes.md}
+            marginVertical={sizes.sm}
+            gradient={gradients.menu}
+          />
+          <Block marginTop={sizes.s}>
+            {POST_DATA?.map((post) => (
+              <Post post={post} />
+            ))}
           </Block>
         </Block>
       </Block>

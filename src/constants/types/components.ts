@@ -483,6 +483,8 @@ export interface IImageProps extends ImageProps, ISpacing {
    * sets the width & height to Math.min(height, weight)
    */
   avatar?: boolean;
+  width?: number;
+  height?: number;
   /**
    * Generates a shadow style
    * @see https://reactnative.dev/docs/shadow-props
@@ -545,6 +547,7 @@ export interface IInputProps extends TextInputProps, ISpacing {
    * @see https://reactnative.dev/docs/view-style-props#backgroundcolor
    */
   primary?: boolean;
+  noBorder ?: boolean
   /**
    * Renders a borderColor & placeholderTextColor directly from the colors.secondary value
    * @see https://reactnative.dev/docs/view-style-props#backgroundcolor

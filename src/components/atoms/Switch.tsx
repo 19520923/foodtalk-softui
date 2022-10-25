@@ -8,8 +8,8 @@ import {
 } from 'react-native';
 import * as Haptics from 'expo-haptics';
 
-import {ISwitchProps} from '../constants/types';
-import useTheme from '../hooks/useTheme';
+import {ISwitchProps} from '../../constants/types';
+import useTheme from '../../hooks/useTheme';
 
 const Switch = ({
   id = 'Switch',

@@ -1,8 +1,8 @@
 import React from 'react';
 import {StyleSheet, Modal as RNModal, ViewStyle, Platform} from 'react-native';
 
-import {useTheme} from '../hooks/';
-import {IModalProps} from '../constants/types';
+import {useTheme} from '../../hooks/';
+import {IModalProps} from '../../constants/types';
 
 import Block from './Block';
 import Button from './Button';

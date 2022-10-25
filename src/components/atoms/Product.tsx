@@ -4,8 +4,8 @@ import {TouchableOpacity} from 'react-native';
 import Block from './Block';
 import Image from './Image';
 import Text from './Text';
-import {IProduct} from '../constants/types';
-import {useTheme, useTranslation} from '../hooks/';
+import {IProduct} from '../../constants/types';
+import {useTheme, useTranslation} from '../../hooks/';
 
 const Product = ({image, title, type, linkLabel}: IProduct) => {
   const {t} = useTranslation();

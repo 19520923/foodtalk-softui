@@ -3,7 +3,7 @@ import {FlatList} from 'react-native';
 
 import {useData, useTheme} from '../hooks/';
 import {IArticle, ICategory} from '../constants/types';
-import {Block, Button, Article, Text} from '../components/';
+import {Block, Button, Article, Text} from '../components/atoms';
 
 const Articles = () => {
   const data = useData();

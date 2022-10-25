@@ -4,18 +4,18 @@ import {
   StackHeaderTitleProps,
   CardStyleInterpolators,
 } from '@react-navigation/stack';
-import {useNavigation} from '@react-navigation/core';
-import {DrawerActions} from '@react-navigation/native';
+
+import {DrawerActions, useNavigation} from '@react-navigation/native';
 import {StackHeaderOptions} from '@react-navigation/stack/lib/typescript/src/types';
 
 import {useData} from './useData';
 import {useTranslation} from './useTranslation';
 
-import Image from '../components/Image';
-import Text from '../components/Text';
+import Image from '../components/atoms/Image';
+import Text from '../components/atoms/Text';
 import useTheme from '../hooks/useTheme';
-import Button from '../components/Button';
-import Block from '../components/Block';
+import Button from '../components/atoms/Button';
+import Block from '../components/atoms/Block';
 
 export default () => {
   const {t} = useTranslation();
@@ -166,7 +166,7 @@ export default () => {
               radius={6}
               width={24}
               height={24}
-              source={{uri: user.avatar}}
+              source={{uri: user.avatar_url}}
             />
           </TouchableOpacity>
         </Block>
