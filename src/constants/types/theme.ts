@@ -174,6 +174,8 @@ export interface ThemeSizes {
   linkSize: number;
 
   multiplier: number;
+
+  icon: number;
 }
 
 export interface ThemeSpacing {
@@ -207,41 +209,25 @@ export interface ThemeWeights {
   black?: TextStyle['fontWeight'];
 }
 export interface ThemeIcons {
-  apple: ImageSourcePropType;
-  google: ImageSourcePropType;
-  facebook: ImageSourcePropType;
-  arrow: ImageSourcePropType;
-  articles: ImageSourcePropType;
-  basket: ImageSourcePropType;
-  bell: ImageSourcePropType;
-  calendar: ImageSourcePropType;
-  chat: ImageSourcePropType;
-  check: ImageSourcePropType;
-  clock: ImageSourcePropType;
-  close: ImageSourcePropType;
-  components: ImageSourcePropType;
-  document: ImageSourcePropType;
-  documentation: ImageSourcePropType;
-  extras: ImageSourcePropType;
-  flight: ImageSourcePropType;
-  home: ImageSourcePropType;
-  hotel: ImageSourcePropType;
-  image: ImageSourcePropType;
-  location: ImageSourcePropType;
-  menu: ImageSourcePropType;
-  more: ImageSourcePropType;
-  notification: ImageSourcePropType;
-  office: ImageSourcePropType;
-  payment: ImageSourcePropType;
-  profile: ImageSourcePropType;
-  register: ImageSourcePropType;
-  rental: ImageSourcePropType;
-  search: ImageSourcePropType;
-  settings: ImageSourcePropType;
-  star: ImageSourcePropType;
-  train: ImageSourcePropType;
-  users: ImageSourcePropType;
-  warning: ImageSourcePropType;
+  home?: any;
+  search?: any;
+  bell?: any;
+  user?: any;
+  menu?: any;
+  back?: any;
+  heart?: any;
+  comment?: any;
+  share?: any;
+  plus?: any;
+  chat?: any;
+  story?: any;
+  post?: any;
+  food?: any;
+  send?: any;
+  close?: any;
+  facebook?: any;
+  google?: any;
+  apple?: any
 }
 
 export interface ThemeAssets {

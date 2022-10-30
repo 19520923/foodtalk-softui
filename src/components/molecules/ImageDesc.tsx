@@ -1,21 +1,9 @@
 import dayjs from 'dayjs';
 import React from 'react';
 import {ColorValue, ImageSourcePropType} from 'react-native';
+import { IImageDesc } from '../../constants/types';
 import {useTheme} from '../../hooks';
 import {Block, Image, Text} from '../atoms';
-
-type Props = {
-  image: ImageSourcePropType;
-  size?: number;
-  title?: string | undefined;
-  description?: string;
-  card?: boolean;
-  info?: {
-    likes?: number;
-    created_at?: string | number | Date;
-  };
-  color?: ColorValue;
-};
 
 const ImageDesc = ({
   image,
@@ -25,7 +13,7 @@ const ImageDesc = ({
   info,
   card,
   color,
-}: Props) => {
+}: IImageDesc) => {
   const {sizes, colors} = useTheme();
 
   if (card)

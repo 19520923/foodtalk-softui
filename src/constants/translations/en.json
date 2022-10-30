@@ -49,7 +49,7 @@
     }
   },
   "app": {
-    "name": "Soft UI",
+    "name": "Foodtalk",
     "fullname": "Soft UI Kit",
     "native": "React Native",
     "link": "creative-tim.com"
@@ -66,7 +66,11 @@
     "extra": "Extra - Automotive",
     "login": "Login",
     "search": "Search",
-    "news": "News"
+    "news": "News",
+    "createPost": "Create post",
+    "createFood": "Create food",
+    "comment": "Comment",
+    "postDetail": "Post detail"
   },
   "navigation": {
     "home": "Soft UI",
@@ -86,7 +90,12 @@
     "login": "Login",
     "extra": "Automotive",
     "shopping": "Shopping Cart",
-    "search": "Search"
+    "search": "News",
+    "comment": "Comment",
+    "createPost": "Create post",
+    "createFood": "Create food",
+    "postDetail": "Post detail"
+
   },
   "menu": {
     "started": "Getting Started",
@@ -107,7 +116,9 @@
   },
   "search": {
     "title": "Search",
-    "subtitle": "Explore more"
+    "subtitle": "Explore more",
+    "foods": "Foods",
+    "users": "Users"
   },
   "profile": {
     "title": "Profile",

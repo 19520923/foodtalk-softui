@@ -1,5 +1,5 @@
-import React from 'react';
-import {TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import {TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import {
   StackHeaderTitleProps,
   CardStyleInterpolators,
@@ -11,17 +11,75 @@ import {StackHeaderOptions} from '@react-navigation/stack/lib/typescript/src/typ
 import {useData} from './useData';
 import {useTranslation} from './useTranslation';
 
-import Image from '../components/atoms/Image';
 import Text from '../components/atoms/Text';
 import useTheme from '../hooks/useTheme';
 import Button from '../components/atoms/Button';
 import Block from '../components/atoms/Block';
 
+import {FontAwesome} from '@expo/vector-icons';
+import {ImageDesc} from '../components/molecules';
+import { useIsDrawerOpen } from '@react-navigation/drawer';
+
 export default () => {
   const {t} = useTranslation();
   const {user} = useData();
   const navigation = useNavigation();
-  const {icons, colors, gradients, sizes} = useTheme();
+    const isDrawerOpen = useIsDrawerOpen();
+  const {icons, colors, gradients, sizes, assets} = useTheme();
+  const [open, setOpen] = useState(false);
+
+  const _handleOpenCreateCard = () => {
+    setOpen(!open);
+  };
+
+  const _handleNavigateCreatePost = () => {
+    navigation.navigate(t('navigation.createPost'));
+  };
+
+  const _handleNavigateCreateFood = () => {
+    navigation.navigate(t('navigation.createFood'));
+  };
+
+  const CreateCard = () => (
+      <Block card style={{position: 'absolute', right: 32, top: 32}}>
+        <TouchableOpacity>
+          <Block row padding={sizes.s}>
+            <FontAwesome
+              name={icons.story}
+              size={sizes.icon}
+              color={colors.icon}
+            />
+            <Text p marginLeft={sizes.sm}>
+              Story
+            </Text>
+          </Block>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={_handleNavigateCreatePost}>
+          <Block row padding={sizes.s}>
+            <FontAwesome
+              name={icons.post}
+              size={sizes.icon}
+              color={colors.icon}
+            />
+            <Text p marginLeft={sizes.sm}>
+              Post
+            </Text>
+          </Block>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={_handleNavigateCreateFood}>
+          <Block row padding={sizes.s}>
+            <FontAwesome
+              name={icons.food}
+              size={sizes.icon}
+              color={colors.icon}
+            />
+            <Text p marginLeft={sizes.sm}>
+              Food recipe
+            </Text>
+          </Block>
+        </TouchableOpacity>
+      </Block>
+  );
 
   const menu = {
     headerStyle: {elevation: 0},
@@ -35,36 +93,29 @@ export default () => {
     ),
     headerLeft: () => (
       <Button onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}>
-        <Image source={icons.menu} radius={0} color={colors.icon} />
+        <FontAwesome name={isDrawerOpen?icons:icons.menu} color={colors.icon} size={sizes.icon} />
       </Button>
     ),
     headerRight: () => (
       <Block row flex={0} align="center" marginRight={sizes.padding}>
         <TouchableOpacity
           style={{marginRight: sizes.sm}}
-          onPress={() =>
-            navigation.navigate('Screens', {
-              screen: 'Pro',
-            })
-          }>
-          <Image source={icons.bell} radius={0} color={colors.icon} />
-          <Block
-            flex={0}
-            right={0}
-            width={sizes.s}
-            height={sizes.s}
-            radius={sizes.xs}
-            position="absolute"
-            gradient={gradients?.primary}
-          />
+          //handle open modal with 3 option: story, post, food
+          onPress={_handleOpenCreateCard}>
+          <FontAwesome name={icons.plus} color={colors.icon} size={26} />
         </TouchableOpacity>
+        {open && CreateCard()}
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('Screens', {
               screen: 'Pro',
             })
           }>
-          <Image source={icons.basket} radius={0} color={colors.icon} />
+          <FontAwesome
+            name={icons.chat}
+            color={colors.icon}
+            size={sizes.icon}
+          />
           <Block
             flex={0}
             padding={0}
@@ -98,23 +149,11 @@ export default () => {
       headerLeft: () => (
         <Button
           onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}>
-          <Image source={icons.menu} radius={0} color={colors.white} />
-        </Button>
-      ),
-    },
-    pro: {
-      ...menu,
-      headerTransparent: true,
-      headerTitle: () => (
-        <Text p white semibold>
-          {t('pro.title')}
-        </Text>
-      ),
-      headerRight: () => null,
-      headerLeft: () => (
-        <Button
-          onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}>
-          <Image source={icons.menu} radius={0} color={colors.white} />
+          <FontAwesome
+            name={assets.menu}
+            color={colors.icon}
+            size={sizes.icon}
+          />
         </Button>
       ),
     },
@@ -123,53 +162,35 @@ export default () => {
       headerRight: () => null,
       headerLeft: () => (
         <Button onPress={() => navigation.goBack()}>
-          <Image
-            radius={0}
-            width={10}
-            height={18}
+          <FontAwesome
+            name={assets.back}
             color={colors.icon}
-            source={icons.arrow}
-            transform={[{rotate: '180deg'}]}
+            size={sizes.icon}
           />
         </Button>
       ),
     },
-    profile: {
+    create: {
       ...menu,
+      headerLeft: () => (
+        <Button onPress={() => navigation.goBack()}>
+          <FontAwesome
+            name={assets.back}
+            color={colors.icon}
+            size={sizes.icon}
+          />
+        </Button>
+      ),
       headerRight: () => (
-        <Block row flex={0} align="center" marginRight={sizes.padding}>
-          <TouchableOpacity
-            style={{marginRight: sizes.sm}}
-            onPress={() =>
-              navigation.navigate('Screens', {
-                screen: 'Notifications',
-              })
-            }>
-            <Image source={icons.bell} radius={0} color={colors.icon} />
-            <Block
-              flex={0}
-              right={0}
-              width={sizes.s}
-              height={sizes.s}
-              radius={sizes.xs}
-              position="absolute"
-              gradient={gradients?.primary}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.dispatch(
-                DrawerActions.jumpTo('Screens', {screen: 'Profile'}),
-              )
-            }>
-            <Image
-              radius={6}
-              width={24}
-              height={24}
-              source={{uri: user.avatar_url}}
-            />
-          </TouchableOpacity>
-        </Block>
+        <Button
+          secondary
+          minHeight={sizes.l}
+          width={80}
+          onPress={() => console.log('press')}>
+          <Text p bold white>
+            Post
+          </Text>
+        </Button>
       ),
     },
   };

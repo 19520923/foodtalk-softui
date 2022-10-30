@@ -1,10 +1,10 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {Linking, Platform} from 'react-native';
+import React, {useCallback, useState} from 'react';
+import {Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 
 import {useData, useTheme, useTranslation} from '../hooks/';
-import * as regex from '../constants/regex';
-import {Block, Button, Input, Image, Text, Checkbox} from '../components/atoms';
+import {Block, Button, Input, Image, Text} from '../components/atoms';
+import {FontAwesome} from '@expo/vector-icons';
 
 const isAndroid = Platform.OS === 'android';
 
@@ -51,8 +51,7 @@ const Login = () => {
           padding={sizes.sm}
           radius={sizes.cardRadius}
           source={assets.background}
-          height={sizes.height * 0.4}>
-        </Image>
+          height={sizes.height * 0.4}></Image>
       </Block>
       {/* register form */}
       <Block
@@ -80,26 +79,23 @@ const Login = () => {
             {/* social buttons */}
             <Block row center justify="space-evenly" marginVertical={sizes.m}>
               <Button outlined gray shadow={!isAndroid}>
-                <Image
-                  source={assets.facebook}
-                  height={sizes.m}
-                  width={sizes.m}
+                <FontAwesome
+                  name={assets.facebook}
+                  size={sizes.m}
                   color={isDark ? colors.icon : undefined}
                 />
               </Button>
               <Button outlined gray shadow={!isAndroid}>
-                <Image
-                  source={assets.apple}
-                  height={sizes.m}
-                  width={sizes.m}
+                <FontAwesome
+                  name={assets.apple}
+                  size={sizes.m}
                   color={isDark ? colors.icon : undefined}
                 />
               </Button>
               <Button outlined gray shadow={!isAndroid}>
-                <Image
-                  source={assets.google}
-                  height={sizes.m}
-                  width={sizes.m}
+                <FontAwesome
+                  name={assets.google}
+                  size={sizes.m}
                   color={isDark ? colors.icon : undefined}
                 />
               </Button>
@@ -170,7 +166,7 @@ const Login = () => {
               shadow={!isAndroid}
               marginVertical={sizes.s}
               marginHorizontal={sizes.sm}
-              onPress={() => navigation.navigate('SignUp')}>
+              onPress={() => navigation.navigate(t('navigation.login'))}>
               <Text bold primary transform="uppercase">
                 {t('common.signup')}
               </Text>

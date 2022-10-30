@@ -1,28 +1,22 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {useData, useTheme, useTranslation} from '../hooks';
-import {Block, Button, Image} from '../components/atoms';
-import {createStackNavigator} from '@react-navigation/stack';
+import {useTheme, useTranslation} from '../hooks';
+import {Block, Button, Text} from '../components/atoms';
 import {Home, Notifications, Profile} from '../screens';
 import Search from '../screens/Search';
-import {useAnimatedRef} from 'react-native-reanimated';
+import {FontAwesome} from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
 
 const BottomBarContent = (props: any) => {
   const {t} = useTranslation();
   const {state, descriptors, navigation} = props;
-  const {isDark, handleIsDark} = useData();
-  const [active, setActive] = useState('Home');
-  const {assets, colors, gradients, sizes} = useTheme();
-  const labelColor = colors.text;
-  const ref = useAnimatedRef();
+  const {assets, colors, sizes} = useTheme();
 
-  const icons = [assets.home, assets.search, assets.bell, assets.profile];
+  const icons = [assets.home, assets.search, assets.bell, assets.user];
 
   return (
-    <Block row flex={0} justify="space-evenly">
+    <Block row flex={0} justify="space-evenly" paddingVertical={sizes.s} white>
       {state.routes.map((route: any, index: number) => {
         const {options} = descriptors[route.key];
         const isFocused = state.index === index;
@@ -46,14 +40,17 @@ const BottomBarContent = (props: any) => {
             align="center"
             key={`bottom-screen-${route.name}-${index}`}
             onPress={onPress}>
-            <Block flex={0} radius={16} align="center" justify="center">
-              <Image
-                radius={0}
-                source={icons[index]}
-                height={20}
-                width={20}
-                color={colors[isFocused ? 'primary' : 'black']}
+            <Block align="center" justify="center">
+              <FontAwesome
+                name={icons[index]}
+                color={isFocused ? colors.primary : colors.icon}
+                size={sizes.icon}
               />
+              {isFocused && (
+                <Text semibold secondary>
+                  {route.name}
+                </Text>
+              )}
             </Block>
           </Button>
         );
@@ -63,8 +60,6 @@ const BottomBarContent = (props: any) => {
 };
 
 export default () => {
-  const {colors, sizes} = useTheme();
-
   return (
     <Tab.Navigator
       screenOptions={{

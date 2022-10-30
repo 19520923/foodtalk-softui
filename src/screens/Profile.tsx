@@ -6,6 +6,7 @@ import {useNavigation} from '@react-navigation/core';
 import {Block, Button, Image, Text} from '../components/atoms';
 import {useData, useTheme, useTranslation} from '../hooks/';
 import {Post} from '../components/organisms';
+import {IPost} from '../constants/types';
 
 const POST_DATA: Array<IPost> = [
   {

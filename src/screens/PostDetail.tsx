@@ -1,11 +1,31 @@
 import React from 'react';
-import {Block, Button, Image, Input, Text} from '../components/atoms';
+import {Block, Button, Input} from '../components/atoms';
 import {ImageDesc} from '../components/molecules';
-import {INotification} from '../constants/types';
+import {Post} from '../components/organisms';
+import {INotification, IPost} from '../constants/types';
 import {useTheme} from '../hooks';
 import {FontAwesome} from '@expo/vector-icons';
 
 type Props = {};
+
+const DATA: IPost = {
+  _id: '10101',
+  author: {
+    _id: 'dasda',
+    username: 'nntan',
+    name: 'Nguyen Nhut Tan',
+    avatar_url:
+      'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
+  },
+  content: 'Hi there',
+  photos: [
+    'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
+    'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
+  ],
+  created_at: '12/10/2022',
+  num_comment: 1,
+  reactions: ['1220'],
+};
 
 const NOTI_DATA: Array<INotification> = [
   {
@@ -36,15 +56,16 @@ const NOTI_DATA: Array<INotification> = [
   },
 ];
 
-const Comment = (props: Props) => {
-  const {sizes, colors, assets, icons} = useTheme();
+const PostDetail = (props: Props) => {
+  const {sizes, colors, icons} = useTheme();
   return (
-    <Block safe style={{position: 'relative'}}>
+    <Block safe paddingVertical={sizes.s}>
       <Block
         scroll
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: sizes.l}}>
-        <Block marginTop={sizes.sm}>
+        <Post post={DATA} />
+        <Block>
           {NOTI_DATA?.map((noti) => (
             <ImageDesc
               key={noti._id}
@@ -63,13 +84,9 @@ const Comment = (props: Props) => {
       <Block
         row
         align="center"
-        style={{
-          width: '100%',
-          position: 'absolute',
-          bottom: sizes.s,
-        }}
-        color={colors.background}
-        padding={sizes.s}>
+        style={{width: '100%', position: 'absolute', bottom: sizes.s}}
+        padding={sizes.s}
+        color={colors.background}>
         <Block>
           <Input placeholder="Write your comment" />
         </Block>
@@ -85,4 +102,4 @@ const Comment = (props: Props) => {
   );
 };
 
-export default Comment;
+export default PostDetail;

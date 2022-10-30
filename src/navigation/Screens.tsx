@@ -2,20 +2,13 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import {
-  Articles,
-  Components,
-  Home,
-  Profile,
-  Register,
-  Pro,
-  Login,
-  Notifications,
   Comment,
-  CreatePost
+  CreatePost,
 } from '../screens';
 import {useScreenOptions, useTranslation} from '../hooks';
-import Search from '../screens/Search';
 import BottomBar from './BottomBar';
+import CreateFood from '../screens/CreateFood';
+import PostDetail from '../screens/PostDetail';
 
 const Stack = createStackNavigator();
 
@@ -25,40 +18,25 @@ export default () => {
 
   return (
     <Stack.Navigator screenOptions={screenOptions.stack}>
-      <Stack.Screen name="Home" component={BottomBar} />
-
+      <Stack.Screen name={t('app.name')} component={BottomBar} />
       <Stack.Screen
-        name="Components"
-        component={Components}
-        options={screenOptions.components}
-      />
-
-      <Stack.Screen
-        name="Articles"
-        component={Articles}
-        options={{title: t('navigation.articles')}}
-      />
-
-      <Stack.Screen name="Pro" component={Pro} options={screenOptions.pro} />
-
-      <Stack.Screen
-        name="Register"
-        component={Register}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="Login"
-        component={Login}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="Comment"
+        name={t('screens.comment')}
         component={Comment}
         options={screenOptions.back}
       />
       <Stack.Screen
-        name="CreatePost"
+        name={t('screens.createPost')}
         component={CreatePost}
+        options={screenOptions.create}
+      />
+      <Stack.Screen
+        name={t('screens.createFood')}
+        component={CreateFood}
+        options={screenOptions.create}
+      />
+      <Stack.Screen
+        name={t('screens.postDetail')}
+        component={PostDetail}
         options={screenOptions.back}
       />
     </Stack.Navigator>

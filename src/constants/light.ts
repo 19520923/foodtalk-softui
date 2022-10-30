@@ -159,6 +159,9 @@ export const SIZES: ThemeSizes = {
 
   /** font size multiplier: for maxFontSizeMultiplier prop */
   multiplier: 2,
+
+  // icon
+  icon: 22,
 };
 
 export const SPACING: ThemeSpacing = {

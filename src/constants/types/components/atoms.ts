@@ -15,9 +15,9 @@ import {
   ViewProps,
   ViewStyle,
 } from 'react-native';
-import {BlurProps} from 'expo-blur';
+import {BlurViewProps} from 'expo-blur';
 import {LinearGradientPoint} from 'expo-linear-gradient';
-import {ISpacing, ITheme} from './theme';
+import {ISpacing, ITheme} from '../theme';
 
 /**
  * ## Block
@@ -196,12 +196,12 @@ export interface IBlockProps
    * BlueView intensity, default: 50, values accepted: 1 to 100
    * @see https://docs.expo.io/versions/latest/sdk/blur-view/#intensity
    */
-  intensity?: BlurProps['intensity'];
+  intensity?: BlurViewProps['intensity'];
   /**
    * BlueView tint color, default: 'default', values accepted: 'light', 'dark', 'default'
    * @see https://docs.expo.io/versions/latest/sdk/blur-view/#blurtint
    */
-  tint?: BlurProps['tint'];
+  tint?: BlurViewProps['tint'];
   /**
    * Renders the View position
    * @see https://reactnative.dev/docs/layout-props#position
@@ -415,6 +415,7 @@ export interface IButtonProps extends TouchableOpacityProps, ISpacing {
    * Provides haptic feedback on touch - Haptics.selectionAsync()
    * @see https://docs.expo.io/versions/latest/sdk/haptics/
    */
+  minHeight?: ViewStyle['minHeight'];
   haptic?: boolean;
   /**
    * Adds vibration feedback on touch using Vibration.vibrate pattern
@@ -547,7 +548,7 @@ export interface IInputProps extends TextInputProps, ISpacing {
    * @see https://reactnative.dev/docs/view-style-props#backgroundcolor
    */
   primary?: boolean;
-  noBorder ?: boolean
+  noBorder?: boolean;
   /**
    * Renders a borderColor & placeholderTextColor directly from the colors.secondary value
    * @see https://reactnative.dev/docs/view-style-props#backgroundcolor

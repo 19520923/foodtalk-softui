@@ -67,6 +67,7 @@ const Button = ({
   haptic = false,
   vibrate,
   vibrateRepeat,
+  minHeight,
   onPress,
   ...props
 }: IButtonProps) => {
@@ -106,7 +107,7 @@ const Button = ({
   const buttonStyles = StyleSheet.flatten([
     style,
     {
-      minHeight: sizes.xl,
+      minHeight: minHeight ? minHeight : sizes.xl,
       minWidth: sizes.xl,
       alignItems: 'center',
       justifyContent: 'center',

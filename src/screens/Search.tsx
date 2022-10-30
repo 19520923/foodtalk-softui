@@ -1,7 +1,6 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Block, Text} from '../components/atoms';
-import {ImageDesc, Card} from '../components/molecules';
+import {Card} from '../components/molecules';
 import {useTheme, useTranslation} from '../hooks';
 
 type Props = {};
@@ -12,13 +11,17 @@ const Search = (props: Props) => {
 
   return (
     <Block scroll padding={sizes.s}>
-      <Block scroll horizontal>
+      <Text h5 semibold marginBottom={sizes.s}>
+        {t('search.foods')}
+      </Text>
+      <Block scroll horizontal paddingBottom={sizes.s}>
         <Card
           inline
           description="This is a example of food card"
           image={assets.card1}
           title="Beefsteck"
           subcription="10"
+          marginRight={sizes.s}
         />
         <Card
           inline
@@ -26,6 +29,7 @@ const Search = (props: Props) => {
           image={assets.card1}
           title="Beefsteck"
           subcription="10"
+          marginRight={sizes.s}
         />
         <Card
           inline
@@ -33,20 +37,26 @@ const Search = (props: Props) => {
           image={assets.card1}
           title="Beefsteck"
           subcription="10"
+          marginRight={sizes.s}
         />
       </Block>
-      <Block marginTop={sizes.s}>
+      <Text h5 semibold marginBottom={sizes.s} marginTop={sizes.sm}>
+        {t('search.users')}
+      </Text>
+      <Block>
         <Card
           image={assets.avatar1}
           title="Nguyen Nhut Tan"
           description="This is a example about ... this is a a"
           subcription="3k following - 2k follower"
+          marginBottom={sizes.s}
         />
         <Card
           image={assets.avatar1}
           title="Nguyen Nhut Tan"
           description="This is a example about ... infomation"
           subcription="3k following - 2k follower"
+          marginBottom={sizes.s}
         />
       </Block>
     </Block>

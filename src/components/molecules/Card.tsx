@@ -1,47 +1,42 @@
-import {Dimensions, ImageSourcePropType, TouchableOpacity} from 'react-native';
+import {
+  Dimensions,
+  StyleSheet,
+  ViewStyle,
+} from 'react-native';
+import {ICard} from '../../constants/types';
 import {useTheme} from '../../hooks';
 import {Block, Image, Text} from '../atoms';
 
 const WIDTH = Dimensions.get('window').width;
-type Props = {
-  inline?: boolean;
-  fullWidth?: boolean;
-  background?: boolean;
-  image: ImageSourcePropType;
-  title: string;
-  description: string;
-  subcription?: string;
-};
 
-const SingleCard = ({image, title, description, subcription}: Props) => {
+const SingleCard = ({image, title, description, subcription}: ICard) => {
   const {assets, colors, sizes} = useTheme();
+
   return (
-    <Block>
-      <Block card row marginBottom={sizes.s}>
-        <Image resizeMode="cover" source={image} height={96} width={96} />
-        <Block paddingLeft={sizes.s} justify="space-between">
-          <Block>
-            <Text numberOfLines={1} p bold color={colors.primary}>
-              {title}
-            </Text>
-            <Text numberOfLines={3}>{description}</Text>
-          </Block>
-          {subcription && (
-            <Text numberOfLines={1} color={colors.gray}>
-              {subcription}
-            </Text>
-          )}
+    <Block card row>
+      <Image resizeMode="cover" source={image} height={96} width={96} />
+      <Block paddingLeft={sizes.s} justify="space-between">
+        <Block>
+          <Text numberOfLines={1} p bold color={colors.primary}>
+            {title}
+          </Text>
+          <Text numberOfLines={3}>{description}</Text>
         </Block>
+        {subcription && (
+          <Text numberOfLines={1} color={colors.gray}>
+            {subcription}
+          </Text>
+        )}
       </Block>
     </Block>
   );
 };
 
-const InlineCard = ({image, title, description, subcription}: Props) => {
+const InlineCard = ({image, title, description, subcription}: ICard) => {
   const {assets, colors, sizes} = useTheme();
   const width = WIDTH / 2 - 1.5 * sizes.s;
   return (
-    <Block card marginRight={sizes.s} width={width} height={width * 1.25}>
+    <Block card width={width} height={width * 1.25}>
       <Image resizeMode="cover" source={image} style={{width: '100%'}} />
       <Block marginTop={sizes.s} justify="space-between">
         <Text numberOfLines={3} marginBottom={sizes.s}>
@@ -158,27 +153,64 @@ const Card = ({
   image,
   description,
   subcription,
-}: Props) => {
-  const {assets, colors, gradients, sizes} = useTheme();
+  margin,
+  marginBottom,
+  marginTop,
+  marginHorizontal,
+  marginVertical,
+  marginRight,
+  marginLeft,
+  padding,
+  paddingBottom,
+  paddingTop,
+  paddingHorizontal,
+  paddingVertical,
+  paddingRight,
+  paddingLeft,
+  style,
+}: ICard) => {
+  const CardContainerStyle = StyleSheet.flatten([
+    style,
+    {
+      ...(margin !== undefined && {margin}),
+      ...(marginBottom && {marginBottom}),
+      ...(marginTop && {marginTop}),
+      ...(marginHorizontal && {marginHorizontal}),
+      ...(marginVertical && {marginVertical}),
+      ...(marginRight && {marginRight}),
+      ...(marginLeft && {marginLeft}),
+      ...(padding !== undefined && {padding}),
+      ...(paddingBottom && {paddingBottom}),
+      ...(paddingTop && {paddingTop}),
+      ...(paddingHorizontal && {paddingHorizontal}),
+      ...(paddingVertical && {paddingVertical}),
+      ...(paddingRight && {paddingRight}),
+      ...(paddingLeft && {paddingLeft}),
+    },
+  ]) as ViewStyle;
 
   if (inline) {
     return (
-      <InlineCard
-        title={title}
-        image={image}
-        description={description}
-        subcription={subcription}
-      />
+      <Block style={CardContainerStyle}>
+        <InlineCard
+          title={title}
+          image={image}
+          description={description}
+          subcription={subcription}
+        />
+      </Block>
     );
   }
 
   return (
-    <SingleCard
-      image={image}
-      title={title}
-      description={description}
-      subcription={subcription}
-    />
+    <Block style={CardContainerStyle}>
+      <SingleCard
+        image={image}
+        title={title}
+        description={description}
+        subcription={subcription}
+      />
+    </Block>
   );
 };
 

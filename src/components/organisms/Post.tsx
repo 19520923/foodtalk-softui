@@ -1,57 +1,49 @@
 import React from 'react';
 import {IPost} from '../../constants/types';
-import {useTheme} from '../../hooks';
+import {useTheme, useTranslation} from '../../hooks';
 import {Block} from '../atoms';
 import {ImageDesc, Carousel} from '../molecules';
+import {FontAwesome} from '@expo/vector-icons';
+import {TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 type Props = {
   post: IPost;
 };
 
 const Post = ({post}: Props) => {
-  const {assets, sizes} = useTheme();
+  const {colors, sizes, icons} = useTheme();
+  const navigation = useNavigation();
+  const {t} = useTranslation()
   const {_id, author, content, photos, reactions, num_comment, created_at} =
     post;
 
-  const actions = [
-    {
-      icon: assets.home,
-    },
-    {icon: assets.home},
-    {icon: assets.home},
-  ];
-  const actionsRight = [
-    {
-      icon: {
-        uri: 'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
-      },
-    },
-    {
-      icon: {
-        uri: 'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
-      },
-    },
-    {
-      icon: {
-        uri: 'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
-      },
-    },
-    {
-      icon: {
-        uri: 'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
-      },
-    },
-    {
-      icon: {
-        uri: 'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
-      },
-    },
-    {
-      icon: {
-        uri: 'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
-      },
-    },
-  ];
+  const _handleNavigateComment = () => {
+    navigation.navigate(t('navigation.comment'));
+  };
+
+  const actionsLeft = () => (
+    <Block row>
+      <TouchableOpacity
+        style={{marginRight: sizes.s, paddingHorizontal: sizes.s}}>
+        <FontAwesome name={icons.heart} color={colors.icon} size={sizes.icon} />
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={_handleNavigateComment}
+        style={{marginRight: sizes.s, paddingHorizontal: sizes.s}}>
+        <FontAwesome
+          name={icons.comment}
+          color={colors.icon}
+          size={sizes.icon}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{marginRight: sizes.s, paddingHorizontal: sizes.s}}>
+        <FontAwesome name={icons.share} color={colors.icon} size={sizes.icon} />
+      </TouchableOpacity>
+    </Block>
+  );
+
   return (
     <Block key={_id} marginBottom={sizes.m}>
       <ImageDesc
@@ -65,8 +57,7 @@ const Post = ({post}: Props) => {
         created_at={created_at}
         likes={reactions.length}
         comments={num_comment}
-        actionsLeft={actions}
-        actionsRight={actionsRight}
+        actionsLeft={actionsLeft()}
       />
     </Block>
   );
