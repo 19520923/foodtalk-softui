@@ -85,7 +85,11 @@ const DrawerContent = (
   // screen list for Drawer menu
   const screens = [
     {name: t('screens.home'), to: 'Home', icon: assets.home},
-    {name: t('screens.postDetail'), to: t('navigation.postDetail'), icon: assets.settings},
+    {
+      name: t('screens.imagePicker'),
+      to: t('navigation.imagePicker'),
+      icon: assets.settings,
+    },
   ];
 
   return (

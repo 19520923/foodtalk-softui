@@ -1,10 +1,15 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useState, useEffect} from 'react';
 import {Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
+import * as regex from '../constants/regex';
 
-import {useData, useTheme, useTranslation} from '../hooks/';
+import {Storage, useData, useTheme, useTranslation} from '../hooks/';
 import {Block, Button, Input, Image, Text} from '../components/atoms';
 import {FontAwesome} from '@expo/vector-icons';
+import RootStore from '../stores/RootStore';
+import _ from 'lodash';
+import API from '../services/axiosClient';
+import {ACCESS_TOKEN} from '../constants/constants';
 
 const isAndroid = Platform.OS === 'android';
 
@@ -22,14 +27,15 @@ const Login = () => {
   const {t} = useTranslation();
   const navigation = useNavigation();
   const [isValid, setIsValid] = useState<ILoginValidation>({
-    email: true,
-    password: true,
+    email: false,
+    password: false,
   });
   const [userData, setUserData] = useState<ILogin>({
     email: '',
     password: '',
   });
   const {assets, colors, gradients, sizes} = useTheme();
+  const {setIsLoggedIn, user} = RootStore;
 
   const _handleChange = useCallback(
     (value) => {
@@ -38,8 +44,26 @@ const Login = () => {
     [setUserData],
   );
 
-  const _handleLogin = () => {
-    //handle login here
+  useEffect(() => {
+    setIsValid((state) => ({
+      ...state,
+      email: regex.email.test(userData.email),
+      password: regex.password.test(userData.password),
+    }));
+  }, [userData, setIsValid]);
+
+  const _handleLogin = async () => {
+    try {
+      const data = await API.login(userData);
+      setIsLoggedIn(true);
+      user?.setProfile(data.user);
+      await Storage.setItem(ACCESS_TOKEN, data.token);
+    } catch (err) {
+      const message = _.get(err, 'message', JSON.stringify(err));
+      console.log(message);
+      // display error message to toask here
+    } finally {
+    }
   };
 
   return (
@@ -166,7 +190,7 @@ const Login = () => {
               shadow={!isAndroid}
               marginVertical={sizes.s}
               marginHorizontal={sizes.sm}
-              onPress={() => navigation.navigate(t('navigation.login'))}>
+              onPress={() => navigation.navigate(t('navigation.register'))}>
               <Text bold primary transform="uppercase">
                 {t('common.signup')}
               </Text>

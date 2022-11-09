@@ -38,7 +38,7 @@ export const ICONS: ThemeIcons = {
   user: 'user-circle',
   menu: 'bars',
   back: 'chevron-left',
-  heart: 'heart-o',
+  heart_o: 'heart-o',
   comment: 'comments-o',
   share: 'share',
   plus: 'plus',
@@ -50,7 +50,11 @@ export const ICONS: ThemeIcons = {
   close: 'close',
   facebook: 'facebook-square',
   apple: 'apple',
-  google: 'google'
+  google: 'google',
+  heart: 'heart',
+  check: 'check',
+  photo: 'photo',
+  checkin: 'map-marker'
 };
 
 export const ASSETS: ThemeAssets = {

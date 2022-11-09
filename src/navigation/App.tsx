@@ -5,7 +5,6 @@ import AppLoading from 'expo-app-loading';
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 
 import Menu from './Menu';
-import Auth from './Auth';
 import { useData, ThemeProvider, TranslationProvider } from '../hooks';
 import {observer} from 'mobx-react-lite'
 

@@ -1,13 +1,8 @@
-import {
-  Dimensions,
-  StyleSheet,
-  ViewStyle,
-} from 'react-native';
+import {Dimensions, StyleSheet, ViewStyle} from 'react-native';
+import {CARD_WIDTH} from '../../constants/constants';
 import {ICard} from '../../constants/types';
 import {useTheme} from '../../hooks';
 import {Block, Image, Text} from '../atoms';
-
-const WIDTH = Dimensions.get('window').width;
 
 const SingleCard = ({image, title, description, subcription}: ICard) => {
   const {assets, colors, sizes} = useTheme();
@@ -34,14 +29,16 @@ const SingleCard = ({image, title, description, subcription}: ICard) => {
 
 const InlineCard = ({image, title, description, subcription}: ICard) => {
   const {assets, colors, sizes} = useTheme();
-  const width = WIDTH / 2 - 1.5 * sizes.s;
+  const width = CARD_WIDTH - 1.5 * sizes.s;
   return (
     <Block card width={width} height={width * 1.25}>
       <Image resizeMode="cover" source={image} style={{width: '100%'}} />
       <Block marginTop={sizes.s} justify="space-between">
-        <Text numberOfLines={3} marginBottom={sizes.s}>
-          {description}
-        </Text>
+        {description && (
+          <Text numberOfLines={3} marginBottom={sizes.s}>
+            {description}
+          </Text>
+        )}
         <Block
           row
           align="center"

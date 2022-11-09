@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, {AxiosInstance} from 'axios';
 import _ from 'lodash';
 import axiosRetry from 'axios-retry';
 import {RETRY_DELAY, RETRY_NUMBER, RETRY_STATUS_CODE} from '../constants/retry';
@@ -9,9 +9,9 @@ import {
   ACCESS_TOKEN,
   MASTER_KEY,
   LIMIT,
+  ACCOUNT,
 } from '../constants/constants';
-import { Storage } from '../hooks';
-import RootStore from '../stores/RootStore';
+import {Storage} from '../hooks';
 
 class AxiosClient {
   failedQueue: Array<any>;
@@ -59,24 +59,19 @@ class AxiosClient {
     /* An interceptor that intercepts the response from the server. */
     this.axios.interceptors.response.use(
       (response: any) => {
-        const success = _.get(response, 'data.success');
-        if (!success) {
-          const message = _.get(response, 'data.message');
-          const originalRequest = response.config;
-          if (message === UNAUTHORIZED) {
-            return this.retryCallAPIWhenTokenExpired(originalRequest);
-          } else {
-            throw new Error(`New error: ${JSON.stringify(message)}`);
-          }
-        }
         return response.data;
       },
       async (error: any) => {
         const originalRequest = error.config;
         const response = error.response;
-        //
-        if (response.status === UNAUTHORIZED && !originalRequest._retry && RootStore.isLoggedIn ) {
-          return this.retryCallAPIWhenTokenExpired(originalRequest);
+        const account = await Storage.getItem(ACCOUNT);
+
+        if (
+          response.status === UNAUTHORIZED &&
+          !originalRequest._retry &&
+          account
+        ) {
+          return this.retryCallAPIWhenTokenExpired(originalRequest, account);
         }
         const resError = _.get(error, 'response.data', {});
         return Promise.reject(resError);
@@ -101,7 +96,7 @@ class AxiosClient {
     this.failedQueue = [];
   }
 
-  retryCallAPIWhenTokenExpired(originalRequest: any) {
+  retryCallAPIWhenTokenExpired(originalRequest: any, account: any) {
     if (this.isRefreshing) {
       return new Promise((resolve, reject) => {
         this.failedQueue.push({resolve, reject});
@@ -118,10 +113,7 @@ class AxiosClient {
     this.isRefreshing = true;
 
     // luu account vào localStorage rồi truyền vào đây
-    return this.login({
-      email: 'nguyennhattan12201@gmail.com',
-      password: '123456789',
-    })
+    return this.login(account)
       .then((data: {token: string}) => {
         /** Add token in to headers.Authorization */
         this.axios.defaults.headers.Authorization = 'Bearer ' + data.token;
@@ -189,18 +181,19 @@ class AxiosClient {
   /**
    * If is_active is not an empty string, then return the axios.get() with the is_active parameter,
    * otherwise return the axios.get() without the is_active parameter.
-   * @param [is_active] - true or false
    * @param [page=1] - the page number
-   * @param [type=all] - all, text, image, video
+   * @param [is_public] - true or false
+   * @param [is_active] - true or false
    * @param [sort=-created_at] - -created_at (descending order)
    * @returns The return value is a promise.
    */
-  getAllPosts(is_active = '', page = 1, type = 'all', sort = '-created_at') {
-    return is_active !== ''
-      ? this.axios.get(
-          `/posts?sort=${sort}&page=${page}&limit=${LIMIT}&is_active=${is_active}`,
-        )
-      : this.axios.get(`/posts?sort=${sort}&page=${page}&limit=${LIMIT}`);
+  getAllPosts(
+    page = 1,
+    is_public = true,
+  ) {
+    return this.axios.get(
+      `/posts?sort=-created_at&page=${page}&limit=${LIMIT}&is_active=true&is_public=${is_public}`,
+    );
   }
 
   /**
@@ -253,27 +246,15 @@ class AxiosClient {
   /**
    * If is_active is not an empty string, then return the axios.get request with the is_active parameter,
    * otherwise return the axios.get request without the is_active parameter.
-   * @param [is_active] - true or false
    * @param [page=1] - the page number
    * @param [sort=name] - the column to sort by
    * @param [search] - search query
-   * @param [type=all] - all, veg, non-veg
    * @returns The return value is the result of the axios.get() method.
    */
-  getAllFoods(
-    is_active = '',
-    page = 1,
-    sort = 'name',
-    search = '',
-    type = 'all',
-  ) {
-    return is_active !== ''
-      ? this.axios.get(
-          `/foods?q=${search}&sort=${sort}&page=${page}&limit=${LIMIT}&is_active=${is_active}`,
-        )
-      : this.axios.get(
-          `/foods?q=${search}&sort=${sort}&page=${page}&limit=${LIMIT}`,
-        );
+  getAllFoods(page = 1, search = '', sort = 'name') {
+    return this.axios.get(
+      `/foods?q=${search}&sort=${sort}&page=${page}&limit=${LIMIT}&is_active=true`,
+    );
   }
 
   /**

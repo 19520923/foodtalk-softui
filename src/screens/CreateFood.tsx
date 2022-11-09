@@ -1,16 +1,29 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Platform} from 'react-native';
 import {Block, Button, Image, Input, Switch, Text} from '../components/atoms';
 import {ImageDesc} from '../components/molecules';
+import { IFood } from '../constants/types';
 import {useTheme} from '../hooks';
+import RootStore from '../stores/RootStore';
 
 const isAndroid = Platform.OS === 'android';
 
-type Props = {};
-
-const CreateFood = (props: Props) => {
+const CreateFood = () => {
   const {colors, sizes, assets, gradients} = useTheme();
-  const [isPublic, setPublic] = useState<boolean>(true);
+  const [food, setFood] = useState<IFood>({
+    name: '',
+    is_public: true,
+    recipe: [],
+    ingredients: [],
+  })
+  const { user: { profile } } = RootStore
+  
+    const _handleChange = useCallback(
+      (value) => {
+        setFood((state) => ({...state, ...value}));
+      },
+      [setFood],
+    );
   return (
     <Block safe paddingTop={sizes.s}>
       <Block
@@ -19,9 +32,9 @@ const CreateFood = (props: Props) => {
         keyboard
         behavior={!isAndroid ? 'padding' : 'height'}>
         <ImageDesc
-          title="Nguyen Nhut Tan"
-          description="tannn"
-          image={assets.avatar1}
+          title={profile.name}
+          description={profile.username}
+          image={{uri: profile.avatar_url}}
         />
         <Block
           row
@@ -31,18 +44,18 @@ const CreateFood = (props: Props) => {
           justify="space-between">
           <Block row>
             <Text p semibold>
-              {isPublic ? 'Public' : 'Only me'}
+              {food.is_public ? 'Public' : 'Only me'}
             </Text>
             <Text p marginLeft={sizes.s}>
-              {isPublic
+              {food.is_public
                 ? '(Every one can see your receip)'
                 : '(Only me can see your receip)'}
             </Text>
           </Block>
           <Switch
             marginRight={sizes.s}
-            checked={isPublic}
-            onPress={(checked) => setPublic(checked)}
+            checked={food.is_public}
+            onPress={(checked) => _handleChange({is_public: checked})}
           />
         </Block>
         <Input placeholder="Name of food?" multiline noBorder />

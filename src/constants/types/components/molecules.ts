@@ -8,8 +8,8 @@ export interface ICard extends ISpacing {
   fullWidth?: boolean;
   background?: boolean;
   image: ImageSourcePropType;
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   subcription?: string;
   style?: ViewStyle;
 }
@@ -17,7 +17,7 @@ export interface ICard extends ISpacing {
 /* Defining the interface for the Carousel component. */
 export interface ICarousel extends ISpacing {
   content?: string;
-  images: Array<ImageSourcePropType>;
+  images?: Array<any>;
   created_at: string;
   likes?: number;
   comments?: number;
@@ -27,9 +27,9 @@ export interface ICarousel extends ISpacing {
 }
 
 export interface IImageDesc {
-  image: ImageSourcePropType;
+  image?: ImageSourcePropType;
   size?: number;
-  title?: string | undefined;
+  title?: string ;
   description?: string;
   card?: boolean;
   info?: {
@@ -37,4 +37,5 @@ export interface IImageDesc {
     created_at?: string | number | Date;
   };
   color?: ColorValue;
+  icon?: any
 }

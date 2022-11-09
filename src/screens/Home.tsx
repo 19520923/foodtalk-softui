@@ -5,53 +5,26 @@ import {Block, Button, Image, Input, Product, Text} from '../components/atoms';
 import {useNavigation} from '@react-navigation/native';
 import {IPost} from '../constants/types';
 import {Post} from '../components/organisms';
-
-const POST_DATA: Array<IPost> = [
-  {
-    _id: '10101',
-    author: {
-      _id: 'dasda',
-      username: 'nntan',
-      name: 'Nguyen Nhut Tan',
-      avatar_url:
-        'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
-    },
-    content: 'Hi there',
-    photos: [
-      'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
-      'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
-    ],
-    created_at: '12/10/2022',
-    num_comment: 1,
-    reactions: ['1220'],
-  },
-  {
-    _id: '10102',
-    author: {
-      _id: 'dasda',
-      username: 'nntan',
-      name: 'Nguyen Nhut Tan',
-      avatar_url:
-        'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
-    },
-    content: 'Hi there',
-    photos: [
-      'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
-      'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
-    ],
-    created_at: '12/10/2022',
-    num_comment: 1,
-    reactions: ['1220'],
-  },
-];
-
+import RootStore from '../stores/RootStore';
+import {observer} from 'mobx-react-lite'
+ 
 const Home = () => {
   const {t} = useTranslation();
   const [tab, setTab] = useState<number>(0);
   const {following, trending} = useData();
   const [products, setProducts] = useState(following);
   const {assets, colors, fonts, gradients, sizes} = useTheme();
+  const {posts: {rows, count, setPosts, loadPosts}} = RootStore
 
+  useEffect(() => {
+    setPosts()
+  }, [])
+
+  const _handleScrollBottom = () => {
+    if (rows.lenght < count) {
+      loadPosts()
+    }
+  }
   // const handleProducts = useCallback(
   //   (tab: number) => {
   //     setTab(tab);
@@ -127,11 +100,12 @@ const Home = () => {
       {/* products list */}
       <Block
         scroll
+        load={_handleScrollBottom}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: sizes.l}}>
         <Block marginTop={sizes.sm}>
-          {POST_DATA?.map((post) => (
-            <Post post={post} />
+          {rows.map((post) => (
+            <Post key={post._id} post={post} />
           ))}
         </Block>
       </Block>
@@ -139,4 +113,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default observer(Home);

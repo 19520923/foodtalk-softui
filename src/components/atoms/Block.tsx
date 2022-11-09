@@ -1,8 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
+  NativeScrollEvent,
   Platform,
   SafeAreaView,
   ScrollView,
+  ScrollViewProps,
   StyleSheet,
   View,
   ViewStyle,
@@ -71,6 +73,8 @@ const Block = (props: IBlockProps) => {
     bottom,
     end,
     start,
+    load,
+    reverse,
     ...rest
   } = props;
   const {colors, sizes} = useTheme();
@@ -167,6 +171,24 @@ const Block = (props: IBlockProps) => {
     },
   ]) as ViewStyle;
 
+  const [onScroll, setOnScroll] = useState<boolean>(false);
+
+  const isCloseToBottom = ({
+    layoutMeasurement,
+    contentOffset,
+    contentSize,
+  }: NativeScrollEvent) => {
+    const PADDING_TO_BOTTOM = sizes.l;
+    return (
+      layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - PADDING_TO_BOTTOM
+    );
+  };
+
+  const isCloseToTop = ({contentOffset}: NativeScrollEvent) => {
+    return contentOffset.y === 0;
+  };
+
   // generate component testID or accessibilityLabel based on Platform.OS
   const blockID =
     Platform.OS === 'android' ? {accessibilityLabel: id} : {testID: id};
@@ -189,7 +211,23 @@ const Block = (props: IBlockProps) => {
 
   if (scroll) {
     return (
-      <ScrollView {...blockID} {...rest} style={blockStyles}>
+      <ScrollView
+        {...blockID}
+        {...rest}
+        style={blockStyles}
+        onScroll={({nativeEvent}) => {
+          setOnScroll(true);
+          if (
+            load &&
+            ((!reverse && isCloseToBottom(nativeEvent)) ||
+              (reverse && isCloseToTop(nativeEvent)))
+          ) {
+            load();
+          }
+
+          setOnScroll(false);
+        }}
+        scrollEventThrottle={1000}>
         {children}
       </ScrollView>
     );

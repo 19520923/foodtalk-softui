@@ -215,7 +215,7 @@ export interface ThemeIcons {
   user?: any;
   menu?: any;
   back?: any;
-  heart?: any;
+  heart_o?: any;
   comment?: any;
   share?: any;
   plus?: any;
@@ -227,7 +227,11 @@ export interface ThemeIcons {
   close?: any;
   facebook?: any;
   google?: any;
-  apple?: any
+  apple?: any;
+  heart?: any;
+  check?: any;
+  photo?: any;
+  checkin?: any;
 }
 
 export interface ThemeAssets {

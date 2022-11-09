@@ -18,15 +18,34 @@ import Block from '../components/atoms/Block';
 
 import {FontAwesome} from '@expo/vector-icons';
 import {ImageDesc} from '../components/molecules';
-import { useIsDrawerOpen } from '@react-navigation/drawer';
+import {useIsDrawerOpen} from '@react-navigation/drawer';
+import {HEIGHT, WIDTH} from '../constants/constants';
 
 export default () => {
   const {t} = useTranslation();
   const {user} = useData();
   const navigation = useNavigation();
-    const isDrawerOpen = useIsDrawerOpen();
+  const isDrawerOpen = useIsDrawerOpen();
   const {icons, colors, gradients, sizes, assets} = useTheme();
   const [open, setOpen] = useState(false);
+
+  const CREATE_CARD_ACTION = [
+    {
+      name: 'Story',
+      icon: icons.story,
+      onPress: () => null,
+    },
+    {
+      name: 'Create post',
+      icon: icons.post,
+      onPress: () => _handleNavigateCreatePost(),
+    },
+    {
+      name: 'Create food',
+      icon: icons.food,
+      onPress: () => _handleNavigateCreateFood(),
+    },
+  ];
 
   const _handleOpenCreateCard = () => {
     setOpen(!open);
@@ -41,44 +60,32 @@ export default () => {
   };
 
   const CreateCard = () => (
-      <Block card style={{position: 'absolute', right: 32, top: 32}}>
-        <TouchableOpacity>
-          <Block row padding={sizes.s}>
-            <FontAwesome
-              name={icons.story}
-              size={sizes.icon}
-              color={colors.icon}
-            />
-            <Text p marginLeft={sizes.sm}>
-              Story
-            </Text>
-          </Block>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={_handleNavigateCreatePost}>
-          <Block row padding={sizes.s}>
-            <FontAwesome
-              name={icons.post}
-              size={sizes.icon}
-              color={colors.icon}
-            />
-            <Text p marginLeft={sizes.sm}>
-              Post
-            </Text>
-          </Block>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={_handleNavigateCreateFood}>
-          <Block row padding={sizes.s}>
-            <FontAwesome
-              name={icons.food}
-              size={sizes.icon}
-              color={colors.icon}
-            />
-            <Text p marginLeft={sizes.sm}>
-              Food recipe
-            </Text>
-          </Block>
-        </TouchableOpacity>
+    <TouchableOpacity
+      onPressIn={_handleOpenCreateCard}
+      style={{
+        position: 'absolute',
+        width: WIDTH,
+        height: HEIGHT,
+        top: -14,
+        right: -28,
+      }}>
+      <Block card style={{position: 'absolute', top: 42, right: 42}}>
+        {CREATE_CARD_ACTION.map((e, index) => (
+          <TouchableOpacity key={index} onPress={e.onPress}>
+            <Block row padding={sizes.s}>
+              <FontAwesome
+                name={e.icon}
+                size={sizes.icon}
+                color={colors.icon}
+              />
+              <Text p marginLeft={sizes.sm}>
+                {e.name}
+              </Text>
+            </Block>
+          </TouchableOpacity>
+        ))}
       </Block>
+    </TouchableOpacity>
   );
 
   const menu = {
@@ -93,7 +100,11 @@ export default () => {
     ),
     headerLeft: () => (
       <Button onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}>
-        <FontAwesome name={isDrawerOpen?icons:icons.menu} color={colors.icon} size={sizes.icon} />
+        <FontAwesome
+          name={isDrawerOpen ? icons.close : icons.menu}
+          color={colors.icon}
+          size={sizes.icon}
+        />
       </Button>
     ),
     headerRight: () => (
@@ -182,12 +193,8 @@ export default () => {
         </Button>
       ),
       headerRight: () => (
-        <Button
-          secondary
-          minHeight={sizes.l}
-          width={80}
-          onPress={() => console.log('press')}>
-          <Text p bold white>
+        <Button minHeight={sizes.l} onPress={() => console.log('press')}>
+          <Text p bold primary>
             Post
           </Text>
         </Button>

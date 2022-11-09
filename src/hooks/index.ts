@@ -6,4 +6,6 @@ export {
   TranslationProvider,
   useTranslation,
 } from './useTranslation';
-export {default as Storage} from './useStorage'
+export {default as Storage} from './useStorage';
+export {upload} from './useFirebase';
+export {default as Map} from './useMap' 

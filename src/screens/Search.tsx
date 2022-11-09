@@ -12,7 +12,7 @@ const Search = (props: Props) => {
   return (
     <Block scroll padding={sizes.s}>
       <Text h5 semibold marginBottom={sizes.s}>
-        {t('search.foods')}
+        {t('common.foods')}
       </Text>
       <Block scroll horizontal paddingBottom={sizes.s}>
         <Card

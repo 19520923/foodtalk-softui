@@ -12,13 +12,13 @@ export const DEFAULT_STATE_PROFILE = {
 };
 
 const profile_obj = {
-  _id: types.optional(types.string, ''),
-  name: types.optional(types.string, ''),
-  username: types.optional(types.string, ''),
-  email: types.optional(types.string, ''),
-  cover_url: types.optional(types.string, ''),
-  avatar_url: types.optional(types.string, ''),
-  about: types.optional(types.string, ''),
+  _id: types.string,
+  name: types.string,
+  username: types.string,
+  email: types.string,
+  cover_url: types.string,
+  avatar_url: types.string,
+  about: types.string,
   is_current: types.optional(types.boolean, false),
 };
 
@@ -26,16 +26,18 @@ const ProfileDetailModel = types.model({
   ...profile_obj,
 });
 
-const ProfileModel = types.model({
-  ...profile_obj,
-  following: types.optional(types.array(ProfileDetailModel), []),
-  follower: types.optional(types.array(ProfileDetailModel), []),
-}).actions(self => ({
-  follow: (user: Instance<typeof ProfileDetailModel>) => {
-    self.following.push(user)
-  },
-  
-}));
+export const ProfileModel = types
+  .model({
+    ...profile_obj,
+    following: types.array(ProfileDetailModel),
+    follower: types.array(ProfileDetailModel),
+  });
 
-export default ProfileModel;
+export const AuthorModel = types.model({
+  ...profile_obj,
+  following: types.array(types.string),
+  follower: types.array(types.string),
+});
+
+export type TAuthorModel = Instance<typeof AuthorModel>;
 export type TProfileModel = Instance<typeof ProfileModel>;

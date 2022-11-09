@@ -25,12 +25,20 @@
     "message": "Enter your message",
     "album": "Album",
     "or": "or",
+
+    "username": "Username",
+    "usernamePlaceholder": "Enter your username",
     "name": "Name",
     "namePlaceholder": "Enter your full name",
     "email": "Email",
     "emailPlaceholder": "Enter your email address",
     "password": "Password",
     "passwordPlaceholder": "Enter a password",
+
+    "foods": "Foods",
+
+    "selected": "Selected",
+
     "agree": "I agree with the ",
     "terms": "Terms and Conditions",
     "signup": "Sign Up",
@@ -62,7 +70,7 @@
     "rental": "Rental",
     "profile": "Profile",
     "settings": "Settings",
-    "register": "Create account",
+    "register": "Register",
     "extra": "Extra - Automotive",
     "login": "Login",
     "search": "Search",
@@ -70,7 +78,9 @@
     "createPost": "Create post",
     "createFood": "Create food",
     "comment": "Comment",
-    "postDetail": "Post detail"
+    "postDetail": "Post detail",
+    "imagePicker": "Image picker",
+    "checkin": "Map"
   },
   "navigation": {
     "home": "Soft UI",
@@ -94,8 +104,9 @@
     "comment": "Comment",
     "createPost": "Create post",
     "createFood": "Create food",
-    "postDetail": "Post detail"
-
+    "postDetail": "Post detail",
+    "imagePicker": "Image picker",
+    "checkin": "Map"
   },
   "menu": {
     "started": "Getting Started",
@@ -117,7 +128,6 @@
   "search": {
     "title": "Search",
     "subtitle": "Explore more",
-    "foods": "Foods",
     "users": "Users"
   },
   "profile": {
@@ -125,8 +135,10 @@
     "posts": "Posts",
     "followers": "Followers",
     "following": "Following",
-    "aboutMe": "About me",
-    "foods": "Foods"
+    "aboutMe": "About me"
+  },
+  "imagePicker": {
+    "title": "Selected {{count}} files"
   },
   "pro": {
     "title": "Soft UI PRO",
@@ -138,5 +150,15 @@
     "appTemplate": "Soft UI PRO React Native is an innovative app template that will help you built stunning mobile applications in no time. It features a huge number of components and screens built to fit together and look amazing:",
     "saveTime": "This modern app template will save you a lot of time going from prototyping to full-functional code, because all elements are implemented. We wanted the design process to be seamless, so switching from image to the real page is very easy to do!",
     "buyNow": "Buy now"
+  },
+  "createPost": {
+    "choosePhotos": "Choose photos",
+    "choosePhotosDesc": "Choose photos for your post",
+
+    "chooseRecipe": "Choose recipe",
+    "chooseRecipeDesc": "Choose your recipe for your post",
+
+    "checkin": "Checkin",
+    "checkinDesc": "Share your location"
   }
 }

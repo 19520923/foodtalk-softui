@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Platform, Linking} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import {useNavigation} from '@react-navigation/core';
@@ -7,6 +7,8 @@ import {Block, Button, Image, Text} from '../components/atoms';
 import {useData, useTheme, useTranslation} from '../hooks/';
 import {Post} from '../components/organisms';
 import {IPost} from '../constants/types';
+import RootStore from '../stores/RootStore';
+import {observer} from 'mobx-react-lite'
 
 const POST_DATA: Array<IPost> = [
   {
@@ -49,11 +51,11 @@ const POST_DATA: Array<IPost> = [
 
 const isAndroid = Platform.OS === 'android';
 
-const Profile = () => {
-  const {user} = useData();
+const Profile = observer(() => {
   const {t} = useTranslation();
   const navigation = useNavigation();
-  const {assets, colors, sizes, gradients} = useTheme();
+  const { assets, colors, sizes, gradients } = useTheme();
+  const { user: { profile } } = RootStore
   const [selected, setSelected] = useState<string>('POST');
 
   const IMAGE_SIZE = (sizes.width - (sizes.padding + sizes.sm) * 2) / 3;
@@ -62,22 +64,28 @@ const Profile = () => {
   const IMAGE_MARGIN = (sizes.width - IMAGE_SIZE * 3 - sizes.padding * 2) / 2;
   const IMAGE_VERTICAL_MARGIN =
     (sizes.width - (IMAGE_VERTICAL_SIZE + sizes.sm) * 2) / 2;
+  
+  useEffect(() => {
+    console.log(profile)
 
-  const handleSocialLink = useCallback(
-    (type: 'twitter' | 'dribbble') => {
-      const url =
-        type === 'twitter'
-          ? `https://twitter.com/${user?.social?.twitter}`
-          : `https://dribbble.com/${user?.social?.dribbble}`;
+  }, [profile])
+  
 
-      try {
-        Linking.openURL(url);
-      } catch (error) {
-        alert(`Cannot open URL: ${url}`);
-      }
-    },
-    [user],
-  );
+  // const handleSocialLink = useCallback(
+  //   (type: 'twitter' | 'dribbble') => {
+  //     const url =
+  //       type === 'twitter'
+  //         ? `https://twitter.com/${user?.social?.twitter}`
+  //         : `https://dribbble.com/${user?.social?.dribbble}`;
+
+  //     try {
+  //       Linking.openURL(url);
+  //     } catch (error) {
+  //       alert(`Cannot open URL: ${url}`);
+  //     }
+  //   },
+  //   [user],
+  // );
 
   const Carories = () => {
     return (
@@ -115,7 +123,7 @@ const Profile = () => {
               black={selected !== 'FOOD'}
               transform="capitalize"
               marginHorizontal={sizes.m}>
-              Foods
+              {t('common.foods')}
             </Text>
           </Button>
         </Block>
@@ -140,16 +148,16 @@ const Profile = () => {
             source={assets.background}>
             <Block flex={0} align="center">
               <Image
-                width={64}
-                height={64}
+                width={80}
+                height={80}
                 marginBottom={sizes.sm}
-                source={{uri: user?.avatar}}
+                source={{ uri: profile.avatar_url }}
               />
               <Text h5 center white>
-                {user?.name}
+                {profile.name}
               </Text>
               <Text p center white>
-                {user?.department}
+                {profile.username}
               </Text>
               <Block row marginVertical={sizes.m}>
                 <Button
@@ -158,7 +166,7 @@ const Profile = () => {
                   shadow={false}
                   radius={sizes.m}
                   onPress={() => {
-                    alert(`Follow ${user?.name}`);
+                    alert(`Follow ${profile.name}`);
                   }}>
                   <Block
                     justify="center"
@@ -176,7 +184,8 @@ const Profile = () => {
                   marginHorizontal={sizes.sm}
                   color="rgba(255,255,255,0.2)"
                   outlined={String(colors.white)}
-                  onPress={() => handleSocialLink('twitter')}>
+                // onPress={() => handleSocialLink('twitter')}
+                >
                   <Ionicons
                     size={18}
                     name="logo-twitter"
@@ -188,7 +197,8 @@ const Profile = () => {
                   radius={sizes.m}
                   color="rgba(255,255,255,0.2)"
                   outlined={String(colors.white)}
-                  onPress={() => handleSocialLink('dribbble')}>
+                // onPress={() => handleSocialLink('dribbble')}
+                >
                   <Ionicons
                     size={18}
                     name="logo-dribbble"
@@ -219,19 +229,19 @@ const Profile = () => {
               paddingVertical={sizes.sm}
               renderToHardwareTextureAndroid>
               <Block align="center">
-                <Text h5>{user?.stats?.posts}</Text>
+                <Text h5>1k</Text>
                 <Text>{t('profile.posts')}</Text>
               </Block>
               <Block align="center">
-                <Text h5>{user?.stats?.posts}</Text>
+                <Text h5>1k</Text>
                 <Text>{t('profile.foods')}</Text>
               </Block>
               <Block align="center">
-                <Text h5>{(user?.stats?.followers || 0) / 1000}k</Text>
+                <Text h5>{(profile.follower.lenght || 0) / 1000}k</Text>
                 <Text>{t('profile.followers')}</Text>
               </Block>
               <Block align="center">
-                <Text h5>{(user?.stats?.following || 0) / 1000}k</Text>
+                <Text h5>{(profile.following.lenght || 0) / 1000}k</Text>
                 <Text>{t('profile.following')}</Text>
               </Block>
             </Block>
@@ -243,7 +253,7 @@ const Profile = () => {
               {t('profile.aboutMe')}
             </Text>
             <Text p lineHeight={26}>
-              {user?.about}
+              {profile.about}
             </Text>
           </Block>
 
@@ -320,6 +330,6 @@ const Profile = () => {
       </Block>
     </Block>
   );
-};
+});
 
 export default Profile;

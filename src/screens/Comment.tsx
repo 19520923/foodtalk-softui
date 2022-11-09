@@ -1,42 +1,30 @@
-import React from 'react';
-import {Block, Button, Image, Input, Text} from '../components/atoms';
+import React, {useEffect} from 'react';
+import {Block, Button, Input} from '../components/atoms';
 import {ImageDesc} from '../components/molecules';
-import {INotification} from '../constants/types';
 import {useTheme} from '../hooks';
 import {FontAwesome} from '@expo/vector-icons';
+import RootStore from '../stores/RootStore';
+import {observer} from 'mobx-react-lite'
 
-type Props = {};
+const Comment = () => {
+  const {selectedPost, removeSelectedPost, setComments} = RootStore;
 
-const NOTI_DATA: Array<INotification> = [
-  {
-    _id: '1',
-    content: '1 has following you. Have you followed back!!',
-    type: 'SYSTEM',
-    created_at: '12/12/2021',
-    author: {
-      _id: 'dasda',
-      username: 'nntan',
-      name: 'Nguyen Nhut Tan',
-      avatar_url:
-        'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
-    },
-  },
-  {
-    _id: '2',
-    content: '1 has following you. Have you followed back!!',
-    type: 'SYSTEM',
-    created_at: '12/12/2021',
-    author: {
-      _id: 'dasda',
-      username: 'nntan',
-      name: 'Nguyen Nhut Tan',
-      avatar_url:
-        'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
-    },
-  },
-];
+  useEffect(() => {
+    if (selectedPost) {
+      setComments(selectedPost._id);
+    }
 
-const Comment = (props: Props) => {
+    return () => {
+      removeSelectedPost();
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log(selectedPost?.comments)
+  
+  }, [selectedPost])
+  
+
   const {sizes, colors, assets, icons} = useTheme();
   return (
     <Block safe style={{position: 'relative'}}>
@@ -45,15 +33,15 @@ const Comment = (props: Props) => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: sizes.l}}>
         <Block marginTop={sizes.sm}>
-          {NOTI_DATA?.map((noti) => (
+          {selectedPost && selectedPost.comments && selectedPost.comments.rows.map((comment) => (
             <ImageDesc
-              key={noti._id}
+              key={comment._id}
               size={sizes.xl}
-              image={{uri: noti.author.avatar_url}}
-              title={noti.author.name}
-              description={noti.content}
+              image={{uri: comment.author?.avatar_url}}
+              title={comment.author?.name}
+              description={comment.content}
               info={{
-                created_at: noti.created_at,
+                created_at: comment.created_at,
                 likes: 4,
               }}
             />
@@ -85,4 +73,4 @@ const Comment = (props: Props) => {
   );
 };
 
-export default Comment;
+export default observer(Comment);

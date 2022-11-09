@@ -5,6 +5,9 @@ import {StyleSheet, ViewStyle} from 'react-native';
 import {useTheme} from '../../hooks';
 import {Block, Image, Text} from '../atoms';
 import {ICarousel} from '../../constants/types';
+import { IMAGE_HEIGHT } from '../../constants/constants';
+import {SliderBox} from 'react-native-image-slider-box';
+
 
 dayjs.extend(relatedTime);
 
@@ -55,14 +58,26 @@ const Carousel = ({
 
   return (
     <Block style={CarouselContainerStyle}>
-      {/* <SwipeSlide images={images} /> */}
-      <Image
-        radius={0}
-        resizeMode="cover"
-        source={assets.carousel1}
-        style={{width: '100%'}}
-        marginVertical={sizes.s}
-      />
+      {images && (
+        <Block marginVertical={sizes.s}>
+          <SliderBox
+            images={images}
+            sliderBoxHeight={IMAGE_HEIGHT}
+            onCurrentImagePressed={(index: number) =>
+              console.warn(`image ${index} pressed`)
+            }
+            dotColor={colors.primary}
+            inactiveDotColor={colors.icon}
+            paginationBoxVerticalPadding={20}
+            autoplay
+            circleLoop
+            dotStyle={{
+              width: sizes.s,
+              height: sizes.s,
+            }}
+          />
+        </Block>
+      )}
       <Block paddingHorizontal={sizes.s}>
         {(actionsLeft || actionsRight) && (
           <Block row justify="space-between" wrap="nowrap">

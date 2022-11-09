@@ -237,6 +237,14 @@ export interface IBlockProps
    * @see https://docs.expo.io/versions/latest/sdk/linear-gradient/#props
    */
   end?: LinearGradientPoint;
+  /**
+   * Load function when near to bottom or top in scrollview
+   */
+  load?: () => void;
+  /**
+   * Reverse scrollview
+   */
+  reverse?: boolean;
 }
 
 /**

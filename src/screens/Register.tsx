@@ -5,16 +5,19 @@ import {useNavigation} from '@react-navigation/core';
 import {useData, useTheme, useTranslation} from '../hooks/';
 import * as regex from '../constants/regex';
 import {Block, Button, Input, Image, Text, Checkbox} from '../components/atoms';
+import {FontAwesome} from '@expo/vector-icons';
 
 const isAndroid = Platform.OS === 'android';
 
 interface IRegistration {
+  username: string;
   name: string;
   email: string;
   password: string;
   agreed: boolean;
 }
 interface IRegistrationValidation {
+  username: boolean;
   name: boolean;
   email: boolean;
   password: boolean;
@@ -26,18 +29,20 @@ const Register = () => {
   const {t} = useTranslation();
   const navigation = useNavigation();
   const [isValid, setIsValid] = useState<IRegistrationValidation>({
+    username: false,
     name: false,
     email: false,
     password: false,
     agreed: false,
   });
   const [registration, setRegistration] = useState<IRegistration>({
+    username: '',
     name: '',
     email: '',
     password: '',
     agreed: false,
   });
-  const {assets, colors, gradients, sizes} = useTheme();
+  const {assets, colors, gradients, sizes, icons} = useTheme();
 
   const handleChange = useCallback(
     (value) => {
@@ -64,37 +69,32 @@ const Register = () => {
   }, [registration, setIsValid]);
 
   return (
-    <Block safe marginTop={sizes.md}>
-      <Block paddingHorizontal={sizes.s}>
+    <Block safe>
+      <Block>
         <Block flex={0} style={{zIndex: 0}}>
           <Image
             background
             resizeMode="cover"
-            padding={sizes.sm}
+            paddingHorizontal={sizes.sm}
+            paddingTop={sizes.l}
             radius={sizes.cardRadius}
             source={assets.background}
-            height={sizes.height * 0.3}>
+            height={sizes.height * 0.4}>
             <Button
               row
               flex={0}
               justify="flex-start"
+              align='center'
               onPress={() => navigation.goBack()}>
-              <Image
-                radius={0}
-                width={10}
-                height={18}
+              <FontAwesome
+                size={sizes.icon}
                 color={colors.white}
-                source={assets.arrow}
-                transform={[{rotate: '180deg'}]}
+                name={icons.back}
               />
-              <Text p white marginLeft={sizes.s}>
-                {t('common.goBack')}
+              <Text p white marginLeft={sizes.sm}>
+                {t('register.title')}
               </Text>
             </Button>
-
-            <Text h4 center white marginBottom={sizes.md}>
-              {t('register.title')}
-            </Text>
           </Image>
         </Block>
         {/* register form */}
@@ -123,26 +123,23 @@ const Register = () => {
               {/* social buttons */}
               <Block row center justify="space-evenly" marginVertical={sizes.m}>
                 <Button outlined gray shadow={!isAndroid}>
-                  <Image
-                    source={assets.facebook}
-                    height={sizes.m}
-                    width={sizes.m}
+                  <FontAwesome
+                    name={icons.facebook}
+                    size={sizes.icon}
                     color={isDark ? colors.icon : undefined}
                   />
                 </Button>
                 <Button outlined gray shadow={!isAndroid}>
-                  <Image
-                    source={assets.apple}
-                    height={sizes.m}
-                    width={sizes.m}
+                  <FontAwesome
+                    name={icons.apple}
+                    size={sizes.icon}
                     color={isDark ? colors.icon : undefined}
                   />
                 </Button>
                 <Button outlined gray shadow={!isAndroid}>
-                  <Image
-                    source={assets.google}
-                    height={sizes.m}
-                    width={sizes.m}
+                  <FontAwesome
+                    name={icons.google}
+                    size={sizes.icon}
                     color={isDark ? colors.icon : undefined}
                   />
                 </Button>
@@ -176,6 +173,15 @@ const Register = () => {
               </Block>
               {/* form inputs */}
               <Block paddingHorizontal={sizes.sm}>
+                <Input
+                  autoCapitalize="none"
+                  marginBottom={sizes.m}
+                  label={t('common.username')}
+                  placeholder={t('common.usernamePlaceholder')}
+                  success={Boolean(registration.username && isValid.username)}
+                  danger={Boolean(registration.username && !isValid.username)}
+                  onChangeText={(value) => handleChange({name: value})}
+                />
                 <Input
                   autoCapitalize="none"
                   marginBottom={sizes.m}
@@ -232,17 +238,6 @@ const Register = () => {
                 disabled={Object.values(isValid).includes(false)}>
                 <Text bold white transform="uppercase">
                   {t('common.signup')}
-                </Text>
-              </Button>
-              <Button
-                primary
-                outlined
-                shadow={!isAndroid}
-                marginVertical={sizes.s}
-                marginHorizontal={sizes.sm}
-                onPress={() => navigation.navigate('Pro')}>
-                <Text bold primary transform="uppercase">
-                  {t('common.signin')}
                 </Text>
               </Button>
             </Block>

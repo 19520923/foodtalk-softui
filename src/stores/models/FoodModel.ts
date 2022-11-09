@@ -1,26 +1,47 @@
 import {Instance, types} from 'mobx-state-tree';
-import ProfileModel from './ProfileModel';
+import {AuthorModel} from './ProfileModel';
+
+export const DEFAULT_STATE_FOOD = {
+  _id: '',
+  name: '',
+  ingredients: [],
+  recipe: [],
+  score: 0,
+  author: {},
+  photo: '',
+  num_rate: 0,
+  created_at: '',
+  rates: [],
+};
 
 const FoodRateModel = types.model({
-  _id: types.optional(types.string, ''),
-  author: types.maybe(ProfileModel),
-  content: types.optional(types.string, ''),
-  score: types.optional(types.number, 0),
-  created_at: types.optional(types.string, ''),
+  _id: types.string,
+  author: AuthorModel,
+  content: types.string,
+  score: types.number,
+  created_at: types.string,
+});
+
+const RateStore = types.model({
+  rows: types.optional(types.array(FoodRateModel), []),
+  count: types.integer,
+  currentPage: types.integer,
 });
 
 const FoodModel = types.model({
-  _id: types.optional(types.string, ''),
-  name: types.optional(types.string, ''),
-  ingredients: types.optional(types.array(types.string), []),
-  recipe: types.optional(types.array(types.string), []),
-  score: types.optional(types.number, 0),
-  author: types.maybe(ProfileModel),
-  photo: types.optional(types.string, ''),
-  num_rate: types.optional(types.integer, 0),
-  created_at: types.optional(types.string, ''),
-  rates: types.optional(types.array(FoodRateModel), []),
+  _id: types.string,
+  name: types.string,
+  ingredients: types.array(types.string),
+  recipe: types.array(types.string),
+  score: types.number,
+  author: AuthorModel,
+  photo: types.string,
+  num_rate: types.integer,
+  created_at: types.string,
+  rates: RateStore,
 });
 
 export default FoodModel;
+
 export type TFoodModel = Instance<typeof FoodModel>;
+export type TFoodRateModel = Instance<typeof FoodRateModel>;
