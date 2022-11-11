@@ -74,7 +74,8 @@ const Login = () => {
           padding={sizes.sm}
           radius={sizes.cardRadius}
           source={assets.background}
-          height={sizes.height * 0.4}></Image>
+          height={sizes.height * 0.4}
+        />
       </Block>
       {/* register form */}
       <Block
