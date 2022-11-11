@@ -12,7 +12,7 @@ export const DEFAULT_STATE_PROFILE = {
 };
 
 const profile_obj = {
-  _id: types.string,
+  _id: types.identifier,
   name: types.string,
   username: types.string,
   email: types.string,
@@ -26,12 +26,11 @@ const ProfileDetailModel = types.model({
   ...profile_obj,
 });
 
-export const ProfileModel = types
-  .model({
-    ...profile_obj,
-    following: types.array(ProfileDetailModel),
-    follower: types.array(ProfileDetailModel),
-  });
+export const ProfileModel = types.model({
+  ...profile_obj,
+  following: types.array(ProfileDetailModel),
+  follower: types.array(ProfileDetailModel),
+});
 
 export const AuthorModel = types.model({
   ...profile_obj,

@@ -15,7 +15,7 @@ export const DEFAULT_STATE_FOOD = {
 };
 
 const FoodRateModel = types.model({
-  _id: types.string,
+  _id: types.identifier,
   author: AuthorModel,
   content: types.string,
   score: types.number,
@@ -29,16 +29,20 @@ const RateStore = types.model({
 });
 
 const FoodModel = types.model({
-  _id: types.string,
+  _id: types.identifier,
   name: types.string,
   ingredients: types.array(types.string),
   recipe: types.array(types.string),
   score: types.number,
   author: AuthorModel,
   photo: types.string,
-  num_rate: types.integer,
+  num_rate: types.number,
   created_at: types.string,
-  rates: RateStore,
+  rates: types.optional(RateStore, {
+    rows: [],
+    count: 0,
+    currentPage: 1,
+  }),
 });
 
 export default FoodModel;

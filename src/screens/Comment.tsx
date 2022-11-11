@@ -1,31 +1,25 @@
 import React, {useEffect} from 'react';
 import {Block, Button, Input} from '../components/atoms';
 import {ImageDesc} from '../components/molecules';
-import {useTheme} from '../hooks';
+import {useMst, useTheme} from '../hooks';
 import {FontAwesome} from '@expo/vector-icons';
-import RootStore from '../stores/RootStore';
-import {observer} from 'mobx-react-lite'
+import {observer} from 'mobx-react-lite';
+import {RouteProp, useRoute} from '@react-navigation/native';
+import {IComment, IParamList} from '../constants/types';
 
 const Comment = () => {
-  const {selectedPost, removeSelectedPost, setComments} = RootStore;
+  const route = useRoute<RouteProp<IParamList, 'Comment'>>();
+  const {
+    posts: {setComment, getCommentsById},
+  } = useMst();
+  const post_id = route.params.post_id;
+  const comments = getCommentsById(post_id);
 
   useEffect(() => {
-    if (selectedPost) {
-      setComments(selectedPost._id);
-    }
+    setComment(route.params.post_id);
+  }, [route.params.post_id, setComment]);
 
-    return () => {
-      removeSelectedPost();
-    };
-  }, []);
-
-  useEffect(() => {
-    console.log(selectedPost?.comments)
-  
-  }, [selectedPost])
-  
-
-  const {sizes, colors, assets, icons} = useTheme();
+  const {sizes, colors, icons} = useTheme();
   return (
     <Block safe style={{position: 'relative'}}>
       <Block
@@ -33,19 +27,20 @@ const Comment = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: sizes.l}}>
         <Block marginTop={sizes.sm}>
-          {selectedPost && selectedPost.comments && selectedPost.comments.rows.map((comment) => (
-            <ImageDesc
-              key={comment._id}
-              size={sizes.xl}
-              image={{uri: comment.author?.avatar_url}}
-              title={comment.author?.name}
-              description={comment.content}
-              info={{
-                created_at: comment.created_at,
-                likes: 4,
-              }}
-            />
-          ))}
+          {comments &&
+            comments.map((comment: IComment) => (
+              <ImageDesc
+                key={comment._id}
+                size={sizes.xl}
+                image={{uri: comment.author?.avatar_url}}
+                title={comment.author?.name}
+                description={comment.content}
+                info={{
+                  created_at: comment.created_at,
+                  likes: 4,
+                }}
+              />
+            ))}
         </Block>
       </Block>
       <Block

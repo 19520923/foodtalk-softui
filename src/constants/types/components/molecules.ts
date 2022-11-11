@@ -1,6 +1,5 @@
-import { ComponentType } from 'react';
 import {ColorValue, ImageSourcePropType, ViewStyle} from 'react-native';
-import {ISpacing, ITheme} from '../theme';
+import {ISpacing} from '../theme';
 
 /* Defining the interface for the Card component. */
 export interface ICard extends ISpacing {
@@ -18,7 +17,7 @@ export interface ICard extends ISpacing {
 export interface ICarousel extends ISpacing {
   content?: string;
   images?: Array<any>;
-  created_at: string;
+  created_at?: string;
   likes?: number;
   comments?: number;
   actionsLeft?: JSX.Element;
@@ -29,7 +28,7 @@ export interface ICarousel extends ISpacing {
 export interface IImageDesc {
   image?: ImageSourcePropType;
   size?: number;
-  title?: string ;
+  title?: string;
   description?: string;
   card?: boolean;
   info?: {
@@ -37,5 +36,5 @@ export interface IImageDesc {
     created_at?: string | number | Date;
   };
   color?: ColorValue;
-  icon?: any
+  icon?: any;
 }

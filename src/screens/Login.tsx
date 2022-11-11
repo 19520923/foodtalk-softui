@@ -3,10 +3,9 @@ import {Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 import * as regex from '../constants/regex';
 
-import {Storage, useData, useTheme, useTranslation} from '../hooks/';
+import {Storage, useData, useMst, useTheme, useTranslation} from '../hooks/';
 import {Block, Button, Input, Image, Text} from '../components/atoms';
 import {FontAwesome} from '@expo/vector-icons';
-import RootStore from '../stores/RootStore';
 import _ from 'lodash';
 import API from '../services/axiosClient';
 import {ACCESS_TOKEN} from '../constants/constants';
@@ -35,7 +34,7 @@ const Login = () => {
     password: '',
   });
   const {assets, colors, gradients, sizes} = useTheme();
-  const {setIsLoggedIn, user} = RootStore;
+  const {setIsLoggedIn, user} = useMst();
 
   const _handleChange = useCallback(
     (value) => {

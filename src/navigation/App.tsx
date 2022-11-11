@@ -5,14 +5,11 @@ import AppLoading from 'expo-app-loading';
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 
 import Menu from './Menu';
-import { useData, ThemeProvider, TranslationProvider } from '../hooks';
-import {observer} from 'mobx-react-lite'
-
-import RootStore from '../stores/RootStore';
+import {useData, ThemeProvider, TranslationProvider} from '../hooks';
+import {observer} from 'mobx-react-lite';
 
 export default observer(() => {
   const {isDark, theme, setTheme} = useData();
-  const {isLoggedIn} = RootStore;
 
   /* set the status bar based on isDark constant */
   useEffect(() => {

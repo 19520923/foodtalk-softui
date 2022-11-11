@@ -1,30 +1,26 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 
-import {useData, useTheme, useTranslation} from '../hooks/';
-import {Block, Button, Image, Input, Product, Text} from '../components/atoms';
-import {useNavigation} from '@react-navigation/native';
+import {useMst, useTheme} from '../hooks/';
+import {Block} from '../components/atoms';
 import {IPost} from '../constants/types';
 import {Post} from '../components/organisms';
-import RootStore from '../stores/RootStore';
-import {observer} from 'mobx-react-lite'
- 
+import {observer} from 'mobx-react-lite';
+
 const Home = () => {
-  const {t} = useTranslation();
-  const [tab, setTab] = useState<number>(0);
-  const {following, trending} = useData();
-  const [products, setProducts] = useState(following);
-  const {assets, colors, fonts, gradients, sizes} = useTheme();
-  const {posts: {rows, count, setPosts, loadPosts}} = RootStore
+  const {sizes} = useTheme();
+  const {
+    posts: {rows, count, setPosts, loadPosts},
+  } = useMst();
 
   useEffect(() => {
-    setPosts()
-  }, [])
+    setPosts();
+  }, [setPosts]);
 
   const _handleScrollBottom = () => {
     if (rows.lenght < count) {
-      loadPosts()
+      loadPosts();
     }
-  }
+  };
   // const handleProducts = useCallback(
   //   (tab: number) => {
   //     setTab(tab);
@@ -104,7 +100,7 @@ const Home = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: sizes.l}}>
         <Block marginTop={sizes.sm}>
-          {rows.map((post) => (
+          {rows.map((post: IPost) => (
             <Post key={post._id} post={post} />
           ))}
         </Block>

@@ -84,7 +84,7 @@ const Register = () => {
               row
               flex={0}
               justify="flex-start"
-              align='center'
+              align="center"
               onPress={() => navigation.goBack()}>
               <FontAwesome
                 size={sizes.icon}

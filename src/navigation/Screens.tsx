@@ -1,12 +1,18 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import {Comment, CreatePost, Login, Register, ImagePicker, Map} from '../screens';
-import {useScreenOptions, useTranslation} from '../hooks';
+import {
+  Comment,
+  CreatePost,
+  Login,
+  Register,
+  ImagePicker,
+  Map,
+} from '../screens';
+import {useMst, useScreenOptions, useTranslation} from '../hooks';
 import BottomBar from './BottomBar';
 import CreateFood from '../screens/CreateFood';
 import PostDetail from '../screens/PostDetail';
-import RootStore from '../stores/RootStore';
 import {observer} from 'mobx-react-lite';
 
 const Stack = createStackNavigator();
@@ -14,7 +20,7 @@ const Stack = createStackNavigator();
 export default observer(() => {
   const {t} = useTranslation();
   const screenOptions = useScreenOptions();
-  const {isLoggedIn} = RootStore;
+  const {isLoggedIn} = useMst();
 
   const main = () => {
     return (

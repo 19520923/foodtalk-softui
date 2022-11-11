@@ -2,28 +2,29 @@ import React, {useCallback, useState} from 'react';
 import {Platform} from 'react-native';
 import {Block, Button, Image, Input, Switch, Text} from '../components/atoms';
 import {ImageDesc} from '../components/molecules';
-import { IFood } from '../constants/types';
-import {useTheme} from '../hooks';
-import RootStore from '../stores/RootStore';
+import {IFood} from '../constants/types';
+import {useMst, useTheme} from '../hooks';
 
 const isAndroid = Platform.OS === 'android';
 
 const CreateFood = () => {
-  const {colors, sizes, assets, gradients} = useTheme();
+  const {sizes, assets} = useTheme();
   const [food, setFood] = useState<IFood>({
     name: '',
     is_public: true,
     recipe: [],
     ingredients: [],
-  })
-  const { user: { profile } } = RootStore
-  
-    const _handleChange = useCallback(
-      (value) => {
-        setFood((state) => ({...state, ...value}));
-      },
-      [setFood],
-    );
+  });
+  const {
+    user: {profile},
+  } = useMst();
+
+  const _handleChange = useCallback(
+    (value) => {
+      setFood((state) => ({...state, ...value}));
+    },
+    [setFood],
+  );
   return (
     <Block safe paddingTop={sizes.s}>
       <Block
@@ -92,7 +93,7 @@ const CreateFood = () => {
           <Block marginBottom={sizes.s}>
             <Text p>1. Cook 30m with hot water</Text>
           </Block>
-          <Block row align='center'>
+          <Block row align="center">
             <Block marginRight={sizes.s}>
               <Input placeholder="New step" />
             </Block>
