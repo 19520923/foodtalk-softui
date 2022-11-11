@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, {useCallback, useState} from 'react';
-import { TouchableOpacity } from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {Block, Text} from '../components/atoms';
 import {Card} from '../components/molecules';
 import {IFood} from '../constants/types';

@@ -6,11 +6,9 @@ import {ImageDesc, Carousel} from '../molecules';
 import {FontAwesome} from '@expo/vector-icons';
 import {TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import RootStore from '../../stores/RootStore';
-import { TPostModel } from '../../stores/models/PostModel';
 
 type Props = {
-  post: TPostModel;
+  post: IPost;
 };
 
 const Post = ({post}: Props) => {
@@ -20,12 +18,9 @@ const Post = ({post}: Props) => {
   const [liked, setLiked] = useState<boolean>(true);
   const {_id, author, content, photos, reactions, num_comment, created_at} =
     post;
-  
-  const {setSelectedPost} = RootStore
 
   const _handleNavigateComment = () => {
-      setSelectedPost(post)
-      navigation.navigate(t('navigation.comment'));
+    navigation.navigate(t('navigation.comment'), {post_id: _id});
   };
 
   const actionsLeft = () => (
@@ -65,9 +60,9 @@ const Post = ({post}: Props) => {
   return (
     <Block key={_id} marginBottom={sizes.m}>
       <ImageDesc
-        image={{uri: author?.avatar_url}}
-        title={author?.name}
-        description={author?.username}
+        image={{uri: author.avatar_url}}
+        title={author.name}
+        description={author.username}
       />
       <Carousel
         content={content}

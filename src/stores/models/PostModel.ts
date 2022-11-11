@@ -1,6 +1,7 @@
-import {types, Instance} from 'mobx-state-tree';
+import {types, Instance, cast} from 'mobx-state-tree';
 import FoodModel from './FoodModel';
 import {AuthorModel} from './ProfileModel';
+import _ from 'lodash';
 
 export const DEFAULT_STATE_POST = {
   _id: '',
@@ -22,7 +23,7 @@ const LocationModel = types.model({
 });
 
 const CommentModel = types.model({
-  _id: types.string,
+  _id: types.identifier,
   author: AuthorModel,
   content: types.string,
   parent: types.maybeNull(types.string),
@@ -31,13 +32,20 @@ const CommentModel = types.model({
 
 const CommnetStore = types
   .model({
-    rows: types.array(CommentModel),
-    count: types.number,
-    currentPage: types.number,
+    rows: types.optional(types.array(CommentModel), []),
+    count: types.optional(types.number, 0),
+    currentPage: types.optional(types.number, 1),
   })
+  .actions((self) => ({
+    setComment: (comments: Array<TPostComment>, count: number) => {
+      self.rows = cast(_.unionBy(self.rows, comments, '_id'));
+      self.count = count;
+      self.currentPage = 2;
+    },
+  }));
 
-const PostModel = types.model({
-  _id: types.string,
+export const PostModel = types.model({
+  _id: types.identifier,
   foods: types.array(FoodModel),
   content: types.string,
   photos: types.array(types.string),
@@ -46,7 +54,11 @@ const PostModel = types.model({
   author: AuthorModel,
   location: LocationModel,
   created_at: types.string,
-  comments: CommnetStore,
+  comments: types.optional(CommnetStore, {
+    rows: [],
+    count: 0,
+    currentPage: 1,
+  }),
   is_public: types.boolean,
 });
 

@@ -221,7 +221,7 @@ class AxiosClient {
    * @returns The return value is a promise.
    */
   getPostComments(page = 1, post_id: string) {
-    return this.axios.get(`/comments/${post_id}?page=${page}&limit=${LIMIT}`);
+    return this.axios.get(`/post-comments/${post_id}?page=${page}&limit=${LIMIT}`);
   }
 
   /**

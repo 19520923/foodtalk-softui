@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {
   StackHeaderTitleProps,
   CardStyleInterpolators,
@@ -8,7 +8,6 @@ import {
 import {DrawerActions, useNavigation} from '@react-navigation/native';
 import {StackHeaderOptions} from '@react-navigation/stack/lib/typescript/src/types';
 
-import {useData} from './useData';
 import {useTranslation} from './useTranslation';
 
 import Text from '../components/atoms/Text';
@@ -17,13 +16,11 @@ import Button from '../components/atoms/Button';
 import Block from '../components/atoms/Block';
 
 import {FontAwesome} from '@expo/vector-icons';
-import {ImageDesc} from '../components/molecules';
 import {useIsDrawerOpen} from '@react-navigation/drawer';
 import {HEIGHT, WIDTH} from '../constants/constants';
 
 export default () => {
   const {t} = useTranslation();
-  const {user} = useData();
   const navigation = useNavigation();
   const isDrawerOpen = useIsDrawerOpen();
   const {icons, colors, gradients, sizes, assets} = useTheme();

@@ -1,7 +1,11 @@
 import {storage} from '../services/firebase';
 import {ref, getDownloadURL, uploadBytesResumable} from 'firebase/storage';
 
-export const upload = (photos: Array<any>, file: string, callback: (array: Array<string>)=> void) => {
+export const upload = (
+  photos: Array<any>,
+  file: string,
+  callback: (array: Array<string>) => void,
+) => {
   const urls: Array<string> = [];
   const metadata = {
     contentType: 'image/webp',
@@ -16,10 +20,10 @@ export const upload = (photos: Array<any>, file: string, callback: (array: Array
 
       uploadBytesResumable(imageRef, blob, metadata).then((snapshot) =>
         getDownloadURL(snapshot.ref).then((downloadURL) => {
-            urls.push(downloadURL);
-            if (index === photo.lenght - 1) {
-                callback(urls)
-            }
+          urls.push(downloadURL);
+          if (index === photo.lenght - 1) {
+            callback(urls);
+          }
         }),
       );
     });

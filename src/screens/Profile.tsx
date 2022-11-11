@@ -4,11 +4,10 @@ import {Ionicons} from '@expo/vector-icons';
 import {useNavigation} from '@react-navigation/core';
 
 import {Block, Button, Image, Text} from '../components/atoms';
-import {useData, useTheme, useTranslation} from '../hooks/';
+import {useData, useMst, useTheme, useTranslation} from '../hooks/';
 import {Post} from '../components/organisms';
 import {IPost} from '../constants/types';
-import RootStore from '../stores/RootStore';
-import {observer} from 'mobx-react-lite'
+import {observer} from 'mobx-react-lite';
 
 const POST_DATA: Array<IPost> = [
   {
@@ -54,8 +53,10 @@ const isAndroid = Platform.OS === 'android';
 const Profile = observer(() => {
   const {t} = useTranslation();
   const navigation = useNavigation();
-  const { assets, colors, sizes, gradients } = useTheme();
-  const { user: { profile } } = RootStore
+  const {assets, colors, sizes, gradients} = useTheme();
+  const {
+    user: {profile},
+  } = useMst();
   const [selected, setSelected] = useState<string>('POST');
 
   const IMAGE_SIZE = (sizes.width - (sizes.padding + sizes.sm) * 2) / 3;
@@ -64,12 +65,10 @@ const Profile = observer(() => {
   const IMAGE_MARGIN = (sizes.width - IMAGE_SIZE * 3 - sizes.padding * 2) / 2;
   const IMAGE_VERTICAL_MARGIN =
     (sizes.width - (IMAGE_VERTICAL_SIZE + sizes.sm) * 2) / 2;
-  
-  useEffect(() => {
-    console.log(profile)
 
-  }, [profile])
-  
+  useEffect(() => {
+    console.log(profile);
+  }, [profile]);
 
   // const handleSocialLink = useCallback(
   //   (type: 'twitter' | 'dribbble') => {
@@ -151,7 +150,7 @@ const Profile = observer(() => {
                 width={80}
                 height={80}
                 marginBottom={sizes.sm}
-                source={{ uri: profile.avatar_url }}
+                source={{uri: profile.avatar_url}}
               />
               <Text h5 center white>
                 {profile.name}
@@ -184,7 +183,7 @@ const Profile = observer(() => {
                   marginHorizontal={sizes.sm}
                   color="rgba(255,255,255,0.2)"
                   outlined={String(colors.white)}
-                // onPress={() => handleSocialLink('twitter')}
+                  // onPress={() => handleSocialLink('twitter')}
                 >
                   <Ionicons
                     size={18}
@@ -197,7 +196,7 @@ const Profile = observer(() => {
                   radius={sizes.m}
                   color="rgba(255,255,255,0.2)"
                   outlined={String(colors.white)}
-                // onPress={() => handleSocialLink('dribbble')}
+                  // onPress={() => handleSocialLink('dribbble')}
                 >
                   <Ionicons
                     size={18}

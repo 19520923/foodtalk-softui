@@ -3,11 +3,10 @@ import dayjs from 'dayjs';
 import React from 'react';
 import {StyleSheet, ViewStyle} from 'react-native';
 import {useTheme} from '../../hooks';
-import {Block, Image, Text} from '../atoms';
+import {Block, Text} from '../atoms';
 import {ICarousel} from '../../constants/types';
-import { IMAGE_HEIGHT } from '../../constants/constants';
+import {IMAGE_HEIGHT} from '../../constants/constants';
 import {SliderBox} from 'react-native-image-slider-box';
-
 
 dayjs.extend(relatedTime);
 
@@ -35,7 +34,7 @@ const Carousel = ({
   paddingLeft,
   style,
 }: ICarousel) => {
-  const {sizes, assets, colors} = useTheme();
+  const {sizes, colors} = useTheme();
   const CarouselContainerStyle = StyleSheet.flatten([
     style,
     {

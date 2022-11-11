@@ -1,20 +1,19 @@
 import React, {useCallback, useState} from 'react';
 import {Block, Image, Input, Switch, Text} from '../components/atoms';
 import {ImageDesc} from '../components/molecules';
-import {useTheme, useTranslation} from '../hooks';
+import {useMst, useTheme, useTranslation} from '../hooks';
 import {SliderBox} from 'react-native-image-slider-box';
 import {HEIGHT, IMAGE_HEIGHT, WIDTH} from '../constants/constants';
 import {TouchableOpacity} from 'react-native';
 import {FontAwesome} from '@expo/vector-icons';
 import {IPost} from '../constants/types';
-import RootStore from '../stores/RootStore';
 import {useNavigation} from '@react-navigation/native';
 
 const CreatePost = () => {
   const {colors, sizes, icons} = useTheme();
   const {
     user: {profile},
-  } = RootStore;
+  } = useMst();
   const {t} = useTranslation();
   const navigation = useNavigation();
   const [showModal, setModal] = useState<boolean>(false);
@@ -53,12 +52,14 @@ const CreatePost = () => {
   ];
 
   const _handleChoosePhotos = () => {
-    navigation.navigate(t('navigation.imagePicker'), {onCallback: _handleSetPhotos});
+    navigation.navigate(t('navigation.imagePicker'), {
+      onCallback: _handleSetPhotos,
+    });
   };
 
   const _handleCheckin = () => {
-    navigation.navigate(t('navigation.checkin'), {onDone: onDone})
-  }
+    navigation.navigate(t('navigation.checkin'), {onDone: onDone});
+  };
 
   const _handleSetPhotos = (array: Array<any>) => {
     setPhotos(array);
@@ -76,10 +77,10 @@ const CreatePost = () => {
       location: {
         name: address,
         lat: region.latitude,
-        lng: region.longtitude
-    }})
-  }
-
+        lng: region.longtitude,
+      },
+    });
+  };
 
   return (
     <Block safe>
@@ -87,8 +88,8 @@ const CreatePost = () => {
         <Block>
           <ImageDesc
             title={profile.name}
-            image={{ uri: profile.avatar_url }}
-            description= 'Hello'
+            image={{uri: profile.avatar_url}}
+            description="Hello"
             // description={
             //   postData.location
             //     ? postData.location?.name
