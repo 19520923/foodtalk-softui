@@ -100,12 +100,12 @@ const DrawerContent = (
       renderToHardwareTextureAndroid
       contentContainerStyle={{paddingBottom: sizes.padding}}>
       <Block paddingHorizontal={sizes.padding}>
-        <Block flex={0} row align="center" marginBottom={sizes.l}>
+        <Block flex={0} row align="center" marginBottom={sizes.s}>
           <Image
             radius={0}
             width={33}
             height={33}
-            color={colors.text}
+            color={colors.facebook}
             source={assets.logo}
             marginRight={sizes.sm}
           />
@@ -113,13 +113,10 @@ const DrawerContent = (
             <Text size={12} semibold>
               {t('app.name')}
             </Text>
-            <Text size={12} semibold>
-              {t('app.native')}
-            </Text>
           </Block>
         </Block>
 
-        {screens?.map((screen, index) => {
+        {/* {screens?.map((screen, index) => {
           const isActive = active === screen.to;
           return (
             <Button
@@ -150,7 +147,7 @@ const DrawerContent = (
               </Text>
             </Button>
           );
-        })}
+        })} */}
 
         <Block
           flex={0}
@@ -161,17 +158,75 @@ const DrawerContent = (
         />
 
         <Text semibold transform="uppercase" opacity={0.5}>
-          {t('menu.documentation')}
+          Settings
         </Text>
+
+        <Block
+          row
+          justify="space-between"
+          marginTop={sizes.sm}
+          marginBottom={sizes.sm}>
+          <Text p color={labelColor}>
+            {t('darkMode')}
+          </Text>
+          <Switch
+            checked={isDark}
+            onPress={(checked) => {
+              handleIsDark(checked);
+            }}
+          />
+        </Block>
+
+        <Button
+          row
+          justify="flex-start"
+          marginTop={sizes.s}
+          marginBottom={sizes.s}
+          onPress={() => handleWebLink('https://github.com')}>
+          <Text p color={labelColor}>
+            Edit Profile
+          </Text>
+        </Button>
+
+        <Button
+          row
+          justify="flex-start"
+          marginTop={sizes.s}
+          marginBottom={sizes.s}
+          onPress={() => handleWebLink('https://github.com')}>
+          <Text p color={labelColor}>
+            Change Password
+          </Text>
+        </Button>
+
+        <Button
+          row
+          justify="flex-start"
+          marginTop={sizes.s}
+          marginBottom={sizes.s}
+          onPress={() => handleWebLink('https://github.com')}>
+          <Text p color={labelColor}>
+            Edit Profile
+          </Text>
+        </Button>
+
+        <Button
+          row
+          justify="flex-start"
+          marginTop={sizes.s}
+          marginBottom={sizes.s}
+          onPress={() => handleWebLink('https://github.com')}>
+          <Text p color={labelColor}>
+            Terms & Privacy
+          </Text>
+        </Button>
 
         <Button
           row
           justify="flex-start"
           marginTop={sizes.sm}
-          marginBottom={sizes.s}
-          onPress={() =>
-            handleWebLink('https://github.com/creativetimofficial')
-          }>
+          marginBottom={sizes.sm}
+          onPress={() => handleWebLink('https://google.com')}>
           <Block
             flex={0}
             radius={6}
@@ -185,25 +240,14 @@ const DrawerContent = (
               radius={0}
               width={14}
               height={14}
-              color={colors.black}
-              source={assets.documentation}
+              color={'red'}
+              source={assets.logout}
             />
           </Block>
           <Text p color={labelColor}>
-            {t('menu.started')}
+            Logout
           </Text>
         </Button>
-
-        <Block row justify="space-between" marginTop={sizes.sm}>
-          <Text color={labelColor}>{t('darkMode')}</Text>
-          <Switch
-            checked={isDark}
-            onPress={(checked) => {
-              handleIsDark(checked);
-              Alert.alert(t('pro.title'), t('pro.alert'));
-            }}
-          />
-        </Block>
       </Block>
     </DrawerContentScrollView>
   );
