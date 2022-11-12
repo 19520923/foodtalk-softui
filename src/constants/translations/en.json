@@ -135,6 +135,7 @@
   "profile": {
     "title": "Profile",
     "posts": "Posts",
+    "foods": "Foods",
     "followers": "Followers",
     "following": "Following",
     "aboutMe": "About me"
