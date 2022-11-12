@@ -174,6 +174,14 @@ const Login = () => {
                 danger={Boolean(userData.password && !isValid.password)}
               />
             </Block>
+            <Text
+              onPress={() =>
+                navigation.navigate(t('navigation.forgotPassword'))
+              }
+              align="right"
+              marginRight={15}>
+              Forgot Password?
+            </Text>
             <Button
               onPress={_handleLogin}
               marginVertical={sizes.s}

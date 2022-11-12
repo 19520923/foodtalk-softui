@@ -80,7 +80,8 @@
     "comment": "Comment",
     "postDetail": "Post detail",
     "imagePicker": "Image picker",
-    "checkin": "Map"
+    "checkin": "Map",
+    "forgotPassword": "Forgot password"
   },
   "navigation": {
     "home": "Soft UI",
@@ -106,7 +107,8 @@
     "createFood": "Create food",
     "postDetail": "Post detail",
     "imagePicker": "Image picker",
-    "checkin": "Map"
+    "checkin": "Map",
+    "forgotPassword": "Forgot password"
   },
   "menu": {
     "started": "Getting Started",
@@ -136,6 +138,9 @@
     "followers": "Followers",
     "following": "Following",
     "aboutMe": "About me"
+  },
+  "forgot": {
+    "title": "Reset Password"
   },
   "imagePicker": {
     "title": "Selected {{count}} files"
