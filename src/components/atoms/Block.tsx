@@ -4,7 +4,6 @@ import {
   Platform,
   SafeAreaView,
   ScrollView,
-  ScrollViewProps,
   StyleSheet,
   View,
   ViewStyle,
@@ -75,6 +74,7 @@ const Block = (props: IBlockProps) => {
     start,
     load,
     reverse,
+    disabled,
     ...rest
   } = props;
   const {colors, sizes} = useTheme();
@@ -158,6 +158,7 @@ const Block = (props: IBlockProps) => {
       ...(justify && {justifyContent: justify}),
       ...(wrap && {flexWrap: wrap}),
       ...(blockColor && {backgroundColor: blockColor}),
+      ...(disabled && {opacity: 0.5}),
       ...(outlined && {
         borderWidth: 1,
         borderColor: blockColor,
@@ -170,8 +171,6 @@ const Block = (props: IBlockProps) => {
       ...(bottom !== undefined && {bottom}),
     },
   ]) as ViewStyle;
-
-  const [onScroll, setOnScroll] = useState<boolean>(false);
 
   const isCloseToBottom = ({
     layoutMeasurement,
@@ -216,7 +215,6 @@ const Block = (props: IBlockProps) => {
         {...rest}
         style={blockStyles}
         onScroll={({nativeEvent}) => {
-          setOnScroll(true);
           if (
             load &&
             ((!reverse && isCloseToBottom(nativeEvent)) ||
@@ -224,8 +222,6 @@ const Block = (props: IBlockProps) => {
           ) {
             load();
           }
-
-          setOnScroll(false);
         }}
         scrollEventThrottle={1000}>
         {children}

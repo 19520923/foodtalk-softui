@@ -32,6 +32,7 @@ export interface IBlockProps
     ViewProps,
     ScrollViewProps,
     KeyboardAvoidingViewProps {
+  disabled?: boolean;
   /**
    * id for testID & accesibilityLabel
    */

@@ -63,7 +63,7 @@ const Carousel = ({
             images={images}
             sliderBoxHeight={IMAGE_HEIGHT}
             onCurrentImagePressed={(index: number) =>
-              console.warn(`image ${index} pressed`)
+              console.log(`image ${index} pressed`)
             }
             dotColor={colors.primary}
             inactiveDotColor={colors.icon}

@@ -11,6 +11,7 @@ export interface ICard extends ISpacing {
   description?: string;
   subcription?: string;
   style?: ViewStyle;
+  disabled?: boolean;
 }
 
 /* Defining the interface for the Carousel component. */

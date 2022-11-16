@@ -7,6 +7,6 @@ export {
   useTranslation,
 } from './useTranslation';
 export {default as Storage} from './useStorage';
-export {upload} from './useFirebase';
+export {upload, uploadMultiple} from './useFirebase';
 export {default as Map} from './useMap';
 export {Provider, useMst} from './useStore';

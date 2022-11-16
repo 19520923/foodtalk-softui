@@ -8,6 +8,7 @@ import {
   Register,
   ImagePicker,
   Map,
+  AttachFood,
 } from '../screens';
 import {useMst, useScreenOptions, useTranslation} from '../hooks';
 import BottomBar from './BottomBar';
@@ -35,12 +36,12 @@ export default observer(() => {
         <Stack.Screen
           name={t('screens.createPost')}
           component={CreatePost}
-          options={screenOptions.create}
+          options={screenOptions.back}
         />
         <Stack.Screen
           name={t('screens.createFood')}
           component={CreateFood}
-          options={screenOptions.create}
+          options={screenOptions.back}
         />
         <Stack.Screen
           name={t('screens.postDetail')}
@@ -55,6 +56,11 @@ export default observer(() => {
         <Stack.Screen
           name={t('screens.checkin')}
           component={Map}
+          options={screenOptions.back}
+        />
+        <Stack.Screen
+          name={t('screens.attachFoods')}
+          component={AttachFood}
           options={screenOptions.back}
         />
       </Stack.Navigator>

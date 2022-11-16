@@ -1,4 +1,5 @@
 import i18n from 'i18n-js';
+import {IFood} from './food';
 
 export * from './components/atoms';
 export * from './components/molecules';
@@ -26,5 +27,9 @@ export type IParamList = {
   };
   Comment: {
     post_id: string;
+  };
+  AttachFood: {
+    foods: Array<IFood>;
+    onDone: (food: Array<IFood>) => void;
   };
 };

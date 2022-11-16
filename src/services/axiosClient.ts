@@ -1,4 +1,4 @@
-import axios, {AxiosInstance} from 'axios';
+import axios from 'axios';
 import _ from 'lodash';
 import axiosRetry from 'axios-retry';
 import {RETRY_DELAY, RETRY_NUMBER, RETRY_STATUS_CODE} from '../constants/retry';
@@ -12,6 +12,7 @@ import {
   ACCOUNT,
 } from '../constants/constants';
 import {Storage} from '../hooks';
+import {IPost} from '../constants/types';
 
 class AxiosClient {
   failedQueue: Array<any>;
@@ -102,7 +103,7 @@ class AxiosClient {
         this.failedQueue.push({resolve, reject});
       })
         .then((token) => {
-          originalRequest.headers['Authorization'] = 'Bearer ' + token;
+          originalRequest.headers.Authorization = 'Bearer ' + token;
           return this.axios(originalRequest);
         })
         .catch((err) => {
@@ -178,19 +179,18 @@ class AxiosClient {
     return this.axios.delete(`/users/${user_id}`);
   }
 
+  createPost(post_data: IPost) {
+    return this.axios.post('/posts', post_data);
+  }
+
   /**
    * If is_active is not an empty string, then return the axios.get() with the is_active parameter,
    * otherwise return the axios.get() without the is_active parameter.
    * @param [page=1] - the page number
    * @param [is_public] - true or false
-   * @param [is_active] - true or false
-   * @param [sort=-created_at] - -created_at (descending order)
    * @returns The return value is a promise.
    */
-  getAllPosts(
-    page = 1,
-    is_public = true,
-  ) {
+  getAllPosts(page = 1, is_public = true) {
     return this.axios.get(
       `/posts?sort=-created_at&page=${page}&limit=${LIMIT}&is_active=true&is_public=${is_public}`,
     );
@@ -221,7 +221,9 @@ class AxiosClient {
    * @returns The return value is a promise.
    */
   getPostComments(page = 1, post_id: string) {
-    return this.axios.get(`/post-comments/${post_id}?page=${page}&limit=${LIMIT}`);
+    return this.axios.get(
+      `/post-comments/${post_id}?page=${page}&limit=${LIMIT}`,
+    );
   }
 
   /**
@@ -253,7 +255,7 @@ class AxiosClient {
    */
   getAllFoods(page = 1, search = '', sort = 'name') {
     return this.axios.get(
-      `/foods?q=${search}&sort=${sort}&page=${page}&limit=${LIMIT}&is_active=true`,
+      `/foods?q=${search}&sort=${sort}&page=${page}&limit=${LIMIT}`,
     );
   }
 
@@ -320,7 +322,7 @@ class AxiosClient {
    * @returns The return value of the function is the return value of the axios.post() call.
    */
   createNotification(notiData: object) {
-    return this.axios.post(`/notifications`, notiData);
+    return this.axios.post('/notifications', notiData);
   }
 }
 

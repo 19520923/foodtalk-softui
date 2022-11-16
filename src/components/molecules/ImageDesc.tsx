@@ -1,7 +1,6 @@
 import {FontAwesome} from '@expo/vector-icons';
 import dayjs from 'dayjs';
 import React from 'react';
-import {ColorValue, ImageSourcePropType} from 'react-native';
 import {IImageDesc} from '../../constants/types';
 import {useTheme} from '../../hooks';
 import {Block, Image, Text} from '../atoms';
@@ -40,10 +39,10 @@ const ImageDesc = ({
       );
     }
 
-    return null
+    return null;
   };
 
-  if (card)
+  if (card) {
     return (
       <Block card row marginHorizontal={sizes.s}>
         {_renderImage()}
@@ -51,7 +50,11 @@ const ImageDesc = ({
           <Text p bold color={color ? color : colors.black}>
             {title}
           </Text>
-          {description && <Text secondary numberOfLines={1}>{description}</Text>}
+          {description && (
+            <Text secondary numberOfLines={1}>
+              {description}
+            </Text>
+          )}
           {info && (
             <Text size={11} secondary>
               {dayjs(info.created_at).toNow(true)} ago{' '}
@@ -61,6 +64,7 @@ const ImageDesc = ({
         </Block>
       </Block>
     );
+  }
 
   return (
     <Block row marginHorizontal={sizes.s}>
@@ -69,7 +73,11 @@ const ImageDesc = ({
         <Text p bold color={color ? color : colors.black}>
           {title}
         </Text>
-        {description && <Text secondary numberOfLines={1}>{description}</Text>}
+        {description && (
+          <Text secondary numberOfLines={1}>
+            {description}
+          </Text>
+        )}
         {info && (
           <Text size={11} secondary>
             {dayjs(info.created_at).toNow(true)} ago{' '}

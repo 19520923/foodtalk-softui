@@ -1,23 +1,25 @@
-import React, {useCallback, useState} from 'react';
-import {Block, Image, Input, Switch, Text} from '../components/atoms';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Block, Button, Image, Input, Switch, Text} from '../components/atoms';
 import {ImageDesc} from '../components/molecules';
-import {useMst, useTheme, useTranslation} from '../hooks';
+import {uploadMultiple, useMst, useTheme, useTranslation} from '../hooks';
 import {SliderBox} from 'react-native-image-slider-box';
 import {HEIGHT, IMAGE_HEIGHT, WIDTH} from '../constants/constants';
 import {TouchableOpacity} from 'react-native';
 import {FontAwesome} from '@expo/vector-icons';
-import {IPost} from '../constants/types';
+import {IFood, IPost} from '../constants/types';
 import {useNavigation} from '@react-navigation/native';
 
 const CreatePost = () => {
   const {colors, sizes, icons} = useTheme();
   const {
     user: {profile},
+    posts: {post},
   } = useMst();
   const {t} = useTranslation();
   const navigation = useNavigation();
   const [showModal, setModal] = useState<boolean>(false);
-  const [photos, setPhotos] = useState<Array<any>>([]);
+  const [chosenFood, setChosenFood] = useState<Array<IFood>>([]);
+  const [photoUris, setPhotoUri] = useState<Array<string>>([]);
   const [postData, setPostData] = useState<IPost>({
     is_public: true,
     photos: [],
@@ -41,7 +43,7 @@ const CreatePost = () => {
       name: t('createPost.chooseRecipe'),
       desc: t('createPost.chooseRecipeDesc'),
       icon: icons.food,
-      onPress: () => null,
+      onPress: () => _handleChooseFoods(),
     },
     {
       name: t('createPost.checkin'),
@@ -53,16 +55,28 @@ const CreatePost = () => {
 
   const _handleChoosePhotos = () => {
     navigation.navigate(t('navigation.imagePicker'), {
-      onCallback: _handleSetPhotos,
+      onCallback: (array: Array<any>) => _handleSetPhotos(array),
     });
   };
 
   const _handleCheckin = () => {
-    navigation.navigate(t('navigation.checkin'), {onDone: onDone});
+    navigation.navigate(t('navigation.checkin'), {onDone: _handleSetLocation});
+  };
+
+  const _handleChooseFoods = () => {
+    navigation.navigate(t('navigation.attachFoods'), {
+      foods: chosenFood,
+      onDone: (array: Array<IFood>) => _handleSetFoods(array),
+    });
   };
 
   const _handleSetPhotos = (array: Array<any>) => {
-    setPhotos(array);
+    setPhotoUri([...array]);
+  };
+
+  const _handleSetFoods = (array: Array<IFood>) => {
+    setChosenFood([...array]);
+    _handleChange({foods: array.map((e) => e._id)});
   };
 
   const _handleChange = useCallback(
@@ -72,7 +86,7 @@ const CreatePost = () => {
     [setPostData],
   );
 
-  const onDone = (address: string, region: any) => {
+  const _handleSetLocation = (address: string, region: any) => {
     _handleChange({
       location: {
         name: address,
@@ -81,6 +95,26 @@ const CreatePost = () => {
       },
     });
   };
+
+  const _handleDone = useCallback(async () => {
+    const urls = await uploadMultiple(photoUris, 'post');
+    const data = {...postData, photos: urls};
+    console.log(data);
+    post(data);
+    navigation.goBack();
+  }, [navigation, photoUris, post, postData]);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button minHeight={sizes.l} onPress={_handleDone}>
+          <Text semibold primary>
+            Done
+          </Text>
+        </Button>
+      ),
+    });
+  }, [_handleDone, navigation, sizes.l]);
 
   return (
     <Block safe>
@@ -128,7 +162,7 @@ const CreatePost = () => {
           </Block>
           <Block marginTop={sizes.s} marginBottom={sizes.sm}>
             <SliderBox
-              images={photos}
+              images={photoUris}
               sliderBoxHeight={IMAGE_HEIGHT}
               onCurrentImagePressed={(index: number) =>
                 console.warn(`image ${index} pressed`)
@@ -147,7 +181,7 @@ const CreatePost = () => {
           </Block>
         </Block>
         <Block scroll horizontal paddingHorizontal={sizes.s}>
-          {postData.foods?.map((e, index) => (
+          {chosenFood.map((e, index) => (
             <Image
               key={index}
               avatar

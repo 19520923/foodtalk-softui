@@ -1,67 +1,9 @@
-import {Dimensions, StyleSheet, ViewStyle} from 'react-native';
+import {StyleSheet, ViewStyle} from 'react-native';
 import {CARD_WIDTH} from '../../constants/constants';
 import {ICard} from '../../constants/types';
 import {useTheme} from '../../hooks';
 import {Block, Image, Text} from '../atoms';
-
-const SingleCard = ({image, title, description, subcription}: ICard) => {
-  const {assets, colors, sizes} = useTheme();
-
-  return (
-    <Block card row>
-      <Image resizeMode="cover" source={image} height={96} width={96} />
-      <Block paddingLeft={sizes.s} justify="space-between">
-        <Block>
-          <Text numberOfLines={1} p bold color={colors.primary}>
-            {title}
-          </Text>
-          <Text numberOfLines={3}>{description}</Text>
-        </Block>
-        {subcription && (
-          <Text numberOfLines={1} color={colors.gray}>
-            {subcription}
-          </Text>
-        )}
-      </Block>
-    </Block>
-  );
-};
-
-const InlineCard = ({image, title, description, subcription}: ICard) => {
-  const {assets, colors, sizes} = useTheme();
-  const width = CARD_WIDTH - 1.5 * sizes.s;
-  return (
-    <Block card width={width} height={width * 1.25}>
-      <Image resizeMode="cover" source={image} style={{width: '100%'}} />
-      <Block marginTop={sizes.s} justify="space-between">
-        {description && (
-          <Text numberOfLines={3} marginBottom={sizes.s}>
-            {description}
-          </Text>
-        )}
-        <Block
-          row
-          align="center"
-          justify="space-between"
-          style={{width: '100%'}}>
-          <Text
-            numberOfLines={1}
-            p
-            bold
-            marginRight={sizes.s}
-            color={colors.primary}>
-            {title}
-          </Text>
-          {subcription && (
-            <Text p semibold color={colors.warning}>
-              {subcription}
-            </Text>
-          )}
-        </Block>
-      </Block>
-    </Block>
-  );
-};
+import React from 'react';
 
 const FullImageWidthCard = () => {
   const {assets, colors, sizes} = useTheme();
@@ -165,6 +107,7 @@ const Card = ({
   paddingRight,
   paddingLeft,
   style,
+  disabled,
 }: ICard) => {
   const CardContainerStyle = StyleSheet.flatten([
     style,
@@ -186,29 +129,69 @@ const Card = ({
     },
   ]) as ViewStyle;
 
-  if (inline) {
+  const {colors, sizes} = useTheme();
+
+  const InlineCard = () => {
+    const width = CARD_WIDTH - 1.5 * sizes.s;
     return (
-      <Block style={CardContainerStyle}>
-        <InlineCard
-          title={title}
-          image={image}
-          description={description}
-          subcription={subcription}
-        />
+      <Block card width={width} height={width * 1.25} disabled={disabled}>
+        <Image resizeMode="cover" source={image} style={{width: '100%'}} />
+        <Block marginTop={sizes.s} justify="space-between">
+          {description && (
+            <Text numberOfLines={3} marginBottom={sizes.s}>
+              {description}
+            </Text>
+          )}
+          <Block
+            row
+            align="center"
+            justify="space-between"
+            style={{width: '100%'}}>
+            <Text
+              numberOfLines={1}
+              p
+              bold
+              marginRight={sizes.s}
+              color={colors.primary}>
+              {title}
+            </Text>
+            {subcription && (
+              <Text p semibold color={colors.warning}>
+                {subcription}
+              </Text>
+            )}
+          </Block>
+        </Block>
       </Block>
     );
+  };
+
+  const SingleCard = () => {
+    return (
+      <Block card row disabled={disabled}>
+        <Image resizeMode="cover" source={image} height={96} width={96} />
+        <Block paddingLeft={sizes.s} justify="space-between">
+          <Block>
+            <Text numberOfLines={1} p bold color={colors.primary}>
+              {title}
+            </Text>
+            <Text numberOfLines={3}>{description}</Text>
+          </Block>
+          {subcription && (
+            <Text numberOfLines={1} color={colors.gray}>
+              {subcription}
+            </Text>
+          )}
+        </Block>
+      </Block>
+    );
+  };
+
+  if (inline) {
+    return <Block style={CardContainerStyle}>{InlineCard()}</Block>;
   }
 
-  return (
-    <Block style={CardContainerStyle}>
-      <SingleCard
-        image={image}
-        title={title}
-        description={description}
-        subcription={subcription}
-      />
-    </Block>
-  );
+  return <Block style={CardContainerStyle}>{SingleCard()}</Block>;
 };
 
 export default Card;
