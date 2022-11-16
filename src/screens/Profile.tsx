@@ -1,10 +1,10 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Platform, Linking} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import {useNavigation} from '@react-navigation/core';
 
 import {Block, Button, Image, Text} from '../components/atoms';
-import {useData, useMst, useTheme, useTranslation} from '../hooks/';
+import {useMst, useTheme, useTranslation} from '../hooks/';
 import {Post} from '../components/organisms';
 import {IPost} from '../constants/types';
 import {observer} from 'mobx-react-lite';

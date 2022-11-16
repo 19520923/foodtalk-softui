@@ -13,7 +13,7 @@ import TextButton from 'react-native-button';
 import {FontAwesome} from '@expo/vector-icons';
 import {Map} from '../hooks';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
-import { IParamList } from '../constants/types';
+import {IParamList} from '../constants/types';
 
 const locationDelta = {latitudeDelta: 0.0922, longitudeDelta: 0.0421};
 const googleApiKey = 'AIzaSyDc7PnOq3Hxzq6dxeUVaY8WGLHIePl0swY';

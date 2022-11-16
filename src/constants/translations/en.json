@@ -80,7 +80,8 @@
     "comment": "Comment",
     "postDetail": "Post detail",
     "imagePicker": "Image picker",
-    "checkin": "Map"
+    "checkin": "Map",
+    "attachFoods": "Attach foods"
   },
   "navigation": {
     "home": "Soft UI",
@@ -106,7 +107,8 @@
     "createFood": "Create food",
     "postDetail": "Post detail",
     "imagePicker": "Image picker",
-    "checkin": "Map"
+    "checkin": "Map",
+    "attachFoods": "Attach foods"
   },
   "menu": {
     "started": "Getting Started",

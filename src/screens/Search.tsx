@@ -3,9 +3,7 @@ import {Block, Text} from '../components/atoms';
 import {Card} from '../components/molecules';
 import {useTheme, useTranslation} from '../hooks';
 
-type Props = {};
-
-const Search = (props: Props) => {
+const Search = () => {
   const {t} = useTranslation();
   const {assets, sizes} = useTheme();
 

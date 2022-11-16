@@ -178,25 +178,6 @@ export default () => {
         </Button>
       ),
     },
-    create: {
-      ...menu,
-      headerLeft: () => (
-        <Button onPress={() => navigation.goBack()}>
-          <FontAwesome
-            name={assets.back}
-            color={colors.icon}
-            size={sizes.icon}
-          />
-        </Button>
-      ),
-      headerRight: () => (
-        <Button minHeight={sizes.l} onPress={() => console.log('press')}>
-          <Text p bold primary>
-            Post
-          </Text>
-        </Button>
-      ),
-    },
   };
 
   return options;

@@ -16,7 +16,7 @@ export interface IComment {
 
 export interface IPost {
   _id?: string;
-  foods?: Array<IFood>;
+  foods?: Array<IFood> | Array<string>;
   author?: IUser | string;
   content?: string;
   photos?: Array<any>;

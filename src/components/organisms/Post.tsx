@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {IPost} from '../../constants/types';
+import {IFood, IPost} from '../../constants/types';
 import {useTheme, useTranslation} from '../../hooks';
-import {Block} from '../atoms';
+import {Block, Image} from '../atoms';
 import {ImageDesc, Carousel} from '../molecules';
 import {FontAwesome} from '@expo/vector-icons';
 import {TouchableOpacity} from 'react-native';
@@ -16,8 +16,16 @@ const Post = ({post}: Props) => {
   const navigation = useNavigation();
   const {t} = useTranslation();
   const [liked, setLiked] = useState<boolean>(true);
-  const {_id, author, content, photos, reactions, num_comment, created_at} =
-    post;
+  const {
+    _id,
+    author,
+    content,
+    photos,
+    reactions,
+    num_comment,
+    created_at,
+    foods,
+  } = post;
 
   const _handleNavigateComment = () => {
     navigation.navigate(t('navigation.comment'), {post_id: _id});
@@ -57,6 +65,16 @@ const Post = ({post}: Props) => {
     </Block>
   );
 
+  const actionsRight = () => {
+    return (
+      <Block row>
+        {foods?.map((food) => (
+          <Image source={{uri: food.photo}} avatar marginRight={sizes.s} />
+        ))}
+      </Block>
+    );
+  };
+
   return (
     <Block key={_id} marginBottom={sizes.m}>
       <ImageDesc
@@ -71,6 +89,7 @@ const Post = ({post}: Props) => {
         likes={reactions ? reactions.length : 0}
         comments={num_comment}
         actionsLeft={actionsLeft()}
+        actionsRight={actionsRight()}
       />
     </Block>
   );

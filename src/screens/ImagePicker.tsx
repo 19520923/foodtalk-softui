@@ -1,10 +1,9 @@
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
-import React from 'react';
-import {ActivityIndicator, TouchableOpacity} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {ActivityIndicator} from 'react-native';
 import {useTheme, useTranslation} from '../hooks';
 import * as ImageManipulator from 'expo-image-manipulator';
 import {IParamList} from '../constants/types';
-import {FontAwesome} from '@expo/vector-icons';
 import {Block, Button, Text} from '../components/atoms';
 import {ImageBrowser} from 'expo-image-picker-multiple';
 
@@ -12,8 +11,20 @@ const ImagePicker = () => {
   const navigation = useNavigation();
   const route = useRoute<RouteProp<IParamList, 'ImagePicker'>>();
   const {onCallback} = route.params;
-  const {colors, sizes, icons} = useTheme();
+  const {colors, sizes} = useTheme();
   const {t} = useTranslation();
+  const [images, setImage] = useState<Array<string>>([]);
+
+  const _handleImageChange = useCallback(
+    (value: string) => {
+      setImage((state) => [...state, value]);
+    },
+    [setImage],
+  );
+
+  useEffect(() => {
+    onCallback(images);
+  }, [images, onCallback]);
 
   const processImageAsync = async (
     uri: string,
@@ -36,24 +47,21 @@ const ImagePicker = () => {
 
     callback
       .then((photos) => {
-        const chosenPhotos: Array<any> = [];
         photos.forEach(async (photo) => {
           const pPhoto = await processImageAsync(photo.uri, {
             format: ImageManipulator.SaveFormat.WEBP,
           });
-          chosenPhotos.push({
-            uri: pPhoto.uri,
-            name: photo.name,
-            type: 'image/webp',
-          });
+          _handleImageChange(pPhoto.uri);
         });
-        onCallback(chosenPhotos);
       })
       .then(() => navigation.goBack());
   };
 
   const _renderDoneButton = (count: number, onSubmit: () => void) => {
-    if (!count) return null;
+    if (!count) {
+      return null;
+    }
+
     return (
       <Button onPress={onSubmit}>
         <Text semibold primary>

@@ -9,6 +9,7 @@ import {
 import _ from 'lodash';
 import {persist} from './mobx-persist';
 import API from '../services/axiosClient';
+import {IPost} from '../constants/types';
 
 const PostStore = types
   .model({
@@ -53,6 +54,15 @@ const PostStore = types
         console.log(err);
       }
     }),
+
+    post: flow(function* (post_data: IPost) {
+      try {
+        const data = yield API.createPost(post_data);
+        self.rows.unshift(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }),
   }));
 
 const FoodStore = types
@@ -65,7 +75,7 @@ const FoodStore = types
     setFoods: flow(function* (key?: string) {
       try {
         const {rows, count} = yield API.getAllFoods(1, key);
-        self.rows = cast(_.unionBy(rows, self.rows, '_id'));
+        self.rows = cast(rows);
         self.count = count;
         self.currentPage = 2;
       } catch (err) {
@@ -107,7 +117,7 @@ export const RootStore = types
   .model({
     user: types.maybe(UserStore),
     searchUsers: types.optional(types.array(ProfileModel), []),
-    searchFoods: types.optional(types.array(FoodStore), []),
+    searchFoods: types.maybe(FoodStore),
     posts: types.maybe(PostStore),
     isLoggedIn: types.optional(types.boolean, false),
   })
@@ -131,25 +141,28 @@ export const RootStore = types
         currentPage: 1,
       },
     },
-    searchUsers: [],
-    searchFoods: [],
     posts: {
+      rows: [],
+      count: 0,
+      currentPage: 1,
+    },
+    searchFoods: {
       rows: [],
       count: 0,
       currentPage: 1,
     },
   });
 
-// Persisting the root store. */
-// persist(
-//   '@rootStore',
-//   RootStore,
-//   {
-//     jsonify: true,
-//   },
-//   {
-//     fetching: true,
-//   },
-// );
+/* Persisting the root store. */
+persist(
+  '@rootStore',
+  RootStore,
+  {
+    jsonify: true,
+  },
+  {
+    fetching: true,
+  },
+);
 
 export type TRootStore = Instance<typeof RootStore>;
