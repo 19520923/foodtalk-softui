@@ -178,25 +178,6 @@ export default () => {
         </Button>
       ),
     },
-    foodDeatil: {
-      ...menu,
-      title: 'Name Food',
-      headerRight: () => (
-        <View style={styles.rightView}>
-          <Text style={styles.markText}>8</Text>
-          <FontAwesome name="star" size={20} color={'#FFCE31'} />
-        </View>
-      ),
-      headerLeft: () => (
-        <Button onPress={() => navigation.goBack()}>
-          <FontAwesome
-            name={assets.back}
-            color={colors.icon}
-            size={sizes.icon}
-          />
-        </Button>
-      ),
-    },
   };
 
   return options;

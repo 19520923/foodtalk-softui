@@ -1,5 +1,4 @@
 import React from 'react';
-import {StyleSheet, Text} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import {
@@ -16,10 +15,8 @@ import BottomBar from './BottomBar';
 import CreateFood from '../screens/CreateFood';
 import PostDetail from '../screens/PostDetail';
 import {observer} from 'mobx-react-lite';
-import ForgotPassword from '../screens/ForgotPassword';
+import {ForgotPassword} from '../screens';
 import FoodDetail from './FoodDetail';
-import {FontAwesome} from '@expo/vector-icons';
-import {View} from 'react-native';
 
 const Stack = createStackNavigator();
 
@@ -70,7 +67,7 @@ export default observer(() => {
         <Stack.Screen
           name={t('screens.foodDetail')}
           component={FoodDetail}
-          options={screenOptions.foodDeatil}
+          options={screenOptions.back}
         />
       </Stack.Navigator>
     );
