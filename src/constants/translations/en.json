@@ -82,6 +82,7 @@
     "imagePicker": "Image picker",
     "checkin": "Map",
     "attachFoods": "Attach foods",
+    "foodDetail": "Food detail",
     "forgotPassword": "Forgot password"
   },
   "navigation": {
@@ -110,6 +111,7 @@
     "imagePicker": "Image picker",
     "checkin": "Map",
     "attachFoods": "Attach foods",
+    "foodDetail": "Food detail",
     "forgotPassword": "Forgot password"
   },
   "menu": {
