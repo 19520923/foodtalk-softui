@@ -7,13 +7,13 @@ import {Text} from '../components/atoms';
 const isAndroid = Platform.OS === 'android';
 
 const ingredients = [
-  '16 ounce ball of pizza dough',
-  '1 tablespoon olive oil',
-  '1 cup pizza sauce',
-  '3 ounces thinly sliced mozzarella cheese',
-  '5 ounces shredded mozzarella cheese',
-  '2.5 ounces pepperoni',
-  '2 tablespoons shredded parmesan cheese',
+  '- 16 ounce ball of pizza dough',
+  '- 1 tablespoon olive oil',
+  '- 1 cup pizza sauce',
+  '- 3 ounces thinly sliced mozzarella cheese',
+  '- 5 ounces shredded mozzarella cheese',
+  '- 2.5 ounces pepperoni',
+  '- 2 tablespoons shredded parmesan cheese',
 ];
 
 const process = [
@@ -47,31 +47,30 @@ const FoodContent = () => {
         />
         <Block marginLeft={sizes.s} paddingTop={sizes.s}>
           <Text
-            p
             semibold
             color={'blue'}
             marginBottom={sizes.m}
-            size={sizes.m}
+            h4
             paddingTop={sizes.s}>
             Pizza
           </Text>
 
           <Block marginBottom={sizes.m}>
-            <Text p bold marginBottom={sizes.s}>
+            <Text h5 bold marginBottom={sizes.s}>
               Ingredients
             </Text>
 
             {ingredients.map((ingredient) => {
               return (
                 <Text p left={sizes.s} marginBottom={sizes.s}>
-                  - {ingredient}
+                  {ingredient}
                 </Text>
               );
             })}
           </Block>
 
           <Block>
-            <Text p bold marginBottom={sizes.s}>
+            <Text h5 bold marginBottom={sizes.s}>
               Process
             </Text>
 
