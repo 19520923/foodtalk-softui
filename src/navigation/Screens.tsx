@@ -9,6 +9,7 @@ import {
   ImagePicker,
   Map,
   AttachFood,
+  UserList,
 } from '../screens';
 import {useMst, useScreenOptions, useTranslation} from '../hooks';
 import BottomBar from './BottomBar';
@@ -22,7 +23,10 @@ const Stack = createStackNavigator();
 export default observer(() => {
   const {t} = useTranslation();
   const screenOptions = useScreenOptions();
-  const {isLoggedIn} = useMst();
+  const {
+    isLoggedIn,
+    user: {profile},
+  } = useMst();
 
   const main = () => {
     return (
@@ -63,6 +67,11 @@ export default observer(() => {
           component={AttachFood}
           options={screenOptions.back}
         />
+        <Stack.Screen
+          name={t('screens.userList')}
+          component={UserList}
+          options={screenOptions.back}
+        />
       </Stack.Navigator>
     );
   };
@@ -91,7 +100,7 @@ export default observer(() => {
     );
   };
 
-  if (isLoggedIn) {
+  if (isLoggedIn && profile._id !== '') {
     return main();
   } else {
     return auth();

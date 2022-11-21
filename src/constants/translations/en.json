@@ -54,7 +54,8 @@
       "one": "1 guest",
       "other": "{{count}} guests",
       "zero": "0 Guests"
-    }
+    },
+    "editProfile": "Edit profile"
   },
   "app": {
     "name": "Foodtalk",
@@ -82,7 +83,8 @@
     "imagePicker": "Image picker",
     "checkin": "Map",
     "attachFoods": "Attach foods",
-    "forgotPassword": "Forgot password"
+    "forgotPassword": "Forgot password",
+    "userList": "User list"
   },
   "navigation": {
     "home": "Soft UI",
@@ -110,7 +112,8 @@
     "imagePicker": "Image picker",
     "checkin": "Map",
     "attachFoods": "Attach foods",
-    "forgotPassword": "Forgot password"
+    "forgotPassword": "Forgot password",
+    "userList": "User list"
   },
   "menu": {
     "started": "Getting Started",

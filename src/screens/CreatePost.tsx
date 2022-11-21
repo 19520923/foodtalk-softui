@@ -123,12 +123,11 @@ const CreatePost = () => {
           <ImageDesc
             title={profile.name}
             image={{uri: profile.avatar_url}}
-            description="Hello"
-            // description={
-            //   postData.location
-            //     ? postData.location?.name
-            //     : profile.username
-            // }
+            description={
+              postData.location?.name !== ''
+                ? postData.location?.name
+                : profile.username
+            }
           />
           <Block
             row
@@ -220,9 +219,7 @@ const CreatePost = () => {
               bottom: 0,
               left: 0,
             }}>
-            <Block
-              card
-              style={{position: 'absolute', bottom: 0, width: '100%'}}>
+            <Block card width={'100%'} position="absolute" bottom={0}>
               {CREATE_POST_ACTION.map((e, index) => (
                 <TouchableOpacity key={index} onPress={e.onPress}>
                   <Block flex={0} paddingVertical={sizes.s}>

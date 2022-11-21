@@ -9,11 +9,7 @@ const FullImageWidthCard = () => {
   const {assets, colors, sizes} = useTheme();
   return (
     <Block card marginTop={sizes.sm}>
-      <Image
-        resizeMode="cover"
-        source={assets?.card4}
-        style={{width: '100%'}}
-      />
+      <Image resizeMode="cover" source={assets?.card4} width={'100%'} />
       <Text
         h5
         bold
@@ -142,11 +138,7 @@ const Card = ({
               {description}
             </Text>
           )}
-          <Block
-            row
-            align="center"
-            justify="space-between"
-            style={{width: '100%'}}>
+          <Block row align="center" justify="space-between" width={'100%'}>
             <Text
               numberOfLines={1}
               p

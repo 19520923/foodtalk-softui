@@ -198,20 +198,15 @@ class AxiosClient {
 
   /**
    * It returns a promise that resolves to an array of posts.
-   * @param is_active - true or false
    * @param [page=1] - The page number of the results to fetch.
    * @param [sort=-created_at] - -created_at
    * @param [user_id] - the id of the user
    * @returns The return value is a promise.
    */
-  getUserPosts(is_active = '', page = 1, sort = '-created_at', user_id = '') {
-    return is_active !== ''
-      ? this.axios.get(
-          `/posts/${user_id}?sort=${sort}&page=${page}&limit=${LIMIT}&is_active=${is_active}`,
-        )
-      : this.axios.get(
-          `/posts?${user_id}sort=${sort}&page=${page}&limit=${LIMIT}`,
-        );
+  getUserPosts(user_id: string, page = 1, sort = '-created_at') {
+    return this.axios.get(
+      `/posts/${user_id}?sort=${sort}&page=${page}&limit=${LIMIT}&is_active=true`,
+    );
   }
 
   /**
@@ -262,20 +257,15 @@ class AxiosClient {
   /**
    * If is_active is not an empty string, then return the axios.get request with the is_active parameter,
    * otherwise return the axios.get request without the is_active parameter.
-   * @param [is_active] - true or false
    * @param [page=1] - the page number
    * @param [sort=-created_at] - the order in which the foods are sorted
    * @param [user_id] - the id of the user
    * @returns The return value is a promise.
    */
-  getUserFoods(is_active = '', page = 1, sort = '-created_at', user_id = '') {
-    return is_active !== ''
-      ? this.axios.get(
-          `/foods/${user_id}?sort=${sort}&page=${page}&limit=${LIMIT}&is_active=${is_active}`,
-        )
-      : this.axios.get(
-          `/foods/${user_id}?sort=${sort}&page=${page}&limit=${LIMIT}`,
-        );
+  getUserFoods(user_id = '', page = 1, sort = '-created_at') {
+    return this.axios.get(
+      `/foods/${user_id}?sort=${sort}&page=${page}&limit=${LIMIT}&is_active=true`,
+    );
   }
 
   /**
@@ -323,6 +313,18 @@ class AxiosClient {
    */
   createNotification(notiData: object) {
     return this.axios.post('/notifications', notiData);
+  }
+
+  likePost(post_id: string) {
+    return this.axios.post(`/posts/${post_id}/likeDislike`);
+  }
+
+  getFollowing(user_id: string) {
+    return this.axios.get(`/users/${user_id}/following`);
+  }
+
+  getFollower(user_id: string) {
+    return this.axios.get(`/users/${user_id}/follower`);
   }
 }
 

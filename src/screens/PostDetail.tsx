@@ -84,7 +84,9 @@ const PostDetail = (props: Props) => {
       <Block
         row
         align="center"
-        style={{width: '100%', position: 'absolute', bottom: sizes.s}}
+        position="absolute"
+        width={'100%'}
+        bottom={sizes.s}
         padding={sizes.s}
         color={colors.background}>
         <Block>

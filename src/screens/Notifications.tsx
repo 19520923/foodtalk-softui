@@ -1,63 +1,59 @@
-import React from 'react';
-import {Block, Text} from '../components/atoms';
+import {observer} from 'mobx-react-lite';
+import React, {useCallback, useEffect} from 'react';
+import {FlatList} from 'react-native';
+import {Block} from '../components/atoms';
 import {ImageDesc} from '../components/molecules';
-import {INotification} from '../constants/types';
-import {useTheme} from '../hooks';
+import {useMst, useTheme} from '../hooks';
 
-type Props = {};
-
-const NOTI_DATA: Array<INotification> = [
-  {
-    _id: '1',
-    content: '1 has following you. Have you followed back!!',
-    type: 'SYSTEM',
-    created_at: '12/12/2021',
-    author: {
-      _id: 'dasda',
-      username: 'nntan',
-      name: 'Nguyen Nhut Tan',
-      avatar_url:
-        'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
-    },
-  },
-  {
-    _id: '2',
-    content: '1 has following you. Have you followed back!!',
-    type: 'SYSTEM',
-    created_at: '12/12/2021',
-    author: {
-      _id: 'dasda',
-      username: 'nntan',
-      name: 'Nguyen Nhut Tan',
-      avatar_url:
-        'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
-    },
-  },
-];
-
-const Notifications = (props: Props) => {
+const Notifications = () => {
   const {sizes} = useTheme();
-  return (
-    <Block
-      scroll
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={{paddingBottom: sizes.l}}>
-      <Block marginTop={sizes.sm}>
-        {NOTI_DATA?.map((noti) => (
-          <ImageDesc
-            key={noti._id}
-            size={sizes.xl}
-            image={{uri: noti.author.avatar_url}}
-            title={noti.author.name}
-            description={noti.content}
-            info={{
-              created_at: noti.created_at,
-            }}
-          />
-        ))}
+  const {
+    notifications: {rows, count, setNoti, loadNoti},
+  } = useMst();
+
+  useEffect(() => {
+    setNoti();
+  }, [setNoti]);
+
+  const _handleLoadMoreNoti = useCallback(() => {
+    if (rows.length <= count) {
+      loadNoti();
+    }
+  }, [count, loadNoti, rows.length]);
+
+  const _renderItem = ({item}) => {
+    return (
+      <Block marginVertical={sizes.xs}>
+        <ImageDesc
+          key={item._id}
+          size={sizes.xl}
+          image={{uri: item.author.avatar_url}}
+          title={item.author.name}
+          description={item.content}
+          info={{
+            created_at: item.created_at,
+          }}
+          card={!item.is_seen}
+        />
       </Block>
+    );
+  };
+
+  return (
+    <Block>
+      <FlatList
+        // refreshing={loader}
+        data={rows}
+        renderItem={_renderItem}
+        keyExtractor={(item) => item._id}
+        showsVerticalScrollIndicator={false}
+        // ListFooterComponent={loader ? <MoreLoader /> : null}
+        // ItemSeparatorComponent={ListSeparator}
+        onEndReachedThreshold={0.5}
+        onEndReached={_handleLoadMoreNoti}
+      />
     </Block>
   );
 };
 
-export default Notifications;
+export default observer(Notifications);

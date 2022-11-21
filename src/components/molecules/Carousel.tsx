@@ -1,7 +1,7 @@
 import relatedTime from 'dayjs/plugin/relativeTime';
 import dayjs from 'dayjs';
 import React from 'react';
-import {StyleSheet, ViewStyle} from 'react-native';
+import {StyleSheet, TouchableOpacity, ViewStyle} from 'react-native';
 import {useTheme} from '../../hooks';
 import {Block, Text} from '../atoms';
 import {ICarousel} from '../../constants/types';
@@ -33,6 +33,7 @@ const Carousel = ({
   paddingRight,
   paddingLeft,
   style,
+  descPress,
 }: ICarousel) => {
   const {sizes, colors} = useTheme();
   const CarouselContainerStyle = StyleSheet.flatten([
@@ -87,10 +88,15 @@ const Carousel = ({
         <Text p lineHeight={26} marginTop={sizes.xs}>
           {content}
         </Text>
-        <Text secondary>
-          {dayjs(created_at).toNow(true)} ago {likes !== 0 && `• ${likes} Like`}{' '}
-          {comments !== 0 && `• ${comments} Comments`}
-        </Text>
+        <TouchableOpacity
+          onPress={descPress ? descPress : null}
+          activeOpacity={1}>
+          <Text secondary>
+            {dayjs(created_at).toNow(true)} ago{' '}
+            {likes !== 0 && `• ${likes} Like`}{' '}
+            {comments !== 0 && `• ${comments} Comments`}
+          </Text>
+        </TouchableOpacity>
       </Block>
     </Block>
   );

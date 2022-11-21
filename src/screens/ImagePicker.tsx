@@ -13,18 +13,6 @@ const ImagePicker = () => {
   const {onCallback} = route.params;
   const {colors, sizes} = useTheme();
   const {t} = useTranslation();
-  const [images, setImage] = useState<Array<string>>([]);
-
-  const _handleImageChange = useCallback(
-    (value: string) => {
-      setImage((state) => [...state, value]);
-    },
-    [setImage],
-  );
-
-  useEffect(() => {
-    onCallback(images);
-  }, [images, onCallback]);
 
   const processImageAsync = async (
     uri: string,
@@ -46,13 +34,15 @@ const ImagePicker = () => {
     });
 
     callback
-      .then((photos) => {
-        photos.forEach(async (photo) => {
+      .then(async (photos) => {
+        const uris = [];
+        for (const photo of photos) {
           const pPhoto = await processImageAsync(photo.uri, {
             format: ImageManipulator.SaveFormat.WEBP,
           });
-          _handleImageChange(pPhoto.uri);
-        });
+          uris.push(pPhoto);
+        }
+        onCallback(uris);
       })
       .then(() => navigation.goBack());
   };

@@ -1,25 +1,34 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {useTheme, useTranslation} from '../hooks';
+import {useMst, useTheme} from '../hooks';
 import {Block, Button, Text} from '../components/atoms';
 import {Home, Notifications, Profile} from '../screens';
 import Search from '../screens/Search';
 import {FontAwesome} from '@expo/vector-icons';
+import _ from 'lodash';
+import {observer} from 'mobx-react-lite';
 
 const Tab = createBottomTabNavigator();
 
 const BottomBarContent = (props: any) => {
-  const {t} = useTranslation();
-  const {state, descriptors, navigation} = props;
-  const {assets, colors, sizes} = useTheme();
+  const {state, navigation, descriptors} = props;
+  const {assets, colors, sizes, gradients} = useTheme();
 
   const icons = [assets.home, assets.search, assets.bell, assets.user];
 
   return (
-    <Block row flex={0} justify="space-evenly" paddingVertical={sizes.s} white>
+    <Block
+      row
+      flex={0}
+      justify="space-evenly"
+      white
+      paddingBottom={sizes.s}
+      radius={sizes.shadowRadius}>
       {state.routes.map((route: any, index: number) => {
         const {options} = descriptors[route.key];
         const isFocused = state.index === index;
+        const badge =
+          options.tabBarBadge !== undefined ? options.tabBarBadge : 0;
 
         const onPress = () => {
           const event = navigation.emit({
@@ -41,17 +50,45 @@ const BottomBarContent = (props: any) => {
             key={`bottom-screen-${route.name}-${index}`}
             onPress={onPress}>
             <Block align="center" justify="center">
-              <FontAwesome
-                name={icons[index]}
-                color={isFocused ? colors.primary : colors.icon}
-                size={sizes.icon}
-              />
+              {isFocused && (
+                <Block primary height={3} width={'150%'} radius={8} flex={0} />
+              )}
+              <Block marginTop={sizes.s} flex={0}>
+                <FontAwesome
+                  name={icons[index]}
+                  color={isFocused ? colors.primary : colors.icon}
+                  size={sizes.icon}
+                />
+              </Block>
               {isFocused && (
                 <Text semibold secondary>
                   {route.name}
                 </Text>
               )}
             </Block>
+            {badge !== 0 && !isFocused && (
+              <Block
+                flex={0}
+                padding={0}
+                justify="center"
+                position="absolute"
+                top={sizes.s}
+                right={sizes.xs}
+                width={sizes.sm}
+                height={sizes.sm}
+                radius={sizes.sm / 2}
+                gradient={gradients?.primary}>
+                <Text
+                  white
+                  center
+                  bold
+                  size={10}
+                  lineHeight={10}
+                  paddingTop={3}>
+                  {badge}
+                </Text>
+              </Block>
+            )}
           </Button>
         );
       })}
@@ -59,7 +96,15 @@ const BottomBarContent = (props: any) => {
   );
 };
 
-export default () => {
+export default observer(() => {
+  const {
+    notifications: {rows},
+  } = useMst();
+
+  const numNotiNotSeen = useMemo(() => {
+    return _.filter(rows, (e) => e.is_seen === false).length;
+  }, [rows]);
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -68,8 +113,12 @@ export default () => {
       tabBar={(props: any) => <BottomBarContent {...props} />}>
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Search" component={Search} />
-      <Tab.Screen name="News" component={Notifications} />
+      <Tab.Screen
+        name="News"
+        component={Notifications}
+        options={{tabBarBadge: numNotiNotSeen}}
+      />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );
-};
+});

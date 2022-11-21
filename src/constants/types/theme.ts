@@ -232,6 +232,7 @@ export interface ThemeIcons {
   check?: any;
   photo?: any;
   checkin?: any;
+  edit?: any;
 }
 
 export interface ThemeAssets {

@@ -1,10 +1,9 @@
-import React, {useEffect} from 'react';
-
+import React, {useCallback, useEffect} from 'react';
 import {useMst, useTheme} from '../hooks/';
 import {Block} from '../components/atoms';
-import {IPost} from '../constants/types';
 import {Post} from '../components/organisms';
 import {observer} from 'mobx-react-lite';
+import {FlatList} from 'react-native';
 
 const Home = () => {
   const {sizes} = useTheme();
@@ -16,10 +15,14 @@ const Home = () => {
     setPosts();
   }, [setPosts]);
 
-  const _handleScrollBottom = () => {
-    if (rows.lenght < count) {
+  const _handleScrollBottom = useCallback(() => {
+    if (rows.length < count) {
       loadPosts();
     }
+  }, [count, loadPosts, rows.length]);
+
+  const _renderItem = ({item}) => {
+    return <Post key={item._id} post={item} />;
   };
   // const handleProducts = useCallback(
   //   (tab: number) => {
@@ -30,81 +33,18 @@ const Home = () => {
   // );
 
   return (
-    <Block>
-      {/* search input */}
-      {/* <Block color={colors.card} flex={0} padding={sizes.padding}>
-        <Input search placeholder={t('common.search')} />
-      </Block> */}
-
-      {/* toggle products list */}
-      {/* <Block
-        row
-        flex={0}
-        align="center"
-        justify="center"
-        color={colors.card}
-        paddingBottom={sizes.sm}>
-        <Button onPress={() => handleProducts(0)}>
-          <Block row align="center">
-            <Block
-              flex={0}
-              radius={6}
-              align="center"
-              justify="center"
-              marginRight={sizes.s}
-              width={sizes.socialIconSize}
-              height={sizes.socialIconSize}
-              gradient={gradients?.[tab === 0 ? 'primary' : 'secondary']}>
-              <Image source={assets.extras} color={colors.white} radius={0} />
-            </Block>
-            <Text p font={fonts?.[tab === 0 ? 'medium' : 'normal']}>
-              {t('home.following')}
-            </Text>
-          </Block>
-        </Button>
-        <Block
-          gray
-          flex={0}
-          width={1}
-          marginHorizontal={sizes.sm}
-          height={sizes.socialIconSize}
-        />
-        <Button onPress={() => handleProducts(1)}>
-          <Block row align="center">
-            <Block
-              flex={0}
-              radius={6}
-              align="center"
-              justify="center"
-              marginRight={sizes.s}
-              width={sizes.socialIconSize}
-              height={sizes.socialIconSize}
-              gradient={gradients?.[tab === 1 ? 'primary' : 'secondary']}>
-              <Image
-                radius={0}
-                color={colors.white}
-                source={assets.documentation}
-              />
-            </Block>
-            <Text p font={fonts?.[tab === 1 ? 'medium' : 'normal']}>
-              {t('home.trending')}
-            </Text>
-          </Block>
-        </Button>
-      </Block> */}
-
-      {/* products list */}
-      <Block
-        scroll
-        load={_handleScrollBottom}
+    <Block paddingTop={sizes.s}>
+      <FlatList
+        // refreshing={loader}
+        data={rows}
+        renderItem={_renderItem}
+        keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: sizes.l}}>
-        <Block marginTop={sizes.sm}>
-          {rows.map((post: IPost) => (
-            <Post key={post._id} post={post} />
-          ))}
-        </Block>
-      </Block>
+        // ListFooterComponent={loader ? <MoreLoader /> : null}
+        // ItemSeparatorComponent={ListSeparator}
+        onEndReachedThreshold={0.5}
+        onEndReached={_handleScrollBottom}
+      />
     </Block>
   );
 };

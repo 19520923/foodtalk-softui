@@ -1,6 +1,6 @@
 import {types, Instance, cast} from 'mobx-state-tree';
 import FoodModel from './FoodModel';
-import {AuthorModel, ProfileModel} from './ProfileModel';
+import {ProfileModel} from './ProfileModel';
 import _ from 'lodash';
 
 export const DEFAULT_STATE_POST = {
@@ -24,7 +24,7 @@ const LocationModel = types.model({
 
 const CommentModel = types.model({
   _id: types.identifier,
-  author: AuthorModel,
+  author: ProfileModel,
   content: types.string,
   parent: types.maybeNull(types.string),
   created_at: types.string,

@@ -1,61 +1,22 @@
-import React, {useEffect, useState} from 'react';
-import {Platform, Linking} from 'react-native';
-import {Ionicons} from '@expo/vector-icons';
-import {useNavigation} from '@react-navigation/core';
-
+import React, {useCallback, useEffect, useState} from 'react';
+import {Platform, FlatList, TouchableOpacity} from 'react-native';
+import {FontAwesome} from '@expo/vector-icons';
 import {Block, Button, Image, Text} from '../components/atoms';
 import {useMst, useTheme, useTranslation} from '../hooks/';
 import {Post} from '../components/organisms';
-import {IPost} from '../constants/types';
 import {observer} from 'mobx-react-lite';
-
-const POST_DATA: Array<IPost> = [
-  {
-    _id: '10101',
-    author: {
-      _id: 'dasda',
-      username: 'nntan',
-      name: 'Nguyen Nhut Tan',
-      avatar_url:
-        'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
-    },
-    content: 'Hi there',
-    photos: [
-      'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
-      '',
-    ],
-    created_at: '12/10/2022',
-    num_comment: 1,
-    reactions: ['1220'],
-  },
-  {
-    _id: '10102',
-    author: {
-      _id: 'dasda',
-      username: 'nntan',
-      name: 'Nguyen Nhut Tan',
-      avatar_url:
-        'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
-    },
-    content: 'Hi there',
-    photos: [
-      'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
-      '',
-    ],
-    created_at: '12/10/2022',
-    num_comment: 1,
-    reactions: ['1220'],
-  },
-];
+import {Card} from '../components/molecules';
+import {useNavigation} from '@react-navigation/native';
+import {IUser} from '../constants/types';
 
 const isAndroid = Platform.OS === 'android';
 
 const Profile = observer(() => {
   const {t} = useTranslation();
   const navigation = useNavigation();
-  const {assets, colors, sizes, gradients} = useTheme();
+  const {assets, colors, sizes, gradients, icons} = useTheme();
   const {
-    user: {profile},
+    user: {profile, setPosts, loadPosts, setFoods, loadFoods, posts, foods},
   } = useMst();
   const [selected, setSelected] = useState<string>('POST');
 
@@ -65,10 +26,6 @@ const Profile = observer(() => {
   const IMAGE_MARGIN = (sizes.width - IMAGE_SIZE * 3 - sizes.padding * 2) / 2;
   const IMAGE_VERTICAL_MARGIN =
     (sizes.width - (IMAGE_VERTICAL_SIZE + sizes.sm) * 2) / 2;
-
-  useEffect(() => {
-    console.log(profile);
-  }, [profile]);
 
   // const handleSocialLink = useCallback(
   //   (type: 'twitter' | 'dribbble') => {
@@ -85,6 +42,24 @@ const Profile = observer(() => {
   //   },
   //   [user],
   // );
+
+  const _formatNum = (num: number) => {
+    if (num >= 1000) {
+      return String((num / 1000).toFixed(1)) + 'k';
+    }
+    return String(num);
+  };
+
+  const _handleNavigateUserList = (name: string) => {
+    navigation.navigate(t('navigation.userList'), {
+      name: name,
+      user_id: profile._id,
+    });
+  };
+
+  const _handleFollowingPress = () => {
+    _handleNavigateUserList('Following');
+  };
 
   const Carories = () => {
     return (
@@ -130,6 +105,39 @@ const Profile = observer(() => {
     );
   };
 
+  useEffect(() => {
+    setPosts(profile._id);
+    setFoods(profile._id);
+  }, [profile._id, setFoods, setPosts]);
+
+  const _handleLoadMorePosts = useCallback(() => {
+    if (posts.rows.length < posts.count) {
+      loadPosts(profile._id);
+    }
+  }, [loadPosts, posts.count, posts.rows.length, profile._id]);
+
+  const _handleLoadMoreFoods = useCallback(() => {
+    if (foods.rows.length < foods.count) {
+      loadFoods(profile._id);
+    }
+  }, [foods.count, foods.rows.length, loadFoods, profile._id]);
+
+  const _renderPostItem = ({item}) => {
+    return <Post key={item._id} post={item} />;
+  };
+
+  const _renderFoodItem = ({item}) => {
+    return (
+      <Card
+        image={{uri: item.photo}}
+        title={item.name}
+        description={item.about}
+        subcription={String(item.score?.toFixed(1))}
+        marginBottom={sizes.s}
+      />
+    );
+  };
+
   return (
     <Block safe>
       <Block
@@ -144,7 +152,7 @@ const Profile = observer(() => {
             paddingBottom={sizes.l}
             paddingTop={sizes.xxl}
             radius={sizes.cardRadius}
-            source={assets.background}>
+            source={{uri: profile.cover_url}}>
             <Block flex={0} align="center">
               <Image
                 width={80}
@@ -173,7 +181,7 @@ const Profile = observer(() => {
                     paddingHorizontal={sizes.m}
                     color="rgba(255,255,255,0.2)">
                     <Text white bold transform="uppercase">
-                      {t('common.follow')}
+                      {t('common.editProfile')}
                     </Text>
                   </Block>
                 </Button>
@@ -185,9 +193,9 @@ const Profile = observer(() => {
                   outlined={String(colors.white)}
                   // onPress={() => handleSocialLink('twitter')}
                 >
-                  <Ionicons
+                  <FontAwesome
                     size={18}
-                    name="logo-twitter"
+                    name={icons.photo}
                     color={colors.white}
                   />
                 </Button>
@@ -198,9 +206,9 @@ const Profile = observer(() => {
                   outlined={String(colors.white)}
                   // onPress={() => handleSocialLink('dribbble')}
                 >
-                  <Ionicons
+                  <FontAwesome
                     size={18}
-                    name="logo-dribbble"
+                    name={icons.edit}
                     color={colors.white}
                   />
                 </Button>
@@ -224,25 +232,30 @@ const Profile = observer(() => {
               radius={sizes.sm}
               overflow="hidden"
               tint={colors.blurTint}
-              justify="space-evenly"
+              justify="space-between"
               paddingVertical={sizes.sm}
+              paddingHorizontal={sizes.s}
               renderToHardwareTextureAndroid>
-              <Block align="center">
-                <Text h5>1k</Text>
+              <Block width="20%" align="center">
+                <Text h5>{_formatNum(posts.count)}</Text>
                 <Text>{t('profile.posts')}</Text>
               </Block>
-              <Block align="center">
-                <Text h5>1k</Text>
+              <Block width="20%" align="center">
+                <Text h5>{_formatNum(foods.count)}</Text>
                 <Text>{t('profile.foods')}</Text>
               </Block>
-              <Block align="center">
-                <Text h5>{(profile.follower.lenght || 0) / 1000}k</Text>
+              <Block width="30%" align="center">
+                <Text h5>{_formatNum(profile.follower.length)}</Text>
                 <Text>{t('profile.followers')}</Text>
               </Block>
-              <Block align="center">
-                <Text h5>{(profile.following.lenght || 0) / 1000}k</Text>
-                <Text>{t('profile.following')}</Text>
-              </Block>
+              <TouchableOpacity
+                onPress={_handleFollowingPress}
+                activeOpacity={1}>
+                <Block align="center">
+                  <Text h5>{_formatNum(profile.following.length)}</Text>
+                  <Text>{t('profile.following')}</Text>
+                </Block>
+              </TouchableOpacity>
             </Block>
           </Block>
 
@@ -320,11 +333,31 @@ const Profile = observer(() => {
             marginVertical={sizes.sm}
             gradient={gradients.menu}
           />
-          <Block marginTop={sizes.s}>
-            {POST_DATA?.map((post) => (
-              <Post post={post} />
-            ))}
-          </Block>
+          {selected === 'POST' ? (
+            <FlatList
+              // refreshing={loader}
+              data={posts.rows}
+              renderItem={_renderPostItem}
+              keyExtractor={(item) => item._id}
+              showsVerticalScrollIndicator={false}
+              // ListFooterComponent={loader ? <MoreLoader /> : null}
+              // ItemSeparatorComponent={ListSeparator}
+              onEndReachedThreshold={0.5}
+              onEndReached={_handleLoadMorePosts}
+            />
+          ) : (
+            <FlatList
+              // refreshing={loader}
+              data={foods.rows}
+              renderItem={_renderFoodItem}
+              keyExtractor={(item) => item._id}
+              showsVerticalScrollIndicator={false}
+              // ListFooterComponent={loader ? <MoreLoader /> : null}
+              // ItemSeparatorComponent={ListSeparator}
+              onEndReachedThreshold={0.5}
+              onEndReached={_handleLoadMoreFoods}
+            />
+          )}
         </Block>
       </Block>
     </Block>

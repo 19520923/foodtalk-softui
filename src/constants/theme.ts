@@ -55,6 +55,7 @@ export const ICONS: ThemeIcons = {
   check: 'check',
   photo: 'photo',
   checkin: 'map-marker',
+  edit: 'edit',
 };
 
 export const ASSETS: ThemeAssets = {

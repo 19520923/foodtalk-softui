@@ -267,11 +267,7 @@ const Cards = () => {
       {/* single card */}
       <Block>
         <Block card row>
-          <Image
-            resizeMode="contain"
-            source={assets?.card1}
-            style={{height: 114}}
-          />
+          <Image resizeMode="contain" source={assets?.card1} height={114} />
           <Block padding={sizes.s} justify="space-between">
             <Text p>Adventures - Multi day trips with meals and stays.</Text>
             <TouchableOpacity>
