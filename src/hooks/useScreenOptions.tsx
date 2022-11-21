@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {TouchableOpacity, View, StyleSheet} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {
   StackHeaderTitleProps,
   CardStyleInterpolators,
@@ -182,38 +182,3 @@ export default () => {
 
   return options;
 };
-
-const styles = StyleSheet.create({
-  topView: {
-    flexDirection: 'row',
-    borderBottomWidth: 0.5,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingBottom: 7,
-    paddingHorizontal: 15,
-  },
-  leftView: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  topText: {
-    fontFamily: 'Roboto',
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: 'gray',
-    marginLeft: 15,
-  },
-  rightView: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginRight: 16,
-  },
-  markText: {
-    fontFamily: 'Roboto',
-    fontSize: 13,
-    color: 'pink',
-    marginRight: 5,
-  },
-});
