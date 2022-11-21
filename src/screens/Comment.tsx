@@ -52,7 +52,7 @@ const Comment = () => {
           bottom: sizes.s,
         }}
         color={colors.background}
-        padding={sizes.s}>
+        padding={sizes.sm}>
         <Block>
           <Input placeholder="Write your comment" />
         </Block>

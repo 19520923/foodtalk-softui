@@ -259,6 +259,7 @@ export interface ThemeAssets {
   photo5: ImageSourcePropType;
   photo6: ImageSourcePropType;
   carousel1: ImageSourcePropType;
+  pizza: ImageSourcePropType;
 
   avatar1: ImageSourcePropType;
   avatar2: ImageSourcePropType;

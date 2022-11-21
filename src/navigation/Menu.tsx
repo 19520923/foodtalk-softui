@@ -105,7 +105,7 @@ const DrawerContent = (
             radius={0}
             width={33}
             height={33}
-            color={colors.facebook}
+            color={colors.primary}
             source={assets.logo}
             marginRight={sizes.sm}
           />
@@ -215,7 +215,7 @@ const DrawerContent = (
           justify="flex-start"
           marginTop={sizes.s}
           marginBottom={sizes.s}
-          onPress={() => handleWebLink('https://github.com')}>
+          onPress={() => navigation.navigate(t('navigation.foodDetail'))}>
           <Text p color={labelColor}>
             Terms & Privacy
           </Text>
