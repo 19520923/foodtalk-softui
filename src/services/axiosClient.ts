@@ -114,7 +114,7 @@ class AxiosClient {
     this.isRefreshing = true;
 
     // luu account vào localStorage rồi truyền vào đây
-    return this.login(account)
+    return this.login(JSON.parse(account))
       .then((data: {token: string}) => {
         /** Add token in to headers.Authorization */
         this.axios.defaults.headers.Authorization = 'Bearer ' + data.token;
@@ -160,14 +160,10 @@ class AxiosClient {
    * @param [search] - string
    * @returns The return value is a promise.
    */
-  getAllUsers(is_active: '', page = 1, sort = 'username', search = '') {
-    return is_active !== ''
-      ? this.axios.get(
-          `/users?q=${search}&sort=${sort}&page=${page}&limit=${LIMIT}&is_active=${is_active}`,
-        )
-      : this.axios.get(
-          `/users?q=${search}&sort=${sort}&page=${page}&limit=${LIMIT}`,
-        );
+  getAllUsers(page = 1, search = '') {
+    return this.axios.get(
+      `/users?q=${search}&sort=username&page=${page}&limit=${LIMIT}&is_active=true`,
+    );
   }
 
   /**
@@ -190,9 +186,9 @@ class AxiosClient {
    * @param [is_public] - true or false
    * @returns The return value is a promise.
    */
-  getAllPosts(page = 1, is_public = true) {
+  getAllPosts(page = 1) {
     return this.axios.get(
-      `/posts?sort=-created_at&page=${page}&limit=${LIMIT}&is_active=true&is_public=${is_public}`,
+      `/posts?sort=-created_at&page=${page}&limit=${LIMIT}&is_active=true&is_public=true`,
     );
   }
 

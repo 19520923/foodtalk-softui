@@ -1,6 +1,6 @@
 import i18n from 'i18n-js';
+import {TPostModel} from '../../stores/models/PostModel';
 import {IFood} from './food';
-import {IUser} from './user';
 
 export * from './components/atoms';
 export * from './components/molecules';
@@ -36,5 +36,8 @@ export type IParamList = {
   UserList: {
     user_id: string;
     name: string;
+  };
+  PostDetail: {
+    post: TPostModel;
   };
 };

@@ -71,8 +71,8 @@ const CreateFood = () => {
           <Text p semibold marginBottom={sizes.s}>
             Ingredients
           </Text>
-          <Block marginBottom={sizes.s}>
-            <Text p>1. 50g Rice</Text>
+          <Block left={sizes.s} marginBottom={sizes.s}>
+            <Text p>- 50g Rice</Text>
           </Block>
           <Block row align="center">
             <Input placeholder="Amount" style={{width: '25%'}} />
@@ -88,9 +88,9 @@ const CreateFood = () => {
         </Block>
         <Block marginTop={sizes.sm} paddingHorizontal={sizes.s}>
           <Text p semibold marginBottom={sizes.s}>
-            Receip
+            Process
           </Text>
-          <Block marginBottom={sizes.s}>
+          <Block left={sizes.s} marginBottom={sizes.s}>
             <Text p>1. Cook 30m with hot water</Text>
           </Block>
           <Block row align="center">

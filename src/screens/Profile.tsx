@@ -7,7 +7,6 @@ import {Post} from '../components/organisms';
 import {observer} from 'mobx-react-lite';
 import {Card} from '../components/molecules';
 import {useNavigation} from '@react-navigation/native';
-import {IUser} from '../constants/types';
 
 const isAndroid = Platform.OS === 'android';
 

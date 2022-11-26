@@ -16,7 +16,8 @@ import BottomBar from './BottomBar';
 import CreateFood from '../screens/CreateFood';
 import PostDetail from '../screens/PostDetail';
 import {observer} from 'mobx-react-lite';
-import ForgotPassword from '../screens/ForgotPassword';
+import {ForgotPassword} from '../screens';
+import FoodDetail from './FoodDetail';
 
 const Stack = createStackNavigator();
 
@@ -65,6 +66,11 @@ export default observer(() => {
         <Stack.Screen
           name={t('screens.attachFoods')}
           component={AttachFood}
+          options={screenOptions.back}
+        />
+        <Stack.Screen
+          name={t('screens.foodDetail')}
+          component={FoodDetail}
           options={screenOptions.back}
         />
         <Stack.Screen

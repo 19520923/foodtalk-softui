@@ -21,14 +21,14 @@ const Comment = () => {
 
   const {sizes, colors, icons} = useTheme();
   return (
-    <Block safe style={{position: 'relative'}}>
+    <Block safe position="relative">
       <Block
         scroll
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: sizes.l}}>
         <Block marginTop={sizes.sm}>
           {comments &&
-            comments.map((comment: IComment) => (
+            comments.map((comment) => (
               <ImageDesc
                 key={comment._id}
                 size={sizes.xl}
@@ -46,13 +46,11 @@ const Comment = () => {
       <Block
         row
         align="center"
-        style={{
-          width: '100%',
-          position: 'absolute',
-          bottom: sizes.s,
-        }}
+        width={'100%'}
+        position="absolute"
+        bottom={sizes.s}
         color={colors.background}
-        padding={sizes.s}>
+        padding={sizes.sm}>
         <Block>
           <Input placeholder="Write your comment" />
         </Block>

@@ -89,6 +89,7 @@ export const ASSETS: ThemeAssets = {
   photo5: require('../assets/images/photo5.png'),
   photo6: require('../assets/images/photo6.png'),
   carousel1: require('../assets/images/carousel1.png'),
+  pizza: require('../assets/images/pizza.jpeg'),
 
   // avatars
   avatar1: require('../assets/images/avatar1.png'),

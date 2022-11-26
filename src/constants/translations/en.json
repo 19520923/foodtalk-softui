@@ -83,6 +83,7 @@
     "imagePicker": "Image picker",
     "checkin": "Map",
     "attachFoods": "Attach foods",
+    "foodDetail": "Food detail",
     "forgotPassword": "Forgot password",
     "userList": "User list"
   },
@@ -112,6 +113,7 @@
     "imagePicker": "Image picker",
     "checkin": "Map",
     "attachFoods": "Attach foods",
+    "foodDetail": "Food detail",
     "forgotPassword": "Forgot password",
     "userList": "User list"
   },

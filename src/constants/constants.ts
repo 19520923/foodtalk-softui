@@ -30,3 +30,16 @@ export const STORAGE_BUCKET = 'login-183fb.appspot.com';
 export const MESSAGING_SENDER_ID = '494465272082';
 export const APP_ID = '1:494465272082:web:5d13db61f31d3e514ccbcb';
 export const MEASUREMENT_ID = 'G-Q3R4CM267X';
+
+export const USER_LIST_SCREEN_NAME = {
+  following: 'Following',
+  follower: 'Follower',
+  reaction: 'Reaction',
+};
+
+export const NOTIFICATION_TYPES = {
+  user: 'USER',
+  food: 'FOOD',
+  post: 'POST',
+  system: 'SYSTEM',
+};

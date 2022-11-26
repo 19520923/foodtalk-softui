@@ -61,12 +61,7 @@ const PostStore = types
     /* Setting the comments of a post. */
     setComment: flow(function* (post_id: string) {
       const index = _.findIndex(self.rows, (p) => p._id === post_id);
-      try {
-        const {rows, count} = yield API.getPostComments(1, post_id);
-        self.rows[index].comments.setComment(rows, count);
-      } catch (err) {
-        console.log(err);
-      }
+      self.rows[index].setComments();
     }),
 
     /* A function that takes in a post_data and then creates a post. */
@@ -90,11 +85,7 @@ false, it adds the user_id to the reactions array. It then calls the API.likePos
       } else {
         self.rows[index].reactions.push(user_id);
       }
-      try {
-        yield API.likePost(post_id);
-      } catch (error) {
-        console.log(error);
-      }
+      yield API.likePost(post_id);
     }),
   }));
 
@@ -110,25 +101,17 @@ const FoodStore = types
   })
   .actions((self) => ({
     setFoods: flow(function* (key?: string) {
-      try {
-        const {rows, count} = yield API.getAllFoods(1, key);
-        self.rows = cast(rows);
-        self.count = count;
-        self.currentPage = 2;
-      } catch (err) {
-        console.log(err);
-      }
+      const {rows, count} = yield API.getAllFoods(1, key);
+      self.rows = cast(rows);
+      self.count = count;
+      self.currentPage = 2;
     }),
     /* A function that takes in a payload and then sets the rows to the payload.foods and the count to the
 payload.count. */
     loadFoods: flow(function* (key: string) {
-      try {
-        const {rows} = yield API.getAllFoods(self.currentPage, key);
-        self.rows.push(...rows);
-        self.currentPage++;
-      } catch (err) {
-        console.log(err);
-      }
+      const {rows} = yield API.getAllFoods(self.currentPage, key);
+      self.rows.push(...rows);
+      self.currentPage++;
     }),
 
     /* Adding a food to the top of the list. */
@@ -167,57 +150,37 @@ const ProfileStore = types
 
     /* Setting the user's posts. */
     setPosts: flow(function* (user_id: string) {
-      try {
-        const {rows, count} = yield API.getUserPosts(user_id);
-        self.posts.rows = cast(rows);
-        self.posts.count = count;
-        self.posts.currentPage = 2;
-      } catch (err) {
-        console.log(err);
-      }
+      const {rows, count} = yield API.getUserPosts(user_id);
+      self.posts.rows = cast(rows);
+      self.posts.count = count;
+      self.posts.currentPage = 2;
     }),
 
     /* Loading the posts of a user. */
     loadPosts: flow(function* (user_id: string) {
-      try {
-        const {rows} = yield API.getUserPosts(user_id, self.posts.currentPage);
-        self.posts.rows.push(...rows);
-        self.posts.currentPage++;
-      } catch (err) {
-        console.log(err);
-      }
+      const {rows} = yield API.getUserPosts(user_id, self.posts.currentPage);
+      self.posts.rows.push(...rows);
+      self.posts.currentPage++;
     }),
 
     setFoods: flow(function* (user_id: string) {
-      try {
-        const {rows, count} = yield API.getUserFoods(user_id);
-        self.foods.rows = cast(rows);
-        self.foods.count = count;
-        self.foods.currentPage = 2;
-      } catch (err) {
-        console.log(err);
-      }
+      const {rows, count} = yield API.getUserFoods(user_id);
+      self.foods.rows = cast(rows);
+      self.foods.count = count;
+      self.foods.currentPage = 2;
     }),
 
     loadFoods: flow(function* (user_id: string) {
-      try {
-        const {rows} = yield API.getUserFoods(user_id, self.foods.currentPage);
-        self.foods.rows.push(...rows);
-        self.foods.currentPage++;
-      } catch (err) {
-        console.log(err);
-      }
+      const {rows} = yield API.getUserFoods(user_id, self.foods.currentPage);
+      self.foods.rows.push(...rows);
+      self.foods.currentPage++;
     }),
 
     setFollowing: flow(function* (user_id: string) {
-      try {
-        const rows = yield API.getFollowing(user_id);
-        self.following.rows = cast(rows);
-        // self.following.count = count;
-        // self.following.currentPage = 2;
-      } catch (err) {
-        console.log(err);
-      }
+      const rows = yield API.getFollowing(user_id);
+      self.following.rows = cast(rows);
+      // self.following.count = count;
+      // self.following.currentPage = 2;
     }),
 
     // loadFollowing: flow(function* (user_id: string) {
@@ -234,14 +197,10 @@ const ProfileStore = types
     // }),
 
     setFollower: flow(function* (user_id: string) {
-      try {
-        const rows = yield API.getFollower(user_id);
-        self.follower.rows = cast(rows);
-        // self.follower.count = count;
-        // self.follower.currentPage = 2;
-      } catch (err) {
-        console.log(err);
-      }
+      const rows = yield API.getFollower(user_id);
+      self.follower.rows = cast(rows);
+      // self.follower.count = count;
+      // self.follower.currentPage = 2;
     }),
 
     // loadFollower: flow(function* (user_id: string) {
@@ -271,23 +230,15 @@ const NotificationStore = types
   .actions((self) => ({
     /* Setting the notifications. */
     setNoti: flow(function* () {
-      try {
-        const {rows, count} = yield API.getAllNotifications(1);
-        self.rows = cast(rows);
-        self.count = count;
-        self.currentPage = 2;
-      } catch (error) {
-        console.log(error);
-      }
+      const {rows, count} = yield API.getAllNotifications(1);
+      self.rows = cast(rows);
+      self.count = count;
+      self.currentPage = 2;
     }),
     loadNoti: flow(function* () {
-      try {
-        const {rows} = yield API.getAllNotifications(self.currentPage);
-        self.rows.push(...rows);
-        self.currentPage++;
-      } catch (error) {
-        console.log(error);
-      }
+      const {rows} = yield API.getAllNotifications(self.currentPage);
+      self.rows.push(...rows);
+      self.currentPage++;
     }),
   }));
 

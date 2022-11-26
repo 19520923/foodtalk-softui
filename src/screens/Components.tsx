@@ -257,7 +257,7 @@ const Social = () => {
 
 // cards example
 const Cards = () => {
-  const {assets, colors, gradients, sizes} = useTheme();
+  const {assets, colors, sizes} = useTheme();
 
   return (
     <Block marginTop={sizes.m} paddingHorizontal={sizes.padding}>

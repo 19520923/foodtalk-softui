@@ -8,7 +8,7 @@ import {Block, Button, Input, Image, Text} from '../components/atoms';
 import {FontAwesome} from '@expo/vector-icons';
 import _ from 'lodash';
 import API from '../services/axiosClient';
-import {ACCESS_TOKEN} from '../constants/constants';
+import {ACCESS_TOKEN, ACCOUNT} from '../constants/constants';
 
 const isAndroid = Platform.OS === 'android';
 
@@ -34,7 +34,7 @@ const Login = () => {
     password: '',
   });
   const {assets, colors, gradients, sizes} = useTheme();
-  const {setIsLoggedIn, user} = useMst();
+  const {user, setIsLoggedIn} = useMst();
 
   const _handleChange = useCallback(
     (value) => {
@@ -54,9 +54,10 @@ const Login = () => {
   const _handleLogin = async () => {
     try {
       const data = await API.login(userData);
+      user.setProfile(data.user);
       setIsLoggedIn(true);
-      user?.setProfile(data.user);
       await Storage.setItem(ACCESS_TOKEN, data.token);
+      await Storage.setItem(ACCOUNT, JSON.stringify(data.user));
     } catch (err) {
       const message = _.get(err, 'message', JSON.stringify(err));
       console.log(message);
