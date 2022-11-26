@@ -2,7 +2,7 @@ import {Dimensions} from 'react-native';
 
 /* Exporting a constant called BASE_URL and setting it to the string
 "https://foodtalk-server.herokuapp.com". */
-export const BASE_URL = 'https://foodtalk-apis.herokuapp.com';
+export const BASE_URL = 'https://foodtalk-apis.onrender.com';
 /* Exporting a constant of axios timeout */
 export const AXIOS_TIMEOUT = 10000;
 /* Exporting a constant called UNAUTHORIZED and setting it to the number 401. */
