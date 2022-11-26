@@ -12,7 +12,7 @@ import {
   ACCOUNT,
 } from '../constants/constants';
 import {Storage} from '../hooks';
-import {IPost} from '../constants/types';
+import {IComment, IPost} from '../constants/types';
 
 class AxiosClient {
   failedQueue: Array<any>;
@@ -321,6 +321,10 @@ class AxiosClient {
 
   getFollower(user_id: string) {
     return this.axios.get(`/users/${user_id}/follower`);
+  }
+
+  addComment(payload: IComment) {
+    return this.axios.post('/post-comments', payload);
   }
 }
 

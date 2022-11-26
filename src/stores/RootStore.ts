@@ -64,6 +64,12 @@ const PostStore = types
       self.rows[index].setComments();
     }),
 
+    createComment: flow(function* (payload) {
+      const index = _.findIndex(self.rows, (p) => p._id === payload.post);
+      const data = API.addComment(payload);
+      self.rows[index].addComment(data);
+    }),
+
     /* A function that takes in a post_data and then creates a post. */
     post: flow(function* (post_data: IPost) {
       try {
@@ -273,15 +279,15 @@ export const RootStore = types
   });
 
 /* Persisting the root store. */
-persist(
-  '@rootStore',
-  RootStore,
-  {
-    jsonify: true,
-  },
-  {
-    fetching: true,
-  },
-);
+// persist(
+//   '@rootStore',
+//   RootStore,
+//   {
+//     jsonify: true,
+//   },
+//   {
+//     fetching: true,
+//   },
+// );
 
 export type TRootStore = Instance<typeof RootStore>;

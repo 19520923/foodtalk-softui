@@ -36,9 +36,9 @@ const CommentModel = types.model({
 });
 
 const CommnetStore = types.model({
-  rows: types.optional(types.array(CommentModel), []),
-  count: types.optional(types.number, 0),
-  currentPage: types.optional(types.number, 1),
+  rows: types.array(CommentModel),
+  count: types.number,
+  currentPage: types.number,
 });
 
 export const PostModel = types
@@ -52,7 +52,11 @@ export const PostModel = types
     author: ProfileModel,
     location: LocationModel,
     created_at: types.string,
-    comments: CommnetStore,
+    comments: types.optional(CommnetStore, {
+      rows: [],
+      count: 0,
+      currentPage: 1,
+    }),
     is_public: types.boolean,
   })
   .actions((self) => ({
@@ -62,6 +66,20 @@ export const PostModel = types
       self.comments.count = count;
       self.comments.currentPage = 2;
     }),
+
+    loadCommnets: flow(function* () {
+      const {rows, count} = yield API.getPostComments(
+        self.comments.currentPage,
+        self._id,
+      );
+      self.comments.rows.push(rows);
+      self.comments.currentPage++;
+    }),
+
+    addComment: (comment: TPostComment) => {
+      self.comments.rows.push(comment);
+      self.comments.count++;
+    },
   }));
 
 export default PostModel;
