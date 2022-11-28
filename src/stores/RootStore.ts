@@ -37,25 +37,17 @@ const PostStore = types
   .actions((self) => ({
     /* A function that is used to set the posts. */
     setPosts: flow(function* () {
-      try {
-        const {rows, count} = yield API.getAllPosts(1);
-        self.rows = cast(_.unionBy(self.rows, rows, '_id'));
-        self.count = count;
-        self.currentPage = 2;
-      } catch (err) {
-        console.log(err);
-      }
+      const {rows, count} = yield API.getAllPosts(1);
+      self.rows = cast(_.unionBy(self.rows, rows, '_id'));
+      self.count = count;
+      self.currentPage = 2;
     }),
 
     /* Load more the posts. */
     loadPosts: flow(function* () {
-      try {
-        const {rows} = yield API.getAllPosts(self.currentPage);
-        self.rows.push(...rows);
-        self.currentPage++;
-      } catch (err) {
-        console.log(err);
-      }
+      const {rows} = yield API.getAllPosts(self.currentPage);
+      self.rows.push(...rows);
+      self.currentPage++;
     }),
 
     /* Setting the comments of a post. */
@@ -72,12 +64,8 @@ const PostStore = types
 
     /* A function that takes in a post_data and then creates a post. */
     post: flow(function* (post_data: IPost) {
-      try {
-        const data = yield API.createPost(post_data);
-        self.rows.unshift(data);
-      } catch (error) {
-        console.log(error);
-      }
+      const data = yield API.createPost(post_data);
+      self.rows.unshift(data);
     }),
 
     /* A function that takes in a post_id, user_id, and isLiked. It then finds the index of the post_id in
@@ -279,15 +267,15 @@ export const RootStore = types
   });
 
 /* Persisting the root store. */
-// persist(
-//   '@rootStore',
-//   RootStore,
-//   {
-//     jsonify: true,
-//   },
-//   {
-//     fetching: true,
-//   },
-// );
+persist(
+  '@rootStore',
+  RootStore,
+  {
+    jsonify: true,
+  },
+  {
+    fetching: true,
+  },
+);
 
 export type TRootStore = Instance<typeof RootStore>;

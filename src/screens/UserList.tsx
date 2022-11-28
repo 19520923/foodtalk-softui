@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {IParamList} from '../constants/types';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {useMst, useTheme} from '../hooks';
@@ -45,7 +45,7 @@ const UserList = () => {
       default:
         return [];
     }
-  }, [follower.rows, following.rows, name]);
+  }, [follower.rows.length, following.rows.length, name]);
 
   useEffect(() => {
     navigation.setOptions({
