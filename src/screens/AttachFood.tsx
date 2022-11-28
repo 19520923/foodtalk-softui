@@ -1,7 +1,7 @@
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import _ from 'lodash';
 import React, {useCallback, useState, useEffect} from 'react';
-import {TouchableOpacity} from 'react-native';
+import {FlatList, TouchableOpacity} from 'react-native';
 import {Block, Button, Input, Text} from '../components/atoms';
 import {Card} from '../components/molecules';
 import {IFood, IParamList} from '../constants/types';
@@ -72,57 +72,76 @@ const AttachFood = () => {
   );
 
   const _handleLoadFoods = useCallback(() => {
-    if (rows.lenght < count) {
+    if (rows.length < count) {
       loadFoods(key);
     }
   }, [rows, count, loadFoods, key]);
+
+  const _renderListFoodItem = ({item}) => {
+    const isSelected = _.findIndex(selected, (e) => e._id === item._id) !== -1;
+    return (
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={() => (!isSelected ? _handleSelected(item) : null)}>
+        <Card
+          image={{uri: item.photo}}
+          title={item.name}
+          description={item.about}
+          subcription={String(item.score?.toFixed(1))}
+          marginBottom={sizes.s}
+          disabled={isSelected}
+        />
+      </TouchableOpacity>
+    );
+  };
+
+  const _renderSelectedList = ({item}) => {
+    return (
+      <TouchableOpacity activeOpacity={1} onPress={() => _handleRemoved(item)}>
+        <Card
+          inline
+          description={item.about}
+          image={{uri: item.photo}}
+          title={item.name}
+          subcription={String(item.score?.toFixed(1))}
+          marginRight={sizes.s}
+        />
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <Block scroll padding={sizes.s}>
       <Text h5 semibold marginBottom={sizes.s}>
         {t('common.selected')}
       </Text>
-      <Block scroll horizontal paddingBottom={sizes.s}>
-        {selected.map((e, index) => (
-          <TouchableOpacity
-            key={index}
-            activeOpacity={1}
-            onPress={() => _handleRemoved(e)}>
-            <Card
-              inline
-              description={e.about}
-              image={{uri: e.photo}}
-              title={e.name}
-              subcription={String(e.score?.toFixed(1))}
-              marginRight={sizes.s}
-            />
-          </TouchableOpacity>
-        ))}
+      <Block paddingBottom={sizes.s}>
+        <FlatList
+          // refreshing={loader}
+          data={selected}
+          renderItem={_renderSelectedList}
+          keyExtractor={(item) => item._id}
+          showsVerticalScrollIndicator={false}
+          // ListFooterComponent={loader ? <MoreLoader /> : null}
+          // ItemSeparatorComponent={ListSeparator}
+          horizontal
+        />
       </Block>
       <Text h5 semibold marginBottom={sizes.s} marginTop={sizes.sm}>
         {t('common.foods')}
       </Text>
-      <Block scroll load={_handleLoadFoods}>
-        {rows.map((food: IFood) => {
-          const isSelected =
-            _.findIndex(selected, (e) => e._id === food._id) !== -1;
-          return (
-            <TouchableOpacity
-              activeOpacity={1}
-              key={food._id}
-              onPress={() => (!isSelected ? _handleSelected(food) : null)}>
-              <Card
-                key={food._id}
-                image={{uri: food.photo}}
-                title={food.name}
-                description={food.about}
-                subcription={String(food.score?.toFixed(1))}
-                marginBottom={sizes.s}
-                disabled={isSelected}
-              />
-            </TouchableOpacity>
-          );
-        })}
+      <Block>
+        <FlatList
+          // refreshing={loader}
+          data={rows}
+          renderItem={_renderListFoodItem}
+          keyExtractor={(item) => item._id}
+          showsVerticalScrollIndicator={false}
+          // ListFooterComponent={loader ? <MoreLoader /> : null}
+          // ItemSeparatorComponent={ListSeparator}
+          onEndReachedThreshold={0.5}
+          onEndReached={_handleLoadFoods}
+        />
       </Block>
     </Block>
   );

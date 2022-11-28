@@ -66,7 +66,7 @@ export default () => {
         top: -14,
         right: -28,
       }}>
-      <Block card style={{position: 'absolute', top: 42, right: 42}}>
+      <Block card position="absolute" top={42} right={42}>
         {CREATE_CARD_ACTION.map((e, index) => (
           <TouchableOpacity key={index} onPress={e.onPress}>
             <Block row padding={sizes.s}>

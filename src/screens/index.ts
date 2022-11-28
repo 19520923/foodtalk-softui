@@ -18,7 +18,7 @@ export {default as Settings} from './Pro';
 export {default as Shopping} from './Pro';
 export {default as Pro} from './Pro';
 export {default as Comment} from './Comment';
-export {default as Reaction} from './Reaction';
+export {default as UserList} from './UserList';
 export {default as CreatePost} from './CreatePost';
 export {default as ImagePicker} from './ImagePicker';
 export {default as Map} from './Map';

@@ -1,4 +1,5 @@
 import i18n from 'i18n-js';
+import {TPostModel} from '../../stores/models/PostModel';
 import {IFood} from './food';
 
 export * from './components/atoms';
@@ -31,5 +32,12 @@ export type IParamList = {
   AttachFood: {
     foods: Array<IFood>;
     onDone: (food: Array<IFood>) => void;
+  };
+  UserList: {
+    user_id: string;
+    name: string;
+  };
+  PostDetail: {
+    post: TPostModel;
   };
 };

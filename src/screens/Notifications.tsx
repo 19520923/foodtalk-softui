@@ -1,63 +1,76 @@
-import React from 'react';
-import {Block, Text} from '../components/atoms';
+import {observer} from 'mobx-react-lite';
+import React, {useCallback, useEffect} from 'react';
+import {FlatList, TouchableOpacity} from 'react-native';
+import {Block} from '../components/atoms';
 import {ImageDesc} from '../components/molecules';
-import {INotification} from '../constants/types';
-import {useTheme} from '../hooks';
+import {useMst, useTheme, useTranslation} from '../hooks';
+import {NOTIFICATION_TYPES} from '../constants/constants';
+import {useNavigation} from '@react-navigation/native';
 
-type Props = {};
-
-const NOTI_DATA: Array<INotification> = [
-  {
-    _id: '1',
-    content: '1 has following you. Have you followed back!!',
-    type: 'SYSTEM',
-    created_at: '12/12/2021',
-    author: {
-      _id: 'dasda',
-      username: 'nntan',
-      name: 'Nguyen Nhut Tan',
-      avatar_url:
-        'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
-    },
-  },
-  {
-    _id: '2',
-    content: '1 has following you. Have you followed back!!',
-    type: 'SYSTEM',
-    created_at: '12/12/2021',
-    author: {
-      _id: 'dasda',
-      username: 'nntan',
-      name: 'Nguyen Nhut Tan',
-      avatar_url:
-        'https://iconutopia.com/wp-content/uploads/2016/06/space-dog-laika1.png',
-    },
-  },
-];
-
-const Notifications = (props: Props) => {
+const Notifications = () => {
   const {sizes} = useTheme();
-  return (
-    <Block
-      scroll
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={{paddingBottom: sizes.l}}>
-      <Block marginTop={sizes.sm}>
-        {NOTI_DATA?.map((noti) => (
+  const {
+    notifications: {rows, count, setNoti, loadNoti},
+  } = useMst();
+  const navigation = useNavigation();
+  const {t} = useTranslation();
+
+  useEffect(() => {
+    setNoti();
+  }, [setNoti]);
+
+  const _handleLoadMoreNoti = useCallback(() => {
+    if (rows.length <= count) {
+      loadNoti();
+    }
+  }, [count, loadNoti, rows.length]);
+
+  const _handlePress = (type: string, data: any) => {
+    switch (type) {
+      case NOTIFICATION_TYPES.post:
+        navigation.navigate(t('navigation.postDetail'), {post: data});
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  const _renderItem = ({item}) => {
+    return (
+      <TouchableOpacity onPress={() => _handlePress(item.type, item.post_data)}>
+        <Block marginVertical={sizes.xs}>
           <ImageDesc
-            key={noti._id}
+            key={item._id}
             size={sizes.xl}
-            image={{uri: noti.author.avatar_url}}
-            title={noti.author.name}
-            description={noti.content}
+            image={{uri: item.author.avatar_url}}
+            title={item.author.name}
+            description={item.content}
             info={{
-              created_at: noti.created_at,
+              created_at: item.created_at,
             }}
+            card={!item.is_seen}
           />
-        ))}
-      </Block>
+        </Block>
+      </TouchableOpacity>
+    );
+  };
+
+  return (
+    <Block>
+      <FlatList
+        // refreshing={loader}
+        data={rows}
+        renderItem={_renderItem}
+        keyExtractor={(item) => item._id}
+        showsVerticalScrollIndicator={false}
+        // ListFooterComponent={loader ? <MoreLoader /> : null}
+        // ItemSeparatorComponent={ListSeparator}
+        onEndReachedThreshold={0.5}
+        onEndReached={_handleLoadMoreNoti}
+      />
     </Block>
   );
 };
 
-export default Notifications;
+export default observer(Notifications);

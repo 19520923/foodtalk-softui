@@ -24,6 +24,7 @@ export interface ICarousel extends ISpacing {
   actionsLeft?: JSX.Element;
   actionsRight?: JSX.Element;
   style?: ViewStyle;
+  descPress?: () => void;
 }
 
 export interface IImageDesc {

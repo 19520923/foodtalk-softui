@@ -12,6 +12,7 @@ export interface IComment {
   author?: IUser;
   created_at?: string;
   parent?: string;
+  post?: string;
 }
 
 export interface IPost {

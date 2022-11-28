@@ -9,7 +9,7 @@ export interface IRate {
 }
 
 export interface IFood {
-  _id?: string;
+  _id: string;
   name?: string;
   ingredients?: Array<string>;
   recipe?: Array<string>;
@@ -25,4 +25,12 @@ export interface IFood {
     count?: number;
     currentPage?: number;
   };
+}
+
+export interface ICFood {
+  name?: string;
+  ingredients?: Array<string>;
+  recipe?: Array<string>;
+  photo?: string;
+  is_public?: boolean;
 }

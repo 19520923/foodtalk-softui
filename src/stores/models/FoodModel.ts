@@ -1,5 +1,5 @@
 import {Instance, types} from 'mobx-state-tree';
-import {AuthorModel, ProfileModel} from './ProfileModel';
+import {ProfileModel} from './ProfileModel';
 
 export const DEFAULT_STATE_FOOD = {
   _id: '',
@@ -16,7 +16,7 @@ export const DEFAULT_STATE_FOOD = {
 
 const FoodRateModel = types.model({
   _id: types.identifier,
-  author: AuthorModel,
+  author: ProfileModel,
   content: types.string,
   score: types.number,
   created_at: types.string,

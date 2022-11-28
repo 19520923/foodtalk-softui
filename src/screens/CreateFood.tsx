@@ -2,14 +2,14 @@ import React, {useCallback, useState} from 'react';
 import {Platform} from 'react-native';
 import {Block, Button, Image, Input, Switch, Text} from '../components/atoms';
 import {ImageDesc} from '../components/molecules';
-import {IFood} from '../constants/types';
+import {ICFood} from '../constants/types';
 import {useMst, useTheme} from '../hooks';
 
 const isAndroid = Platform.OS === 'android';
 
 const CreateFood = () => {
   const {sizes, assets} = useTheme();
-  const [food, setFood] = useState<IFood>({
+  const [food, setFood] = useState<ICFood>({
     name: '',
     is_public: true,
     recipe: [],
