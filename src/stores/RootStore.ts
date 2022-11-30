@@ -267,15 +267,15 @@ export const RootStore = types
   });
 
 /* Persisting the root store. */
-persist(
-  '@rootStore',
-  RootStore,
-  {
-    jsonify: true,
-  },
-  {
-    fetching: true,
-  },
-);
+// persist(
+//   '@rootStore',
+//   RootStore,
+//   {
+//     jsonify: true,
+//   },
+//   {
+//     fetching: true,
+//   },
+// );
 
 export type TRootStore = Instance<typeof RootStore>;
