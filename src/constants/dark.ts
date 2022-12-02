@@ -8,7 +8,7 @@ import {
 
 import {THEME as commonTheme} from './theme';
 
-const lightColor: ThemeColors = {
+const darkColor: ThemeColors = {
   // default text color
   text: '#252F40',
 
@@ -43,7 +43,7 @@ const lightColor: ThemeColors = {
 
   /** UI colors for navigation & card */
   card: '#FFFFFF',
-  background: '#E9ECEF',
+  background: '#000000',
 
   /** UI color for shadowColor */
   shadow: '#000000',
@@ -77,7 +77,7 @@ const lightColor: ThemeColors = {
 };
 
 export const COLORS: ThemeColors = {
-  ...lightColor,
+  ...darkColor,
 };
 
 export const GRADIENTS: ThemeGradients = {
