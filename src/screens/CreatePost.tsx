@@ -19,7 +19,7 @@ const CreatePost = () => {
   const navigation = useNavigation();
   const [showModal, setModal] = useState<boolean>(false);
   const [chosenFood, setChosenFood] = useState<Array<IFood>>([]);
-  const [photoUris, setPhotoUri] = useState<Array<string>>([]);
+  const [photoUris, setPhotoUri] = useState<Array<any>>([]);
   const [postData, setPostData] = useState<IPost>({
     is_public: true,
     photos: [],

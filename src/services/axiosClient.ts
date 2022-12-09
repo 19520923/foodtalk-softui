@@ -12,7 +12,13 @@ import {
   ACCOUNT,
 } from '../constants/constants';
 import {Storage} from '../hooks';
-import {IComment, IPost} from '../constants/types';
+import {
+  ICFood,
+  IComment,
+  IPost,
+  IRate,
+  IRegistration,
+} from '../constants/types';
 
 class AxiosClient {
   failedQueue: Array<any>;
@@ -211,9 +217,9 @@ class AxiosClient {
    * @param post_id - the id of the post
    * @returns The return value is a promise.
    */
-  getPostComments(page = 1, post_id: string) {
+  getPostComments(page: number, post_id: string) {
     return this.axios.get(
-      `/post-comments/${post_id}?page=${page}&limit=${LIMIT}`,
+      `/post-comments/${post_id}?page=${page}&limit=${LIMIT}&sort=-created_at`,
     );
   }
 
@@ -325,6 +331,18 @@ class AxiosClient {
 
   addComment(payload: IComment) {
     return this.axios.post('/post-comments', payload);
+  }
+
+  createFood(payload: ICFood) {
+    return this.axios.post('/foods', payload);
+  }
+
+  addRate(payload: IRate) {
+    return this.axios.post('/food-rates', payload);
+  }
+
+  register(payload: IRegistration) {
+    return this.axios.post('/users', {...payload, access_token: MASTER_KEY});
   }
 }
 

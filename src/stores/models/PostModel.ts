@@ -1,7 +1,6 @@
 import {types, Instance, cast, flow} from 'mobx-state-tree';
 import FoodModel from './FoodModel';
 import {ProfileModel} from './ProfileModel';
-import _ from 'lodash';
 import API from '../../services/axiosClient';
 
 export const DEFAULT_STATE_POST = {
@@ -68,7 +67,7 @@ export const PostModel = types
     }),
 
     loadCommnets: flow(function* () {
-      const {rows, count} = yield API.getPostComments(
+      const {rows} = yield API.getPostComments(
         self.comments.currentPage,
         self._id,
       );
@@ -77,9 +76,21 @@ export const PostModel = types
     }),
 
     addComment: (comment: TPostComment) => {
-      self.comments.rows.push(comment);
+      self.comments.rows.unshift(comment);
       self.comments.count++;
     },
+
+    /* A function that takes in a post_id, user_id, and isLiked. It then finds the index of the post_id in
+the rows array. If isLiked is true, it removes the user_id from the reactions array. If isLiked is
+false, it adds the user_id to the reactions array. It then calls the API.likePost function. */
+    like: flow(function* (user_id: string, isLiked: boolean) {
+      if (isLiked) {
+        self.reactions.remove(user_id);
+      } else {
+        self.reactions.push(user_id);
+      }
+      yield API.likePost(self._id);
+    }),
   }));
 
 export default PostModel;

@@ -13,5 +13,11 @@ export const email: RegExp = /^[^\s@]+@[^\s@]+\.([^\s@]{2,})+$/;
  * password validation, should contain:
  * [0-9a-zA-Z]{6,}: at least 6 from the mentioned characters
  */
-export const password: RegExp =
-  /^[0-9a-zA-Z]{6,}$/;
+export const password: RegExp = /^[0-9a-zA-Z]{6,}$/;
+
+/*
+ * username validation, should contain:
+ * [0-9a-zA-Z]{6,}: at least 6 from the mentioned characters
+ */
+export const username: RegExp =
+  /^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/;

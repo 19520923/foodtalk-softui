@@ -1,5 +1,6 @@
-import {Instance, types} from 'mobx-state-tree';
+import {cast, flow, Instance, types} from 'mobx-state-tree';
 import {ProfileModel} from './ProfileModel';
+import API from '../../services/axiosClient';
 
 export const DEFAULT_STATE_FOOD = {
   _id: '',
@@ -28,22 +29,36 @@ const RateStore = types.model({
   currentPage: types.integer,
 });
 
-const FoodModel = types.model({
-  _id: types.identifier,
-  name: types.string,
-  ingredients: types.array(types.string),
-  recipe: types.array(types.string),
-  score: types.number,
-  author: ProfileModel,
-  photo: types.string,
-  num_rate: types.number,
-  created_at: types.string,
-  rates: types.optional(RateStore, {
-    rows: [],
-    count: 0,
-    currentPage: 1,
-  }),
-});
+const FoodModel = types
+  .model({
+    _id: types.identifier,
+    name: types.string,
+    ingredients: types.array(types.string),
+    recipe: types.array(types.string),
+    score: types.number,
+    author: ProfileModel,
+    photo: types.string,
+    num_rate: types.number,
+    created_at: types.string,
+    rates: types.optional(RateStore, {
+      rows: [],
+      count: 0,
+      currentPage: 1,
+    }),
+  })
+  .actions((self) => ({
+    setRates: flow(function* () {
+      const {rows, count} = yield API.getFoodRates(1, self._id);
+      self.rates.rows = cast(rows);
+      self.rates.count = count;
+      self.rates.currentPage = 2;
+    }),
+    loadRates: flow(function* () {
+      const {rows} = yield API.getFoodRates(self.rates.currentPage, self._id);
+      self.rates.rows = cast(rows);
+      self.rates.currentPage++;
+    }),
+  }));
 
 export default FoodModel;
 
