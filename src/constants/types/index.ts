@@ -1,4 +1,5 @@
 import i18n from 'i18n-js';
+import {TFoodModel} from '../../stores/models/FoodModel';
 import {TPostModel} from '../../stores/models/PostModel';
 import {IFood} from './food';
 
@@ -27,7 +28,7 @@ export type IParamList = {
     isVisible: boolean;
   };
   Comment: {
-    post_id: string;
+    post: TPostModel;
   };
   AttachFood: {
     foods: Array<IFood>;
@@ -39,5 +40,8 @@ export type IParamList = {
   };
   PostDetail: {
     post: TPostModel;
+  };
+  Food: {
+    food: TFoodModel;
   };
 };

@@ -43,3 +43,9 @@ export const NOTIFICATION_TYPES = {
   post: 'POST',
   system: 'SYSTEM',
 };
+
+export const maxRating = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+export const starImgFilled =
+  'https://github.com/tranhonghan/images/blob/main/star_filled.png?raw=true';
+export const starImgCorner =
+  'https://github.com/tranhonghan/images/blob/main/star_corner.png?raw=true';

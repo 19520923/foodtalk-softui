@@ -1,6 +1,5 @@
 import React, {useCallback, useState} from 'react';
 import {
-  Image,
   TextInput,
   TextStyle,
   ViewStyle,
@@ -13,6 +12,7 @@ import Text from './Text';
 
 import useTheme from '../../hooks/useTheme';
 import {IInputProps} from '../../constants/types';
+import {FontAwesome} from '@expo/vector-icons';
 
 const Input = ({
   id = 'Input',
@@ -128,15 +128,19 @@ const Input = ({
       )}
       <Block row align="center" justify="flex-end" style={inputContainerStyles}>
         {search && assets.search && (
-          <Image
-            source={assets.search}
-            style={{marginLeft: sizes.inputPadding, tintColor: colors.icon}}
+          <FontAwesome
+            name={assets.search}
+            size={sizes.icon}
+            color={colors.icon}
+            style={{marginLeft: sizes.inputPadding}}
           />
         )}
         {icon && (
-          <Image
-            source={assets?.[icon]}
-            style={{marginLeft: sizes.inputPadding, tintColor: colors.icon}}
+          <FontAwesome
+            name={assets?.[icon]}
+            color={colors.icon}
+            size={sizes.icon}
+            style={{marginLeft: sizes.inputPadding}}
           />
         )}
         <TextInput
@@ -149,22 +153,22 @@ const Input = ({
           onBlur={(event) => handleFocus(event, false)}
         />
         {danger && assets.warning && (
-          <Image
-            source={assets.warning}
+          <FontAwesome
+            name={assets.warning}
+            size={sizes.icon}
+            color={colors.danger}
             style={{
               marginRight: sizes.s,
-              tintColor: colors.danger,
             }}
           />
         )}
         {success && assets.check && (
-          <Image
-            source={assets.check}
+          <FontAwesome
+            name={assets.check}
+            color={colors.success}
+            size={sizes.icon}
             style={{
-              width: 12,
-              height: 9,
               marginRight: sizes.s,
-              tintColor: colors.success,
             }}
           />
         )}

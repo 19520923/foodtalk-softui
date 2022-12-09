@@ -15,3 +15,10 @@ export interface AuthResponse {
   token: string;
   user: IUser;
 }
+
+export interface IRegistration {
+  username: string;
+  name: string;
+  email: string;
+  password: string;
+}

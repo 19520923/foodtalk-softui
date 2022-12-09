@@ -1,21 +1,16 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Linking, Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
-
-import {useData, useTheme, useTranslation} from '../hooks/';
+import {useTheme, useTranslation} from '../hooks/';
 import * as regex from '../constants/regex';
 import {Block, Button, Input, Image, Text, Checkbox} from '../components/atoms';
 import {FontAwesome} from '@expo/vector-icons';
+import API from '../services/axiosClient';
+import {IRegistration} from '../constants/types';
+import _ from 'lodash';
 
 const isAndroid = Platform.OS === 'android';
 
-interface IRegistration {
-  username: string;
-  name: string;
-  email: string;
-  password: string;
-  agreed: boolean;
-}
 interface IRegistrationValidation {
   username: boolean;
   name: boolean;
@@ -25,9 +20,9 @@ interface IRegistrationValidation {
 }
 
 const Register = () => {
-  const {isDark} = useData();
   const {t} = useTranslation();
   const navigation = useNavigation();
+  const [agreed, setAgreed] = useState(false);
   const [isValid, setIsValid] = useState<IRegistrationValidation>({
     username: false,
     name: false,
@@ -40,7 +35,6 @@ const Register = () => {
     name: '',
     email: '',
     password: '',
-    agreed: false,
   });
   const {assets, colors, gradients, sizes, icons} = useTheme();
 
@@ -51,22 +45,30 @@ const Register = () => {
     [setRegistration],
   );
 
-  const handleSignUp = useCallback(() => {
+  const handleSignUp = useCallback(async () => {
     if (!Object.values(isValid).includes(false)) {
-      /** send/save registratin data */
-      console.log('handleSignUp', registration);
+      try {
+        await API.register(registration);
+        navigation.goBack();
+      } catch (err) {
+        const message = _.get(err, 'message', JSON.stringify(err));
+        console.log(message);
+        // display error message to toask here
+      } finally {
+      }
     }
-  }, [isValid, registration]);
+  }, [isValid, navigation, registration]);
 
   useEffect(() => {
     setIsValid((state) => ({
       ...state,
+      username: regex.username.test(registration.username),
       name: regex.name.test(registration.name),
       email: regex.email.test(registration.email),
       password: regex.password.test(registration.password),
-      agreed: registration.agreed,
+      agreed: agreed,
     }));
-  }, [registration, setIsValid]);
+  }, [agreed, registration, setIsValid]);
 
   return (
     <Block safe>
@@ -126,21 +128,21 @@ const Register = () => {
                   <FontAwesome
                     name={icons.facebook}
                     size={sizes.icon}
-                    color={isDark ? colors.icon : undefined}
+                    color={colors.icon}
                   />
                 </Button>
                 <Button outlined gray shadow={!isAndroid}>
                   <FontAwesome
                     name={icons.apple}
                     size={sizes.icon}
-                    color={isDark ? colors.icon : undefined}
+                    color={colors.icon}
                   />
                 </Button>
                 <Button outlined gray shadow={!isAndroid}>
                   <FontAwesome
                     name={icons.google}
                     size={sizes.icon}
-                    color={isDark ? colors.icon : undefined}
+                    color={colors.icon}
                   />
                 </Button>
               </Block>
@@ -180,7 +182,7 @@ const Register = () => {
                   placeholder={t('common.usernamePlaceholder')}
                   success={Boolean(registration.username && isValid.username)}
                   danger={Boolean(registration.username && !isValid.username)}
-                  onChangeText={(value) => handleChange({name: value})}
+                  onChangeText={(value) => handleChange({username: value})}
                 />
                 <Input
                   autoCapitalize="none"
@@ -216,8 +218,8 @@ const Register = () => {
               <Block row flex={0} align="center" paddingHorizontal={sizes.sm}>
                 <Checkbox
                   marginRight={sizes.sm}
-                  checked={registration?.agreed}
-                  onPress={(value) => handleChange({agreed: value})}
+                  checked={agreed}
+                  onPress={(value) => setAgreed(value)}
                 />
                 <Text paddingRight={sizes.s}>
                   {t('common.agree')}

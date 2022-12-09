@@ -131,13 +131,12 @@ const Card = ({
     const width = CARD_WIDTH - 1.5 * sizes.s;
     return (
       <Block card width={width} height={width * 1.25} disabled={disabled}>
-        <Image resizeMode="cover" source={image} style={{width: '100%'}} />
+        <Image resizeMode="cover" source={image} width={width} />
         <Block marginTop={sizes.s} justify="space-between">
-          {description && (
-            <Text numberOfLines={3} marginBottom={sizes.s}>
-              {description}
-            </Text>
-          )}
+          <Text numberOfLines={3} marginBottom={sizes.s}>
+            {description}
+          </Text>
+
           <Block row align="center" justify="space-between" width={'100%'}>
             <Text
               numberOfLines={1}
@@ -147,7 +146,7 @@ const Card = ({
               color={colors.primary}>
               {title}
             </Text>
-            {subcription && (
+            {subcription !== '' && (
               <Text p semibold color={colors.warning}>
                 {subcription}
               </Text>
@@ -169,7 +168,7 @@ const Card = ({
             </Text>
             <Text numberOfLines={3}>{description}</Text>
           </Block>
-          {subcription && (
+          {subcription !== '' && (
             <Text numberOfLines={1} color={colors.gray}>
               {subcription}
             </Text>

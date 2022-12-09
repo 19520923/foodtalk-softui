@@ -1,5 +1,5 @@
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
-import React, {useCallback, useEffect, useState} from 'react';
+import React from 'react';
 import {ActivityIndicator} from 'react-native';
 import {useTheme, useTranslation} from '../hooks';
 import * as ImageManipulator from 'expo-image-manipulator';
@@ -16,9 +16,14 @@ const ImagePicker = () => {
 
   const processImageAsync = async (
     uri: string,
+    actions: ImageManipulator.ActionResize,
     options?: ImageManipulator.SaveOptions,
   ) => {
-    const file = await ImageManipulator.manipulateAsync(uri, [], options);
+    const file = await ImageManipulator.manipulateAsync(
+      uri,
+      [actions],
+      options,
+    );
     return file;
   };
 
@@ -37,10 +42,14 @@ const ImagePicker = () => {
       .then(async (photos) => {
         const uris = [];
         for (const photo of photos) {
-          const pPhoto = await processImageAsync(photo.uri, {
-            format: ImageManipulator.SaveFormat.WEBP,
-          });
-          uris.push(pPhoto);
+          const pPhoto = await processImageAsync(
+            photo.uri,
+            {resize: {width: 1920}},
+            {
+              format: ImageManipulator.SaveFormat.WEBP,
+            },
+          );
+          uris.push(pPhoto.uri);
         }
         onCallback(uris);
       })
