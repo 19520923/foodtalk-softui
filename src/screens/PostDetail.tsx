@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Block, Button, Input} from '../components/atoms';
 import {ImageDesc} from '../components/molecules';
 import {Post} from '../components/organisms';
@@ -15,6 +15,10 @@ const PostDetail = () => {
   const {sizes, colors, icons} = useTheme();
   const route = useRoute<RouteProp<IParamList, 'PostDetail'>>();
   const {post} = route.params;
+
+  useEffect(() => {
+    post.setComments();
+  }, [post]);
 
   const _renderItem = ({item}) => {
     return (
@@ -49,7 +53,7 @@ const PostDetail = () => {
           // ListFooterComponent={loader ? <MoreLoader /> : null}
           // ItemSeparatorComponent={ListSeparator}
           onEndReachedThreshold={0.5}
-          // onEndReached={_handleScrollBottom}
+          onEndReached={post.loadCommnets}
         />
       </Block>
 

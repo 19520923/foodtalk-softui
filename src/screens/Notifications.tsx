@@ -38,8 +38,10 @@ const Notifications = () => {
 
   const _renderItem = ({item}) => {
     return (
-      <TouchableOpacity onPress={() => _handlePress(item.type, item.post_data)}>
-        <Block marginVertical={sizes.xs}>
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={() => _handlePress(item.type, item.post_data)}>
+        <Block padding={sizes.xs} white={!item.is_seen}>
           <ImageDesc
             key={item._id}
             size={sizes.xl}
@@ -49,7 +51,6 @@ const Notifications = () => {
             info={{
               created_at: item.created_at,
             }}
-            card={!item.is_seen}
           />
         </Block>
       </TouchableOpacity>

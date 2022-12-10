@@ -1,16 +1,16 @@
 import React, {useCallback, useMemo} from 'react';
-import {IFood, IPost} from '../../constants/types';
 import {useMst, useTheme, useTranslation} from '../../hooks';
 import {Block, Image} from '../atoms';
 import {ImageDesc, Carousel} from '../molecules';
 import {FontAwesome} from '@expo/vector-icons';
-import {FlatList, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {observer} from 'mobx-react-lite';
 import _ from 'lodash';
+import {TPostModel} from '../../stores/models/PostModel';
 
 type Props = {
-  post: IPost;
+  post: TPostModel;
 };
 
 const Post = ({post}: Props) => {
@@ -18,7 +18,6 @@ const Post = ({post}: Props) => {
   const navigation = useNavigation();
   const {t} = useTranslation();
   const {
-    posts: {like},
     user: {profile},
   } = useMst();
 
@@ -31,11 +30,12 @@ const Post = ({post}: Props) => {
     num_comment,
     created_at,
     foods,
+    like,
   } = post;
 
   const _handleNavigateComment = useCallback(() => {
-    navigation.navigate(t('navigation.comment'), {post_id: _id});
-  }, [_id, navigation, t]);
+    navigation.navigate(t('navigation.comment'), {post: post});
+  }, [navigation, post, t]);
 
   const isLiked = useMemo(() => {
     return _.findIndex(reactions, (e) => e === profile._id) !== -1;
@@ -43,8 +43,8 @@ const Post = ({post}: Props) => {
   }, [profile._id, reactions?.length]);
 
   const _handleLike = useCallback(() => {
-    like(_id, profile._id, isLiked);
-  }, [_id, isLiked, like, profile._id]);
+    like(profile._id, isLiked);
+  }, [isLiked, like, profile._id]);
 
   const actionsLeft = useMemo(
     () => (

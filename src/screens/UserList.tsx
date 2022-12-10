@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {IParamList} from '../constants/types';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {useMst, useTheme} from '../hooks';

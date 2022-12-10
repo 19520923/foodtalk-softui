@@ -50,36 +50,10 @@ const PostStore = types
       self.currentPage++;
     }),
 
-    /* Setting the comments of a post. */
-    setComment: flow(function* (post_id: string) {
-      const index = _.findIndex(self.rows, (p) => p._id === post_id);
-      self.rows[index].setComments();
-    }),
-
-    createComment: flow(function* (payload) {
-      const index = _.findIndex(self.rows, (p) => p._id === payload.post);
-      const data = API.addComment(payload);
-      self.rows[index].addComment(data);
-    }),
-
     /* A function that takes in a post_data and then creates a post. */
     post: flow(function* (post_data: IPost) {
       const data = yield API.createPost(post_data);
       self.rows.unshift(data);
-    }),
-
-    /* A function that takes in a post_id, user_id, and isLiked. It then finds the index of the post_id in
-the rows array. If isLiked is true, it removes the user_id from the reactions array. If isLiked is
-false, it adds the user_id to the reactions array. It then calls the API.likePost function. */
-    like: flow(function* (post_id: string, user_id: string, isLiked: boolean) {
-      const index = _.findIndex(self.rows, (p) => p._id === post_id);
-
-      if (isLiked) {
-        self.rows[index].reactions.remove(user_id);
-      } else {
-        self.rows[index].reactions.push(user_id);
-      }
-      yield API.likePost(post_id);
     }),
   }));
 
@@ -118,11 +92,27 @@ payload.count. */
 rows: an array of ProfileModel
 count: a number
 currentPage: a number */
-const UserStore = types.model({
-  rows: types.optional(types.array(ProfileModel), []),
-  count: types.optional(types.number, 0),
-  currentPage: types.optional(types.number, 1),
-});
+const UserStore = types
+  .model({
+    rows: types.optional(types.array(ProfileModel), []),
+    count: types.optional(types.number, 0),
+    currentPage: types.optional(types.number, 1),
+  })
+  .actions((self) => ({
+    setUsers: flow(function* (key?: string) {
+      const {rows, count} = yield API.getAllUsers(1, key);
+      self.rows = cast(rows);
+      self.count = count;
+      self.currentPage = 2;
+    }),
+    /* A function that takes in a payload and then sets the rows to the payload.foods and the count to the
+payload.count. */
+    loadUsers: flow(function* (key: string) {
+      const {rows} = yield API.getAllUsers(self.currentPage, key);
+      self.rows.push(...rows);
+      self.currentPage++;
+    }),
+  }));
 
 /* Creating a ProfileStore model with the following properties:
 profile: a ProfileModel
@@ -267,15 +257,15 @@ export const RootStore = types
   });
 
 /* Persisting the root store. */
-persist(
-  '@rootStore',
-  RootStore,
-  {
-    jsonify: true,
-  },
-  {
-    fetching: true,
-  },
-);
+// persist(
+//   '@rootStore',
+//   RootStore,
+//   {
+//     jsonify: true,
+//   },
+//   {
+//     fetching: true,
+//   },
+// );
 
 export type TRootStore = Instance<typeof RootStore>;

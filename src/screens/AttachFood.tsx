@@ -41,6 +41,7 @@ const AttachFood = () => {
         <Input
           placeholder="Type to search food's recipes"
           onChangeText={(text) => _handleKeyChange(text)}
+          search
         />
       ),
       headerRight: () => (

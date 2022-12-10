@@ -1,64 +1,96 @@
-import React from 'react';
-import {Block, Text} from '../components/atoms';
+import React, {useEffect, useState} from 'react';
+import {FlatList} from 'react-native';
+import {Block, Input, Text} from '../components/atoms';
 import {Card} from '../components/molecules';
-import {useTheme, useTranslation} from '../hooks';
+import {useMst, useTheme, useTranslation} from '../hooks';
+import {observer} from 'mobx-react-lite';
 
 const Search = () => {
   const {t} = useTranslation();
-  const {assets, sizes} = useTheme();
+  const {sizes, assets} = useTheme();
+  const {searchUsers, searchFoods} = useMst();
+  const [key, setKey] = useState('');
+
+  useEffect(() => {
+    searchUsers.setUsers(key);
+    searchFoods.setFoods(key);
+  }, [key, searchFoods, searchUsers]);
+
+  const _renderFoodItem = ({item}) => (
+    <Card
+      inline
+      description={item.about}
+      image={{uri: item.photo}}
+      title={item.name}
+      subcription={item.score}
+      marginRight={sizes.s}
+    />
+  );
+
+  const _handleLoadMoreFoods = () => {
+    if (searchFoods.rows.length < searchFoods.count) {
+      searchFoods.loadFoods(key);
+    }
+  };
+
+  const _renderUserItem = ({item}) => (
+    <Card
+      description={item.about}
+      image={{uri: item.avatar_url}}
+      title={item.name}
+      subcription={`${item.follower.length} followers - ${item.following.length} following`}
+      marginBottom={sizes.s}
+    />
+  );
+
+  const _handleLoadMoreUsers = () => {
+    if (searchUsers.rows.length < searchFoods.count) {
+      searchUsers.loadUsers(key);
+    }
+  };
 
   return (
-    <Block scroll padding={sizes.s}>
-      <Text h5 semibold marginBottom={sizes.s}>
-        {t('common.foods')}
+    <Block scroll showsHorizontalScrollIndicator={false} padding={sizes.s}>
+      <Input
+        placeholder="Type to search"
+        onChangeText={(text) => setKey(text)}
+        search
+      />
+      <Text h5 semibold marginBottom={sizes.s} marginTop={sizes.sm}>
+        {t('common.foods')} ({searchFoods.count})
       </Text>
-      <Block scroll horizontal paddingBottom={sizes.s}>
-        <Card
-          inline
-          description="This is a example of food card"
-          image={assets.card1}
-          title="Beefsteck"
-          subcription="10"
-          marginRight={sizes.s}
-        />
-        <Card
-          inline
-          description="This is a example of food card"
-          image={assets.card1}
-          title="Beefsteck"
-          subcription="10"
-          marginRight={sizes.s}
-        />
-        <Card
-          inline
-          description="This is a example of food card"
-          image={assets.card1}
-          title="Beefsteck"
-          subcription="10"
-          marginRight={sizes.s}
+      <Block paddingBottom={sizes.s}>
+        <FlatList
+          // refreshing={loader}
+          data={searchFoods.rows}
+          renderItem={_renderFoodItem}
+          keyExtractor={(item) => item._id}
+          showsHorizontalScrollIndicator={false}
+          // ListFooterComponent={loader ? <MoreLoader /> : null}
+          // ItemSeparatorComponent={ListSeparator}
+          onEndReachedThreshold={0.5}
+          onEndReached={_handleLoadMoreFoods}
+          horizontal
         />
       </Block>
       <Text h5 semibold marginBottom={sizes.s} marginTop={sizes.sm}>
-        {t('search.users')}
+        {t('search.users')} ({searchUsers.count})
       </Text>
-      <Block>
-        <Card
-          image={assets.avatar1}
-          title="Nguyen Nhut Tan"
-          description="This is a example about ... this is a a"
-          subcription="3k following - 2k follower"
-          marginBottom={sizes.s}
-        />
-        <Card
-          image={assets.avatar1}
-          title="Nguyen Nhut Tan"
-          description="This is a example about ... infomation"
-          subcription="3k following - 2k follower"
-          marginBottom={sizes.s}
+      <Block marginBottom={sizes.s}>
+        <FlatList
+          // refreshing={loader}
+          data={searchUsers.rows}
+          renderItem={_renderUserItem}
+          keyExtractor={(item) => item._id}
+          showsVerticalScrollIndicator={false}
+          // ListFooterComponent={loader ? <MoreLoader /> : null}
+          // ItemSeparatorComponent={ListSeparator}
+          onEndReachedThreshold={0.5}
+          onEndReached={_handleLoadMoreUsers}
         />
       </Block>
     </Block>
   );
 };
 
-export default Search;
+export default observer(Search);

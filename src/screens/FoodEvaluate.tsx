@@ -1,29 +1,35 @@
 import {FontAwesome} from '@expo/vector-icons';
-import React, {useState} from 'react';
-import {Platform, TouchableOpacity} from 'react-native';
+import {useRoute, RouteProp} from '@react-navigation/native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {FlatList, TouchableOpacity} from 'react-native';
 import {Block, Button, Image, Input} from '../components/atoms';
 import {ImageDesc} from '../components/molecules';
+import {maxRating, starImgCorner, starImgFilled} from '../constants/constants';
+import {IParamList} from '../constants/types';
 import {useTheme} from '../hooks';
-
-const isAndroid = Platform.OS === 'android';
-
-const commentsFood = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+import API from '../services/axiosClient';
 
 const FoodEvaluate = () => {
   const {sizes, colors, icons} = useTheme();
+  const route = useRoute<RouteProp<IParamList, 'Food'>>();
+  const {food} = route.params;
   const [payload, setPayload] = useState({
-    food: '1234',
+    food: food._id,
     score: 10,
+    content: '',
   });
-  const maxRating = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-  const starImgFilled =
-    'https://github.com/tranhonghan/images/blob/main/star_filled.png?raw=true';
-  const starImgCorner =
-    'https://github.com/tranhonghan/images/blob/main/star_corner.png?raw=true';
+  useEffect(() => {
+    food.setRates();
+  }, [food]);
 
-  const onRatingChange = (rate: any) => {
-    setPayload({...payload, score: rate});
+  const _handleChange = useCallback((value) => {
+    setPayload((state) => ({...state, ...value}));
+  }, []);
+
+  const _handleSubmit = async () => {
+    _handleChange({score: 10, content: ''});
+    const data = await API.addRate(payload);
   };
 
   const CustomRatingBar = () => {
@@ -33,10 +39,11 @@ const FoodEvaluate = () => {
           return (
             <TouchableOpacity
               activeOpacity={0.7}
-              onPress={() => onRatingChange(item)}>
+              onPress={() => _handleChange({score: item})}>
               <Image
                 resizeMode="cover"
-                style={{width: 30, height: 30}}
+                width={30}
+                height={30}
                 source={
                   item <= payload.score
                     ? {uri: starImgFilled}
@@ -50,34 +57,48 @@ const FoodEvaluate = () => {
     );
   };
 
+  const _renderItem = ({item}) => (
+    <ImageDesc
+      size={sizes.xl}
+      image={{
+        uri: item.author.avatar_url,
+      }}
+      title={item.author.name}
+      description={item.content}
+      info={{
+        created_at: item.created_at,
+        likes: 2,
+      }}
+    />
+  );
+
   return (
     <Block keyboard color={colors.white} paddingTop={sizes.s} bottom={sizes.s}>
       <Block paddingTop={sizes.sm} color={colors.background} scroll>
-        {commentsFood.map((e) => {
-          return (
-            <ImageDesc
-              size={sizes.xl}
-              image={{
-                uri: 'https://img.timviec.com.vn/2021/10/chef-la-gi-4.jpg',
-              }}
-              title={'Dang Duy Bang'}
-              description={'Delicous!'}
-              info={{
-                created_at: 'an hour ago',
-                likes: 2,
-              }}
-            />
-          );
-        })}
+        <FlatList
+          // refreshing={loader}
+          data={food.rates.rows}
+          renderItem={_renderItem}
+          keyExtractor={(item) => item._id}
+          showsVerticalScrollIndicator={false}
+          // ListFooterComponent={loader ? <MoreLoader /> : null}
+          // ItemSeparatorComponent={ListSeparator}
+          onEndReachedThreshold={0.5}
+          onEndReached={food.loadRates}
+        />
       </Block>
 
       <Block color={colors.white}>
         <CustomRatingBar />
         <Block row align="center" padding={sizes.s}>
           <Block>
-            <Input placeholder="Write your comment" />
+            <Input
+              placeholder="Write your comment"
+              value={payload.content}
+              onChangeText={(text) => _handleChange({content: text})}
+            />
           </Block>
-          <Button paddingLeft={sizes.s}>
+          <Button paddingLeft={sizes.s} onPress={_handleSubmit}>
             <FontAwesome
               name={icons.send}
               color={colors.icon}

@@ -29,8 +29,8 @@ export interface IFood {
 
 export interface ICFood {
   name?: string;
-  ingredients?: Array<string>;
-  recipe?: Array<string>;
-  photo?: string;
+  ingredients: Array<string>;
+  recipe: Array<string>;
+  photo?: string | unknown;
   is_public?: boolean;
 }
