@@ -9,20 +9,29 @@ import {
 import {THEME as commonTheme} from './theme';
 
 const darkColor: ThemeColors = {
+  // authen (never change)
+  cover1: '#E9ECEE',
+  cover2: '#E9ECEF',
+  boldText: '#000000',
+  normalText: '#AAAAAA',
+  blueText: '#205EFF',
+  iconAuth: '#8392AB',
+  whiteAuth: '#FFFFFF',
+
   // default text color
-  text: '#252F40',
+  text: '#E2E2E2',
 
   // base colors
   /** UI color for #primary */
   primary: '#CB0C9F',
   /** UI color for #secondary */
-  secondary: '#627594', // '#8392AB',
+  secondary: '#ffffff', // '#8392AB',
   /** UI color for #tertiary */
   tertiary: '#E8AE4C',
 
   // non-colors
-  black: '#252F40',
-  white: '#FFFFFF',
+  black: '#FFFFFF',
+  white: '#252F30',
 
   dark: '#252F40',
   light: '#E9ECEF',
@@ -67,7 +76,7 @@ const darkColor: ThemeColors = {
   dribbble: '#EA4C89',
 
   /** icon tint color */
-  icon: '#8392AB',
+  icon: '#FFFFFF',
 
   /** blur tint color */
   blurTint: 'light',

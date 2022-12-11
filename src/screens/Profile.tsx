@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {Platform, FlatList, TouchableOpacity} from 'react-native';
 import {FontAwesome} from '@expo/vector-icons';
 import {Block, Button, Image, Text} from '../components/atoms';
-import {useMst, useTheme, useTranslation} from '../hooks/';
+import {useData, useMst, useTheme, useTranslation} from '../hooks/';
 import {Post} from '../components/organisms';
 import {observer} from 'mobx-react-lite';
 import {Card} from '../components/molecules';
@@ -18,6 +18,7 @@ const Profile = observer(() => {
     user: {profile, setPosts, loadPosts, setFoods, loadFoods, posts, foods},
   } = useMst();
   const [selected, setSelected] = useState<string>('POST');
+  const {isDark} = useData();
 
   const IMAGE_SIZE = (sizes.width - (sizes.padding + sizes.sm) * 2) / 3;
   const IMAGE_VERTICAL_SIZE =
@@ -73,7 +74,7 @@ const Profile = observer(() => {
             radius={sizes.m}
             marginHorizontal={sizes.s}
             onPress={() => setSelected('POST')}
-            gradient={gradients?.[selected === 'POST' ? 'primary' : 'light']}>
+            gradient={gradients?.[selected === 'POST' ? 'primary' : 'white']}>
             <Text
               p
               bold={selected === 'POST'}
@@ -88,7 +89,7 @@ const Profile = observer(() => {
             radius={sizes.m}
             marginHorizontal={sizes.s}
             onPress={() => setSelected('FOOD')}
-            gradient={gradients?.[selected === 'FOOD' ? 'primary' : 'light']}>
+            gradient={gradients?.[selected === 'FOOD' ? 'primary' : 'white']}>
             <Text
               p
               bold={selected === 'FOOD'}
@@ -224,8 +225,9 @@ const Profile = observer(() => {
             marginHorizontal="8%"
             color="rgba(255,255,255,0.2)">
             <Block
+              color={colors.white}
               row
-              blur
+              //blur
               flex={0}
               intensity={100}
               radius={sizes.sm}
@@ -237,22 +239,22 @@ const Profile = observer(() => {
               renderToHardwareTextureAndroid>
               <Block width="20%" align="center">
                 <Text h5>{_formatNum(posts.count)}</Text>
-                <Text>{t('profile.posts')}</Text>
+                <Text color={colors.text}>{t('profile.posts')}</Text>
               </Block>
               <Block width="20%" align="center">
                 <Text h5>{_formatNum(foods.count)}</Text>
-                <Text>{t('profile.foods')}</Text>
+                <Text color={colors.text}>{t('profile.foods')}</Text>
               </Block>
               <Block width="30%" align="center">
                 <Text h5>{_formatNum(profile.follower.length)}</Text>
-                <Text>{t('profile.followers')}</Text>
+                <Text color={colors.text}>{t('profile.followers')}</Text>
               </Block>
               <TouchableOpacity
                 onPress={_handleFollowingPress}
                 activeOpacity={1}>
                 <Block align="center">
                   <Text h5>{_formatNum(profile.following.length)}</Text>
-                  <Text>{t('profile.following')}</Text>
+                  <Text color={colors.text}>{t('profile.following')}</Text>
                 </Block>
               </TouchableOpacity>
             </Block>

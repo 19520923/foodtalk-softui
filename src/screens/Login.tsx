@@ -31,8 +31,8 @@ const Login = () => {
     password: false,
   });
   const [userData, setUserData] = useState<ILogin>({
-    email: '',
-    password: '',
+    email: 'dangbang0001@gmail.com',
+    password: '123456789',
   });
   const {assets, colors, gradients, sizes} = useTheme();
   const {user, setIsLoggedIn} = useMst();
@@ -64,7 +64,7 @@ const Login = () => {
     } catch (err) {
       setIsLoading(false);
       const message = _.get(err, 'message', JSON.stringify(err));
-      console.log(message);
+      console.log('Login error: ', message);
       // display error message to toask here
     } finally {
     }
@@ -72,7 +72,7 @@ const Login = () => {
 
   return (
     <>
-      <Block safe>
+      <Block color={colors.cover1} safe>
         <Block flex={0} style={{zIndex: 0}}>
           <Image
             background
@@ -103,7 +103,7 @@ const Login = () => {
               justify="space-evenly"
               tint={colors.blurTint}
               paddingVertical={sizes.sm}>
-              <Text p semibold center>
+              <Text color={colors.boldText} p semibold center>
                 {t('login.subtitle')}
               </Text>
               {/* social buttons */}
@@ -112,21 +112,21 @@ const Login = () => {
                   <FontAwesome
                     name={assets.facebook}
                     size={sizes.m}
-                    color={isDark ? colors.icon : undefined}
+                    color={colors.facebook}
                   />
                 </Button>
                 <Button outlined gray shadow={!isAndroid}>
                   <FontAwesome
                     name={assets.apple}
                     size={sizes.m}
-                    color={isDark ? colors.icon : undefined}
+                    color={colors.iconAuth}
                   />
                 </Button>
                 <Button outlined gray shadow={!isAndroid}>
                   <FontAwesome
                     name={assets.google}
                     size={sizes.m}
-                    color={isDark ? colors.icon : undefined}
+                    color={colors.iconAuth}
                   />
                 </Button>
               </Block>
@@ -145,7 +145,10 @@ const Login = () => {
                   start={[0, 1]}
                   gradient={gradients.divider}
                 />
-                <Text center marginHorizontal={sizes.s}>
+                <Text
+                  color={colors.normalText}
+                  center
+                  marginHorizontal={sizes.s}>
                   {t('common.or')}
                 </Text>
                 <Block
@@ -181,6 +184,7 @@ const Login = () => {
                 />
               </Block>
               <Text
+                color={colors.blueText}
                 onPress={() =>
                   navigation.navigate(t('navigation.forgotPassword'))
                 }
@@ -194,7 +198,7 @@ const Login = () => {
                 marginHorizontal={sizes.sm}
                 gradient={gradients.primary}
                 disabled={Object.values(isValid).includes(false)}>
-                <Text bold white transform="uppercase">
+                <Text color={colors.whiteAuth} bold transform="uppercase">
                   {t('common.signin')}
                 </Text>
               </Button>

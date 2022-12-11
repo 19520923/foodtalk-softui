@@ -34,19 +34,21 @@ const Comment = () => {
   return (
     <Block safe position="relative">
       <Block scroll showsVerticalScrollIndicator={false}>
-        <Block marginTop={sizes.sm} marginBottom={sizes.xxl}>
+        <Block paddingTop={sizes.s} marginBottom={sizes.xxl}>
           {post.comments.rows.map((comment) => (
-            <ImageDesc
-              key={comment._id}
-              size={sizes.xl}
-              image={{uri: comment.author?.avatar_url}}
-              title={comment.author?.name}
-              description={comment.content}
-              info={{
-                created_at: comment.created_at,
-                likes: 4,
-              }}
-            />
+            <Block paddingVertical={sizes.s}>
+              <ImageDesc
+                key={comment._id}
+                size={sizes.xl}
+                image={{uri: comment.author?.avatar_url}}
+                title={comment.author?.name}
+                description={comment.content}
+                info={{
+                  created_at: comment.created_at,
+                  likes: 4,
+                }}
+              />
+            </Block>
           ))}
         </Block>
       </Block>

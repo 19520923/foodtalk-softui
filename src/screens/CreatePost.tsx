@@ -4,7 +4,7 @@ import {ImageDesc} from '../components/molecules';
 import {uploadMultiple, useMst, useTheme, useTranslation} from '../hooks';
 import {SliderBox} from 'react-native-image-slider-box';
 import {HEIGHT, IMAGE_HEIGHT, WIDTH} from '../constants/constants';
-import {TouchableOpacity} from 'react-native';
+import {Platform, TouchableOpacity} from 'react-native';
 import {FontAwesome} from '@expo/vector-icons';
 import {IFood, IPost} from '../constants/types';
 import {useNavigation} from '@react-navigation/native';
@@ -190,7 +190,11 @@ const CreatePost = () => {
           ))}
         </Block>
       </Block>
-      <Block style={{position: 'absolute', bottom: 0, width: '100%'}} card>
+      <Block
+        color={colors.background}
+        bottom={Platform.OS === 'ios' ? 20 : 0}
+        style={{position: 'absolute', bottom: 0, width: '100%'}}
+        card>
         {!showModal ? (
           <TouchableOpacity
             onPressIn={() => setModal(true)}
@@ -219,7 +223,12 @@ const CreatePost = () => {
               bottom: 0,
               left: 0,
             }}>
-            <Block card width={'100%'} position="absolute" bottom={0}>
+            <Block
+              color={colors.background}
+              card
+              width={'100%'}
+              position="absolute"
+              bottom={0}>
               {CREATE_POST_ACTION.map((e, index) => (
                 <TouchableOpacity key={index} onPress={e.onPress}>
                   <Block flex={0} paddingVertical={sizes.s}>

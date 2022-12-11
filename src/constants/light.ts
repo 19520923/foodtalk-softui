@@ -9,6 +9,15 @@ import {
 import {THEME as commonTheme} from './theme';
 
 const lightColor: ThemeColors = {
+  // authen (never change)
+  cover1: '#E9ECEE',
+  cover2: '#E9ECEF',
+  boldText: '#000000',
+  normalText: '#AAAAAA',
+  blueText: '#205EFF',
+  iconAuth: '#8392AB',
+  whiteAuth: '#FFFFFF',
+
   // default text color
   text: '#252F40',
 

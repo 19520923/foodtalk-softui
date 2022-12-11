@@ -39,7 +39,7 @@ const ForgotPassword = () => {
   }, [registration, setIsValid]);
 
   return (
-    <Block safe>
+    <Block color={colors.cover1} safe>
       <Block>
         <Block flex={0} style={{zIndex: 0}}>
           <Image
@@ -87,7 +87,7 @@ const ForgotPassword = () => {
               justify="space-evenly"
               tint={colors.blurTint}
               paddingVertical={sizes.sm}>
-              <Text p semibold center>
+              <Text color={colors.boldText} p semibold center>
                 Forgot password
               </Text>
               {/* social buttons */}
