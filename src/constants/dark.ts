@@ -8,7 +8,7 @@ import {
 
 import {THEME as commonTheme} from './theme';
 
-const lightColor: ThemeColors = {
+const darkColor: ThemeColors = {
   // authen (never change)
   cover1: '#E9ECEE',
   cover2: '#E9ECEF',
@@ -19,19 +19,19 @@ const lightColor: ThemeColors = {
   whiteAuth: '#FFFFFF',
 
   // default text color
-  text: '#252F40',
+  text: '#E2E2E2',
 
   // base colors
   /** UI color for #primary */
   primary: '#CB0C9F',
   /** UI color for #secondary */
-  secondary: '#627594', // '#8392AB',
+  secondary: '#ffffff', // '#8392AB',
   /** UI color for #tertiary */
   tertiary: '#E8AE4C',
 
   // non-colors
-  black: '#252F40',
-  white: '#FFFFFF',
+  black: '#FFFFFF',
+  white: '#252F30',
 
   dark: '#252F40',
   light: '#E9ECEF',
@@ -52,7 +52,7 @@ const lightColor: ThemeColors = {
 
   /** UI colors for navigation & card */
   card: '#FFFFFF',
-  background: '#E9ECEF',
+  background: '#000000',
 
   /** UI color for shadowColor */
   shadow: '#000000',
@@ -76,7 +76,7 @@ const lightColor: ThemeColors = {
   dribbble: '#EA4C89',
 
   /** icon tint color */
-  icon: '#8392AB',
+  icon: '#FFFFFF',
 
   /** blur tint color */
   blurTint: 'light',
@@ -86,7 +86,7 @@ const lightColor: ThemeColors = {
 };
 
 export const COLORS: ThemeColors = {
-  ...lightColor,
+  ...darkColor,
 };
 
 export const GRADIENTS: ThemeGradients = {

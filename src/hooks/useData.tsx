@@ -1,7 +1,9 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import Storage from '@react-native-async-storage/async-storage';
+
 import {ITheme} from '../constants/types';
-import {light} from '../constants';
+
+import {dark, light} from '../constants';
 
 export const DataContext = React.createContext({});
 
@@ -38,7 +40,7 @@ export const DataProvider = ({children}: {children: React.ReactNode}) => {
 
   // change theme based on isDark updates
   useEffect(() => {
-    setTheme(isDark ? light : light);
+    setTheme(!isDark ? light : dark);
   }, [isDark]);
 
   const contextValue = {

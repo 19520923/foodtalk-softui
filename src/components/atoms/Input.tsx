@@ -122,7 +122,7 @@ const Input = ({
   return (
     <Block flex={0} style={inputBoxStyles}>
       {label && (
-        <Text bold marginBottom={sizes.s}>
+        <Text color={colors.boldText} bold marginBottom={sizes.s}>
           {label}
         </Text>
       )}

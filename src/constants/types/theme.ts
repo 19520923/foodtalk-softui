@@ -105,6 +105,13 @@ export interface ThemeColors {
   icon: ColorValue;
   blurTint: 'light' | 'dark' | 'default';
   link: ColorValue;
+  cover1: ColorValue;
+  cover2: ColorValue;
+  boldText: ColorValue;
+  normalText: ColorValue;
+  blueText: ColorValue;
+  iconAuth: ColorValue;
+  whiteAuth: ColorValue;
 }
 
 export interface ThemeGradients {

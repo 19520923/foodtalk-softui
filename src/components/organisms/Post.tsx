@@ -111,7 +111,11 @@ const Post = ({post}: Props) => {
   }, [foods, sizes.s]);
 
   return (
-    <Block key={_id} marginBottom={sizes.m}>
+    <Block
+      color={colors.white}
+      key={_id}
+      marginBottom={sizes.sm}
+      paddingVertical={sizes.sm}>
       <ImageDesc
         image={{uri: author.avatar_url, cache: 'only-if-cached'}}
         title={author.name}
