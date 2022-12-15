@@ -6,9 +6,30 @@ import {useNavigation} from '@react-navigation/native';
 import {t} from 'i18n-js';
 import {useTheme} from '../../hooks';
 import {Block, Image, Text} from '../atoms';
-import moment from 'moment';
+//import moment from 'moment';
 
-const MessagePreview = () => {
+export interface IPropsMessagePreview {
+  avatar: string;
+  username: string;
+  content: string;
+  created_at: string;
+  is_current: boolean;
+}
+
+export type ILastMessage = {
+  lastMessage: IPropsMessagePreview;
+};
+
+const MessagePreview = (props: ILastMessage) => {
+  const {lastMessage} = props;
+
+  //   let lastMessage: IPropsMessagePreview = {
+  //     avatar: avatar,
+  //     username: username,
+  //     content: content,
+  //     created_at: created_at,
+  //     is_current: is_current,
+  //   };
   const navigation = useNavigation();
   const rightSwipe = () => {
     return (
@@ -21,9 +42,6 @@ const MessagePreview = () => {
   };
 
   const {sizes, colors} = useTheme();
-
-  const avatar =
-    'https://thuvienanime.com/wp-content/uploads/2022/04/Naruto.jpg';
 
   const _handleNavigateChatWithUser = () => {
     navigation.navigate(t('navigation.chat'));
@@ -38,28 +56,27 @@ const MessagePreview = () => {
           row
           style={{borderBottomWidth: 0.2}}>
           <Block row>
-            <Image width={50} height={50} source={{uri: avatar}} />
-            {/* {user().is_current ? (
+            <Image width={50} height={50} source={{uri: lastMessage.avatar}} />
+            {lastMessage.is_current ? (
               <Text
-                style={{
-                  color: color.iconGreen,
-                  position: 'absolute',
-                  left: 35,
-                  top: 30,
-                }}>
+                size={sizes.m + 4}
+                color={'#00B555'}
+                position="absolute"
+                left={40}
+                top={35}>
                 ●
               </Text>
-            ) : null} */}
+            ) : null}
             <Block justify="center" marginLeft={sizes.s}>
               <Text bold color={colors.black} size={sizes.sm}>
-                BangDD
+                {lastMessage.username}
               </Text>
               {/* {user().is_current ? ( */}
               <Block row justify="space-between" align="center">
                 <Block row>
                   <Block row align="center">
                     <Text color={colors.text} numberOfLines={1}>
-                      Hi developer !
+                      {lastMessage.content}
                       {/* {props.data.lastMessage &&
                         (props.data.lastMessage.content.length < 26
                           ? `${props.data.lastMessage.content}`
@@ -75,10 +92,10 @@ const MessagePreview = () => {
                       ●
                     </Text>
                     <Text
-                      size={sizes.sm}
+                      size={sizes.s + 5}
                       color={colors.text}
                       marginLeft={sizes.s}>
-                      Now
+                      {lastMessage.created_at}
                       {/* {props.data.lastMessage &&
                         moment(props.data.lastMessage.created_at).fromNow()} */}
                     </Text>
@@ -88,7 +105,7 @@ const MessagePreview = () => {
                   width={16}
                   height={16}
                   source={{
-                    uri: avatar,
+                    uri: lastMessage.avatar,
                   }}
                 />
                 {/* <Ionicons name='checkmark-circle-outline' size={16} color={color.textIconSmall} /> */}

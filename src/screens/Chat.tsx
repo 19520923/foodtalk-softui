@@ -27,11 +27,11 @@ const Chat = () => {
     setMessages([
       {
         _id: 1,
-        text: 'Hello developer',
+        text: 'Reply me ! Please',
         createdAt: new Date(),
         user: {
           _id: 2,
-          name: 'React Native',
+          name: 'BangDD',
           avatar:
             'https://thuvienanime.com/wp-content/uploads/2022/04/Naruto.jpg',
         },
@@ -42,7 +42,7 @@ const Chat = () => {
         createdAt: new Date(Date.UTC(2016, 5, 11, 17, 20, 0)),
         user: {
           _id: 2,
-          name: 'React Native',
+          name: 'BangDD',
           avatar:
             'https://thuvienanime.com/wp-content/uploads/2022/04/Naruto.jpg',
         },
