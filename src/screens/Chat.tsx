@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import {Block, Text} from '../components/atoms';
+import React, {useState, useEffect, useCallback} from 'react';
+import {Block, Image, Text} from '../components/atoms';
 import {useTheme} from '../hooks';
-import {GiftedChat} from 'react-native-gifted-chat';
-
+import {GiftedChat, Send} from 'react-native-gifted-chat';
+import {FontAwesome} from '@expo/vector-icons';
 export interface IMessage {
   _id: string | number;
   text: string;
@@ -19,7 +19,7 @@ export interface IMessage {
 }
 
 const Chat = () => {
-  const {colors} = useTheme();
+  const {colors, icons, sizes} = useTheme();
 
   const [messages, setMessages] = useState<IMessage[]>([]);
 
@@ -58,15 +58,39 @@ const Chat = () => {
     ]);
   }, []);
 
-  const onSend = (messages = []) => {
+  const onSend = useCallback((messages = []) => {
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, messages),
     );
+  }, []);
+
+  const renderSend = (props) => {
+    const sendStylesCustom = {
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignSelf: 'center',
+      marginRight: 15,
+    };
+
+    return (
+      <Send {...props} containerStyle={sendStylesCustom}>
+        <FontAwesome size={sizes.m} name={icons.edit} color={colors.blueText} />
+      </Send>
+    );
+  };
+
+  const _handleNavigateProfile = () => {
+    alert('Go to this user profile');
   };
 
   return (
-    <Block justify="space-between">
+    <Block justify="space-between" paddingHorizontal={sizes.sm}>
       <GiftedChat
+        alwaysShowSend
+        onPressAvatar={_handleNavigateProfile}
+        placeholder={'Write message ...'}
+        renderSend={renderSend}
+        alignTop={true}
         messages={messages}
         onSend={(messages) => onSend(messages)}
         user={{
