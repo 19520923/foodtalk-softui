@@ -99,7 +99,10 @@ const DrawerContent = (
       scrollEnabled
       removeClippedSubviews
       renderToHardwareTextureAndroid
-      contentContainerStyle={{paddingBottom: sizes.padding}}>
+      contentContainerStyle={{
+        paddingBottom: sizes.padding,
+        backgroundColor: colors.background,
+      }}>
       <Block paddingHorizontal={sizes.padding}>
         <Block flex={0} row align="center" marginBottom={sizes.s}>
           <Image
@@ -111,44 +114,11 @@ const DrawerContent = (
             marginRight={sizes.sm}
           />
           <Block>
-            <Text size={12} semibold>
+            <Text color={colors.black} size={12} semibold>
               {t('app.name')}
             </Text>
           </Block>
         </Block>
-
-        {/* {screens?.map((screen, index) => {
-          const isActive = active === screen.to;
-          return (
-            <Button
-              row
-              justify="flex-start"
-              marginBottom={sizes.s}
-              key={`menu-screen-${screen.name}-${index}`}
-              onPress={() => handleNavigation(screen.to)}>
-              <Block
-                flex={0}
-                radius={6}
-                align="center"
-                justify="center"
-                width={sizes.md}
-                height={sizes.md}
-                marginRight={sizes.s}
-                gradient={gradients[isActive ? 'primary' : 'white']}>
-                <Image
-                  radius={0}
-                  width={14}
-                  height={14}
-                  source={screen.icon}
-                  color={colors[isActive ? 'white' : 'black']}
-                />
-              </Block>
-              <Text p semibold={isActive} color={labelColor}>
-                {screen.name}
-              </Text>
-            </Button>
-          );
-        })} */}
 
         <Block
           flex={0}
@@ -256,10 +226,10 @@ const DrawerContent = (
 
 /* drawer menu navigation */
 export default () => {
-  const {gradients} = useTheme();
+  const {gradients, colors} = useTheme();
 
   return (
-    <Block gradient={gradients.light}>
+    <Block color={colors.background} gradient={gradients.light}>
       <Drawer.Navigator
         drawerType="slide"
         overlayColor="transparent"
@@ -269,9 +239,9 @@ export default () => {
         )}
         drawerStyle={{
           flex: 1,
-          width: '60%',
+          width: '70%',
           borderRightWidth: 0,
-          backgroundColor: 'transparent',
+          backgroundColor: colors.background,
         }}>
         <Drawer.Screen name="Screens" component={ScreensStack} />
       </Drawer.Navigator>

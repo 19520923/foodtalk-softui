@@ -65,7 +65,12 @@ export default () => {
         top: -14,
         right: -28,
       }}>
-      <Block card position="absolute" top={42} right={42}>
+      <Block
+        color={colors.background}
+        card
+        position="absolute"
+        top={42}
+        right={42}>
         {CREATE_CARD_ACTION.map((e, index) => (
           <TouchableOpacity key={index} onPress={e.onPress}>
             <Block row padding={sizes.s}>
@@ -74,7 +79,7 @@ export default () => {
                 size={sizes.icon}
                 color={colors.icon}
               />
-              <Text p marginLeft={sizes.sm}>
+              <Text color={colors.black} p marginLeft={sizes.sm}>
                 {e.name}
               </Text>
             </Block>
@@ -85,14 +90,20 @@ export default () => {
   );
 
   const menu = {
-    headerStyle: {elevation: 0},
+    headerStyle: {elevation: 0, backgroundColor: colors.background},
     headerTitleAlign: 'left',
-    headerTitleContainerStyle: {marginLeft: -sizes.sm},
+    headerTitleContainerStyle: {
+      marginLeft: -sizes.sm,
+    },
     headerLeftContainerStyle: {paddingLeft: sizes.s},
-    headerRightContainerStyle: {paddingRight: sizes.s},
+    headerRightContainerStyle: {
+      paddingRight: sizes.s,
+    },
     cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
     headerTitle: ({children}: StackHeaderTitleProps) => (
-      <Text p>{children}</Text>
+      <Text color={colors.black} p>
+        {children}
+      </Text>
     ),
     headerLeft: () => (
       <Button onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}>

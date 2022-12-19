@@ -44,6 +44,7 @@
     "firebase": "9.6.11",
     "i18n-js": "3.8.0",
     "lodash": "^4.17.21",
+    "lottie-react-native": "5.0.1",
     "mobx": "^6.6.2",
     "mobx-persist": "^0.4.1",
     "mobx-react-lite": "^3.4.0",

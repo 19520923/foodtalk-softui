@@ -139,7 +139,7 @@ const Card = ({
           height={(width * 2) / 3}
         />
         <Block marginTop={sizes.s} justify="space-between">
-          <Text numberOfLines={3} marginBottom={sizes.s}>
+          <Text color={colors.text} numberOfLines={3} marginBottom={sizes.s}>
             {description}
           </Text>
 
@@ -165,7 +165,7 @@ const Card = ({
 
   const SingleCard = () => {
     return (
-      <Block card row disabled={disabled}>
+      <Block color={colors.white} card row disabled={disabled}>
         <Image resizeMode="cover" source={image} height={96} width={96} />
         <Block paddingLeft={sizes.s} justify="space-between">
           <Block>

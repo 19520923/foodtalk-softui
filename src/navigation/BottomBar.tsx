@@ -1,4 +1,5 @@
 import React, {useMemo} from 'react';
+import {Platform} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useMst, useTheme} from '../hooks';
 import {Block, Button, Text} from '../components/atoms';
@@ -22,7 +23,7 @@ const BottomBarContent = (props: any) => {
       flex={0}
       justify="space-evenly"
       white
-      paddingBottom={sizes.s}
+      paddingBottom={Platform.OS === 'ios' ? sizes.m : sizes.s}
       radius={sizes.shadowRadius}>
       {state.routes.map((route: any, index: number) => {
         const {options} = descriptors[route.key];

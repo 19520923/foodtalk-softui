@@ -71,7 +71,7 @@ const Register = () => {
   }, [agreed, registration, setIsValid]);
 
   return (
-    <Block safe>
+    <Block color={colors.cover1} safe>
       <Block>
         <Block flex={0} style={{zIndex: 0}}>
           <Image
@@ -128,21 +128,21 @@ const Register = () => {
                   <FontAwesome
                     name={icons.facebook}
                     size={sizes.icon}
-                    color={colors.icon}
+                    color={colors.facebook}
                   />
                 </Button>
                 <Button outlined gray shadow={!isAndroid}>
                   <FontAwesome
                     name={icons.apple}
                     size={sizes.icon}
-                    color={colors.icon}
+                    color={colors.iconAuth}
                   />
                 </Button>
                 <Button outlined gray shadow={!isAndroid}>
                   <FontAwesome
                     name={icons.google}
                     size={sizes.icon}
-                    color={colors.icon}
+                    color={colors.iconAuth}
                   />
                 </Button>
               </Block>
@@ -221,9 +221,10 @@ const Register = () => {
                   checked={agreed}
                   onPress={(value) => setAgreed(value)}
                 />
-                <Text paddingRight={sizes.s}>
+                <Text color={colors.boldText} paddingRight={sizes.s}>
                   {t('common.agree')}
                   <Text
+                    color={colors.blueText}
                     semibold
                     onPress={() => {
                       Linking.openURL('https://www.creative-tim.com/terms');
@@ -238,7 +239,7 @@ const Register = () => {
                 marginHorizontal={sizes.sm}
                 gradient={gradients.primary}
                 disabled={Object.values(isValid).includes(false)}>
-                <Text bold white transform="uppercase">
+                <Text bold color={colors.whiteAuth} transform="uppercase">
                   {t('common.signup')}
                 </Text>
               </Button>
