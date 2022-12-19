@@ -1,11 +1,12 @@
 import {observer} from 'mobx-react-lite';
 import React, {useCallback, useEffect} from 'react';
-import {FlatList, TouchableOpacity} from 'react-native';
+import {FlatList, ListRenderItem, TouchableOpacity} from 'react-native';
 import {Block} from '../components/atoms';
 import {ImageDesc} from '../components/molecules';
 import {useMst, useTheme, useTranslation} from '../hooks';
 import {NOTIFICATION_TYPES} from '../constants/constants';
 import {useNavigation} from '@react-navigation/native';
+import {TNotificationModel} from '../stores/models/NotificationModel';
 
 const Notifications = () => {
   const {sizes} = useTheme();
@@ -25,10 +26,22 @@ const Notifications = () => {
     }
   }, [count, loadNoti, rows.length]);
 
-  const _handlePress = (type: string, data: any) => {
-    switch (type) {
+  const _handlePress = (noti: TNotificationModel) => {
+    if (!noti.is_seen) {
+      noti.seen();
+    }
+    switch (noti.type) {
       case NOTIFICATION_TYPES.post:
-        navigation.navigate(t('navigation.postDetail'), {post: data});
+        navigation.navigate(
+          t('navigation.postDetail') as never,
+          {post: noti.post_data} as never,
+        );
+        break;
+      case NOTIFICATION_TYPES.food:
+        navigation.navigate(
+          t('navigation.foodDetail') as never,
+          {food: noti.food_data} as never,
+        );
         break;
 
       default:
@@ -36,11 +49,9 @@ const Notifications = () => {
     }
   };
 
-  const _renderItem = ({item}) => {
+  const _renderItem: ListRenderItem<TNotificationModel> = ({item}) => {
     return (
-      <TouchableOpacity
-        activeOpacity={1}
-        onPress={() => _handlePress(item.type, item.post_data)}>
+      <TouchableOpacity activeOpacity={1} onPress={() => _handlePress(item)}>
         <Block padding={sizes.xs} white={!item.is_seen}>
           <ImageDesc
             key={item._id}

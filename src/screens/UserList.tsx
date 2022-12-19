@@ -4,9 +4,10 @@ import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {useMst, useTheme} from '../hooks';
 import {Card} from '../components/molecules';
 import {Block} from '../components/atoms';
-import {FlatList} from 'react-native';
+import {FlatList, ListRenderItem} from 'react-native';
 import {USER_LIST_SCREEN_NAME} from '../constants/constants';
 import {observer} from 'mobx-react-lite';
+import {TProfileModel} from '../stores/models/ProfileModel';
 
 const UserList = () => {
   const navigation = useNavigation();
@@ -15,15 +16,15 @@ const UserList = () => {
   const {
     user: {following, follower, setFollowing, setFollower},
   } = useMst();
-  const {user_id, name} = route.params;
+  const {name} = route.params;
 
   useEffect(() => {
     switch (name) {
       case USER_LIST_SCREEN_NAME.following:
-        setFollowing(user_id);
+        setFollowing();
         break;
       case USER_LIST_SCREEN_NAME.follower:
-        setFollower(user_id);
+        setFollower();
         break;
       case USER_LIST_SCREEN_NAME.reaction:
         break;
@@ -31,21 +32,21 @@ const UserList = () => {
       default:
         break;
     }
-  }, [name, setFollower, setFollowing, user_id]);
+  }, [name, setFollower, setFollowing]);
 
   const data = useMemo(() => {
     switch (name) {
       case USER_LIST_SCREEN_NAME.following:
-        return following.rows;
+        return following;
       case USER_LIST_SCREEN_NAME.follower:
-        return follower.rows;
+        return follower;
       case USER_LIST_SCREEN_NAME.reaction:
         return [];
 
       default:
         return [];
     }
-  }, [follower.rows.length, following.rows.length, name]);
+  }, [follower, following, name]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -53,7 +54,7 @@ const UserList = () => {
     });
   }, [name, navigation]);
 
-  const _renderItem = ({item}) => {
+  const _renderItem: ListRenderItem<TProfileModel> = ({item}) => {
     return (
       <Card
         image={{uri: item.avatar_url}}

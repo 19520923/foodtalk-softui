@@ -85,7 +85,8 @@
     "attachFoods": "Attach foods",
     "foodDetail": "Food detail",
     "forgotPassword": "Forgot password",
-    "userList": "User list"
+    "userList": "User list",
+    "profileScreen": "User's Profile"
   },
   "navigation": {
     "home": "Soft UI",
@@ -115,7 +116,8 @@
     "attachFoods": "Attach foods",
     "foodDetail": "Food detail",
     "forgotPassword": "Forgot password",
-    "userList": "User list"
+    "userList": "User list",
+    "profileScreen": "User's Profile"
   },
   "menu": {
     "started": "Getting Started",

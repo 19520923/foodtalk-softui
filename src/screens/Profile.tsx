@@ -1,23 +1,42 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {Platform, FlatList, TouchableOpacity} from 'react-native';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {
+  Platform,
+  FlatList,
+  TouchableOpacity,
+  ListRenderItem,
+} from 'react-native';
 import {FontAwesome} from '@expo/vector-icons';
 import {Block, Button, Image, Text} from '../components/atoms';
 import {useMst, useTheme, useTranslation} from '../hooks/';
 import {Post} from '../components/organisms';
 import {observer} from 'mobx-react-lite';
 import {Card} from '../components/molecules';
-import {useNavigation} from '@react-navigation/native';
+import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
+import {IParamList} from '../constants/types';
+import _ from 'lodash';
+import {TPostModel} from '../stores/models/PostModel';
+import {TFoodModel} from '../stores/models/FoodModel';
 
 const isAndroid = Platform.OS === 'android';
 
 const Profile = observer(() => {
   const {t} = useTranslation();
   const navigation = useNavigation();
-  const {assets, colors, sizes, gradients, icons} = useTheme();
+  const route = useRoute<RouteProp<IParamList, 'Profile'>>();
   const {
     user: {profile, setPosts, loadPosts, setFoods, loadFoods, posts, foods},
-  } = useMst();
+  } = route.params;
+  const store = useMst();
+  const {assets, colors, sizes, gradients, icons} = useTheme();
   const [selected, setSelected] = useState<string>('POST');
+  const isCurrentUser = useMemo(
+    () => store.user.profile._id === profile._id,
+    [profile._id, store.user.profile._id],
+  );
+  const isFollowed = useMemo(
+    () => _.includes(store.user.profile.following, profile._id),
+    [profile._id, store.user.profile.following],
+  );
 
   const IMAGE_SIZE = (sizes.width - (sizes.padding + sizes.sm) * 2) / 3;
   const IMAGE_VERTICAL_SIZE =
@@ -50,10 +69,13 @@ const Profile = observer(() => {
   };
 
   const _handleNavigateUserList = (name: string) => {
-    navigation.navigate(t('navigation.userList'), {
-      name: name,
-      user_id: profile._id,
-    });
+    navigation.navigate(
+      t('navigation.userList') as never,
+      {
+        name: name,
+        user_id: profile._id,
+      } as never,
+    );
   };
 
   const _handleFollowingPress = () => {
@@ -105,27 +127,27 @@ const Profile = observer(() => {
   };
 
   useEffect(() => {
-    setPosts(profile._id);
-    setFoods(profile._id);
-  }, [profile._id, setFoods, setPosts]);
+    setPosts();
+    setFoods();
+  }, [setFoods, setPosts]);
 
   const _handleLoadMorePosts = useCallback(() => {
     if (posts.rows.length < posts.count) {
-      loadPosts(profile._id);
+      loadPosts();
     }
-  }, [loadPosts, posts.count, posts.rows.length, profile._id]);
+  }, [loadPosts, posts.count, posts.rows]);
 
   const _handleLoadMoreFoods = useCallback(() => {
     if (foods.rows.length < foods.count) {
-      loadFoods(profile._id);
+      loadFoods();
     }
-  }, [foods.count, foods.rows.length, loadFoods, profile._id]);
+  }, [foods.count, foods.rows, loadFoods]);
 
-  const _renderPostItem = ({item}) => {
+  const _renderPostItem: ListRenderItem<TPostModel> = ({item}) => {
     return <Post key={item._id} post={item} />;
   };
 
-  const _renderFoodItem = ({item}) => {
+  const _renderFoodItem: ListRenderItem<TFoodModel> = ({item}) => {
     return (
       <Card
         image={{uri: item.photo}}
@@ -166,51 +188,54 @@ const Profile = observer(() => {
                 {profile.username}
               </Text>
               <Block row marginVertical={sizes.m}>
-                <Button
-                  white
-                  outlined
-                  shadow={false}
-                  radius={sizes.m}
-                  onPress={() => {
-                    alert(`Follow ${profile.name}`);
-                  }}>
+                <Button white outlined shadow={false} radius={sizes.m}>
                   <Block
                     justify="center"
                     radius={sizes.m}
                     paddingHorizontal={sizes.m}
                     color="rgba(255,255,255,0.2)">
                     <Text white bold transform="uppercase">
-                      {t('common.editProfile')}
+                      {t(
+                        isCurrentUser
+                          ? 'common.editProfile'
+                          : isFollowed
+                          ? 'common.followed'
+                          : 'common.follow',
+                      )}
                     </Text>
                   </Block>
                 </Button>
-                <Button
-                  shadow={false}
-                  radius={sizes.m}
-                  marginHorizontal={sizes.sm}
-                  color="rgba(255,255,255,0.2)"
-                  outlined={String(colors.white)}
-                  // onPress={() => handleSocialLink('twitter')}
-                >
-                  <FontAwesome
-                    size={18}
-                    name={icons.photo}
-                    color={colors.white}
-                  />
-                </Button>
-                <Button
-                  shadow={false}
-                  radius={sizes.m}
-                  color="rgba(255,255,255,0.2)"
-                  outlined={String(colors.white)}
-                  // onPress={() => handleSocialLink('dribbble')}
-                >
-                  <FontAwesome
-                    size={18}
-                    name={icons.edit}
-                    color={colors.white}
-                  />
-                </Button>
+                {isCurrentUser && (
+                  <Button
+                    shadow={false}
+                    radius={sizes.m}
+                    marginHorizontal={sizes.sm}
+                    color="rgba(255,255,255,0.2)"
+                    outlined={String(colors.white)}
+                    // onPress={() => handleSocialLink('twitter')}
+                  >
+                    <FontAwesome
+                      size={18}
+                      name={icons.photo}
+                      color={colors.white}
+                    />
+                  </Button>
+                )}
+                {isCurrentUser && (
+                  <Button
+                    shadow={false}
+                    radius={sizes.m}
+                    color="rgba(255,255,255,0.2)"
+                    outlined={String(colors.white)}
+                    // onPress={() => handleSocialLink('dribbble')}
+                  >
+                    <FontAwesome
+                      size={18}
+                      name={icons.edit}
+                      color={colors.white}
+                    />
+                  </Button>
+                )}
               </Block>
             </Block>
           </Image>
@@ -283,7 +308,11 @@ const Profile = observer(() => {
             <Block row justify="space-between" wrap="wrap">
               <Image
                 resizeMode="cover"
-                source={assets?.photo1}
+                source={
+                  posts.rows[0]
+                    ? {uri: posts.rows[0].photos[0]}
+                    : assets?.photo1
+                }
                 style={{
                   width: IMAGE_VERTICAL_SIZE + IMAGE_MARGIN / 2,
                   height: IMAGE_VERTICAL_SIZE * 2 + IMAGE_VERTICAL_MARGIN,
@@ -292,7 +321,11 @@ const Profile = observer(() => {
               <Block marginLeft={sizes.m}>
                 <Image
                   resizeMode="cover"
-                  source={assets?.photo2}
+                  source={
+                    posts.rows[1]
+                      ? {uri: posts.rows[1].photos[0]}
+                      : assets?.photo2
+                  }
                   marginBottom={IMAGE_VERTICAL_MARGIN}
                   style={{
                     height: IMAGE_VERTICAL_SIZE,
@@ -301,7 +334,11 @@ const Profile = observer(() => {
                 />
                 <Image
                   resizeMode="cover"
-                  source={assets?.photo3}
+                  source={
+                    posts.rows[3]
+                      ? {uri: posts.rows[3].photos[0]}
+                      : assets?.photo3
+                  }
                   style={{
                     height: IMAGE_VERTICAL_SIZE,
                     width: IMAGE_VERTICAL_SIZE,

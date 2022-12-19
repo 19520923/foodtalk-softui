@@ -36,6 +36,7 @@ export interface IImageDesc {
   info?: {
     likes?: number;
     created_at?: string | number | Date;
+    score?: number;
   };
   color?: ColorValue;
   icon?: any;

@@ -1,5 +1,6 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {Alert, Animated, Linking, StyleSheet} from 'react-native';
+import {Animated, Linking, StyleSheet} from 'react-native';
 
 import {
   useIsDrawerOpen,
@@ -82,15 +83,15 @@ const DrawerContent = (
 
   const handleWebLink = useCallback((url) => Linking.openURL(url), []);
 
-  // screen list for Drawer menu
-  const screens = [
-    {name: t('screens.home'), to: 'Home', icon: assets.home},
-    {
-      name: t('screens.imagePicker'),
-      to: t('navigation.imagePicker'),
-      icon: assets.settings,
-    },
-  ];
+  // // screen list for Drawer menu
+  // const screens = [
+  //   {name: t('screens.home'), to: 'Home', icon: assets.home},
+  //   {
+  //     name: t('screens.imagePicker'),
+  //     to: t('navigation.imagePicker'),
+  //     icon: assets.settings,
+  //   },
+  // ];
 
   return (
     <DrawerContentScrollView
@@ -263,7 +264,9 @@ export default () => {
         drawerType="slide"
         overlayColor="transparent"
         sceneContainerStyle={{backgroundColor: 'transparent'}}
-        drawerContent={(props) => <DrawerContent {...props} />}
+        drawerContent={(props: DrawerContentComponentProps) => (
+          <DrawerContent {...props} />
+        )}
         drawerStyle={{
           flex: 1,
           width: '60%',

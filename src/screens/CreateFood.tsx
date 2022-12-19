@@ -50,9 +50,12 @@ const CreateFood = () => {
   );
 
   const _handleChoosePhotos = () => {
-    navigation.navigate(t('navigation.imagePicker'), {
-      onCallback: (array: Array<any>) => _handleSetPhotos(array),
-    });
+    navigation.navigate(
+      t('navigation.imagePicker') as never,
+      {
+        onCallback: (array: Array<any>) => _handleSetPhotos(array),
+      } as never,
+    );
   };
 
   const _handleSetPhotos = (array: Array<any>) => {
@@ -79,7 +82,7 @@ const CreateFood = () => {
 
   const _handleAddProcess = () => {
     setProcess('');
-    _handleChange({ingredients: [...food.recipe, ingredient]});
+    _handleChange({recipe: [...food.recipe, process]});
   };
 
   const _handleRemoveProcess = (proc: string) => {
@@ -97,10 +100,10 @@ const CreateFood = () => {
   const isValid = useMemo(
     () =>
       food.name !== '' &&
-      food.photo !== '' &&
+      photo &&
       food.recipe.length !== 0 &&
       food.ingredients.length !== 0,
-    [food],
+    [food, photo],
   );
 
   useEffect(() => {
@@ -162,6 +165,7 @@ const CreateFood = () => {
             radius={0}
             resizeMode="cover"
             source={{uri: photo[0]}}
+            // eslint-disable-next-line react-native/no-inline-styles
             style={{width: '100%', height: 244}}
             marginTop={sizes.s}
           />
@@ -180,6 +184,7 @@ const CreateFood = () => {
           <Block row align="center">
             <Input
               placeholder="Amount"
+              // eslint-disable-next-line react-native/no-inline-styles
               style={{width: '25%'}}
               value={ingredient.amount}
               onChangeText={(text) => _handleIngrChange({amount: text})}

@@ -1,13 +1,21 @@
 import {FontAwesome} from '@expo/vector-icons';
 import {useRoute, RouteProp} from '@react-navigation/native';
-import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList, TouchableOpacity} from 'react-native';
+import React, {useCallback, useState} from 'react';
+import {
+  FlatList,
+  ListRenderItem,
+  Platform,
+  TouchableOpacity,
+} from 'react-native';
 import {Block, Button, Image, Input} from '../components/atoms';
 import {ImageDesc} from '../components/molecules';
 import {maxRating, starImgCorner, starImgFilled} from '../constants/constants';
 import {IParamList} from '../constants/types';
 import {useTheme} from '../hooks';
 import API from '../services/axiosClient';
+import {observer} from 'mobx-react-lite';
+import {TFoodRateModel} from '../stores/models/FoodModel';
+const isAndroid = Platform.OS === 'android';
 
 const FoodEvaluate = () => {
   const {sizes, colors, icons} = useTheme();
@@ -19,10 +27,6 @@ const FoodEvaluate = () => {
     content: '',
   });
 
-  useEffect(() => {
-    food.setRates();
-  }, [food]);
-
   const _handleChange = useCallback((value) => {
     setPayload((state) => ({...state, ...value}));
   }, []);
@@ -30,6 +34,7 @@ const FoodEvaluate = () => {
   const _handleSubmit = async () => {
     _handleChange({score: 10, content: ''});
     const data = await API.addRate(payload);
+    food.addRate(data);
   };
 
   const CustomRatingBar = () => {
@@ -57,7 +62,7 @@ const FoodEvaluate = () => {
     );
   };
 
-  const _renderItem = ({item}) => (
+  const _renderItem: ListRenderItem<TFoodRateModel> = ({item}) => (
     <ImageDesc
       size={sizes.xl}
       image={{
@@ -67,14 +72,19 @@ const FoodEvaluate = () => {
       description={item.content}
       info={{
         created_at: item.created_at,
-        likes: 2,
+        score: item.score,
       }}
     />
   );
 
   return (
-    <Block keyboard color={colors.white} paddingTop={sizes.s} bottom={sizes.s}>
-      <Block paddingTop={sizes.sm} color={colors.background} scroll>
+    <Block
+      safe
+      color={colors.white}
+      paddingTop={sizes.s}
+      bottom={sizes.s}
+      behavior={!isAndroid ? 'padding' : 'height'}>
+      <Block paddingTop={sizes.sm} color={colors.background}>
         <FlatList
           // refreshing={loader}
           data={food.rates.rows}
@@ -88,7 +98,12 @@ const FoodEvaluate = () => {
         />
       </Block>
 
-      <Block color={colors.white}>
+      <Block
+        color={colors.background}
+        position="absolute"
+        bottom={0}
+        left={0}
+        width="100%">
         <CustomRatingBar />
         <Block row align="center" padding={sizes.s}>
           <Block>
@@ -111,4 +126,4 @@ const FoodEvaluate = () => {
   );
 };
 
-export default FoodEvaluate;
+export default observer(FoodEvaluate);

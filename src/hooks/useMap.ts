@@ -1,12 +1,13 @@
 import {useState, useEffect} from 'react';
 import * as Location from 'expo-location';
 import {APIKEY} from '../constants/constants';
-import { LocationGeocodedAddress, LocationGeocodedLocation } from 'expo-location';
+import {LocationGeocodedAddress, LocationGeocodedLocation} from 'expo-location';
 
 function useMapHooks(ref: any) {
   useEffect(() => {
     Location.setGoogleApiKey(APIKEY);
     getCurrentPosition();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [region, setRegion] = useState({
@@ -22,7 +23,7 @@ function useMapHooks(ref: any) {
   const getCurrentPosition = async () => {
     let {status} = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
-    //   setErrorMsg('Permission to access location was denied');
+      //   setErrorMsg('Permission to access location was denied');
       return;
     }
 
@@ -38,26 +39,26 @@ function useMapHooks(ref: any) {
     });
   };
 
-  const onLocationChange = async (location:LocationGeocodedLocation) => {
+  const onLocationChange = async (location: LocationGeocodedLocation) => {
     try {
       let json = await Location.reverseGeocodeAsync(location, {
         useGoogleMaps: true,
       });
 
       if (json) {
-          let data: LocationGeocodedAddress = {
-              city: null,
-              district: null,
-              streetNumber: null,
-              street: null,
-              region: null,
-              subregion: null,
-              country: null,
-              postalCode: null,
-              name: null,
-              isoCountryCode: null,
-              timezone: null
-          }
+        let data: LocationGeocodedAddress = {
+          city: null,
+          district: null,
+          streetNumber: null,
+          street: null,
+          region: null,
+          subregion: null,
+          country: null,
+          postalCode: null,
+          name: null,
+          isoCountryCode: null,
+          timezone: null,
+        };
         json.forEach((item) => {
           if (item.name && !data.name) {
             data.name = item.name;
@@ -83,19 +84,19 @@ function useMapHooks(ref: any) {
             data.country = item.country;
           }
         });
-        const address = `${data.name}, ${data.streetNumber}, ${data.street}, ${data.district}, ${data.city}, ${data.country}`;
-        setAddress(address);
-        ref.current?.setAddressText(address);
+        const addr = `${data.name}, ${data.streetNumber}, ${data.street}, ${data.district}, ${data.city}, ${data.country}`;
+        setAddress(addr);
+        ref.current?.setAddressText(addr);
       }
-    //   onLocationChange(formatted_address);
+      //   onLocationChange(formatted_address);
     } catch (error) {
       console.log(error);
       setAddress('');
     }
   };
 
-  const setLocationDetails = ( details: any) => {
-    const {geometry, name} = details;
+  const setLocationDetails = (details: any) => {
+    const {geometry} = details;
     if (geometry) {
       setRegion({
         longitude: geometry.location.lng,
@@ -105,8 +106,8 @@ function useMapHooks(ref: any) {
   };
 
   const onMapMarkerDragEnd = (location: any) => {
-    const region = location.nativeEvent.coordinate;
-    setRegion(region);
+    const reg = location.nativeEvent.coordinate;
+    setRegion(reg);
     //onLocationChange(region);
   };
 

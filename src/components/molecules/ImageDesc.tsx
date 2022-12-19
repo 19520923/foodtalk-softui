@@ -82,6 +82,7 @@ const ImageDesc = ({
           <Text size={11} secondary>
             {dayjs(info.created_at).toNow(true)} ago{' '}
             {info.likes && `• ${info.likes} Like`}{' '}
+            {info.score && `• ${info.score} star`}{' '}
           </Text>
         )}
       </Block>

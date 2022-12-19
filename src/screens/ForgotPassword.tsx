@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/core';
 
 import {useTheme, useTranslation} from '../hooks/';
@@ -6,6 +6,7 @@ import * as regex from '../constants/regex';
 import {Block, Button, Image, Input, Text} from '../components/atoms';
 import {FontAwesome} from '@expo/vector-icons';
 import {Platform} from 'react-native';
+import {IRegistration} from '../constants/types';
 
 const isAndroid = Platform.OS === 'android';
 

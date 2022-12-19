@@ -98,6 +98,7 @@ const BottomBarContent = (props: any) => {
 
 export default observer(() => {
   const {
+    user,
     notifications: {rows},
   } = useMst();
 
@@ -118,7 +119,11 @@ export default observer(() => {
         component={Notifications}
         options={{tabBarBadge: numNotiNotSeen}}
       />
-      <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
+        initialParams={{user: user}}
+      />
     </Tab.Navigator>
   );
 });

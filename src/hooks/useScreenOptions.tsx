@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {TouchableOpacity} from 'react-native';
 import {
@@ -10,10 +11,8 @@ import {StackHeaderOptions} from '@react-navigation/stack/lib/typescript/src/typ
 
 import {useTranslation} from './useTranslation';
 
-import Text from '../components/atoms/Text';
 import useTheme from '../hooks/useTheme';
-import Button from '../components/atoms/Button';
-import Block from '../components/atoms/Block';
+import {Button, Block, Text} from '../components/atoms';
 
 import {FontAwesome} from '@expo/vector-icons';
 import {useIsDrawerOpen} from '@react-navigation/drawer';
@@ -49,11 +48,11 @@ export default () => {
   };
 
   const _handleNavigateCreatePost = () => {
-    navigation.navigate(t('navigation.createPost'));
+    navigation.navigate(t('navigation.createPost') as never);
   };
 
   const _handleNavigateCreateFood = () => {
-    navigation.navigate(t('navigation.createFood'));
+    navigation.navigate(t('navigation.createFood') as never);
   };
 
   const CreateCard = () => (
@@ -115,9 +114,12 @@ export default () => {
         {open && CreateCard()}
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate('Screens', {
-              screen: 'Pro',
-            })
+            navigation.navigate(
+              'Screens' as never,
+              {
+                screen: 'Pro',
+              } as never,
+            )
           }>
           <FontAwesome
             name={icons.chat}

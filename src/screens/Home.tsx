@@ -3,7 +3,8 @@ import {useMst, useTheme} from '../hooks/';
 import {Block} from '../components/atoms';
 import {Post} from '../components/organisms';
 import {observer} from 'mobx-react-lite';
-import {FlatList} from 'react-native';
+import {FlatList, ListRenderItem} from 'react-native';
+import {TPostModel} from '../stores/models/PostModel';
 
 const Home = () => {
   const {sizes} = useTheme();
@@ -21,7 +22,7 @@ const Home = () => {
     }
   }, [count, loadPosts, rows.length]);
 
-  const _renderItem = ({item}) => {
+  const _renderItem: ListRenderItem<TPostModel> = ({item}) => {
     return <Post key={item._id} post={item} />;
   };
   // const handleProducts = useCallback(

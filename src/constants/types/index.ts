@@ -1,6 +1,7 @@
 import i18n from 'i18n-js';
 import {TFoodModel} from '../../stores/models/FoodModel';
 import {TPostModel} from '../../stores/models/PostModel';
+import {TProfileStore} from '../../stores/RootStore';
 import {IFood} from './food';
 
 export * from './components/atoms';
@@ -43,5 +44,8 @@ export type IParamList = {
   };
   Food: {
     food: TFoodModel;
+  };
+  Profile: {
+    user: TProfileStore;
   };
 };
