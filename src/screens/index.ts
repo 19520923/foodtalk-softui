@@ -1,7 +1,6 @@
 export {default as About} from './Pro';
 export {default as Agreement} from './Pro';
 export {default as Articles} from './Articles';
-export {default as Chat} from './Pro';
 export {default as Components} from './Components';
 export {default as Extras} from './Pro';
 export {default as Home} from './Home';
@@ -26,3 +25,4 @@ export {default as AttachFood} from './AttachFood';
 export {default as FoodContent} from './FoodContent';
 export {default as FoodEvaluate} from './FoodEvaluate';
 export {default as ForgotPassword} from './ForgotPassword';
+export {default as Chat} from './Chat';

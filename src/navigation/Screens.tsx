@@ -10,6 +10,7 @@ import {
   Map,
   AttachFood,
   UserList,
+  Chat,
 } from '../screens';
 import {useMst, useScreenOptions, useTranslation} from '../hooks';
 import BottomBar from './BottomBar';
@@ -18,6 +19,7 @@ import PostDetail from '../screens/PostDetail';
 import {observer} from 'mobx-react-lite';
 import {ForgotPassword} from '../screens';
 import FoodDetail from './FoodDetail';
+import ChatList from '../screens/ChatList';
 
 const Stack = createStackNavigator();
 
@@ -76,6 +78,16 @@ export default observer(() => {
         <Stack.Screen
           name={t('screens.userList')}
           component={UserList}
+          options={screenOptions.back}
+        />
+        <Stack.Screen
+          name={t('screens.chatList')}
+          component={ChatList}
+          options={screenOptions.back}
+        />
+        <Stack.Screen
+          name={t('screens.chat')}
+          component={Chat}
           options={screenOptions.back}
         />
       </Stack.Navigator>

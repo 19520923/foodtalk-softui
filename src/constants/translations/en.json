@@ -85,6 +85,8 @@
     "attachFoods": "Attach foods",
     "foodDetail": "Food detail",
     "forgotPassword": "Forgot password",
+    "chat": "Chat",
+    "chatList": "Chat List",
     "userList": "User list"
   },
   "navigation": {
@@ -94,7 +96,6 @@
     "rentals": "Soft UI",
     "rental": "Best Deal",
     "booking": "Booking",
-    "chat": "Chat",
     "profile": "Profile",
     "settings": "Settings",
     "news": "News",
@@ -115,6 +116,8 @@
     "attachFoods": "Attach foods",
     "foodDetail": "Food detail",
     "forgotPassword": "Forgot password",
+    "chat": "Chat",
+    "chatList": "Chat List",
     "userList": "User list"
   },
   "menu": {
