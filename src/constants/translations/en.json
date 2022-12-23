@@ -86,7 +86,9 @@
     "foodDetail": "Food detail",
     "forgotPassword": "Forgot password",
     "userList": "User list",
-    "profileScreen": "User's Profile"
+    "profileScreen": "User's Profile",
+    "chat": "Chat",
+    "chatList": "Chat List"
   },
   "navigation": {
     "home": "Soft UI",
@@ -95,7 +97,6 @@
     "rentals": "Soft UI",
     "rental": "Best Deal",
     "booking": "Booking",
-    "chat": "Chat",
     "profile": "Profile",
     "settings": "Settings",
     "news": "News",
@@ -117,7 +118,9 @@
     "foodDetail": "Food detail",
     "forgotPassword": "Forgot password",
     "userList": "User list",
-    "profileScreen": "User's Profile"
+    "profileScreen": "User's Profile",
+    "chat": "Chat",
+    "chatList": "Chat List"
   },
   "menu": {
     "started": "Getting Started",

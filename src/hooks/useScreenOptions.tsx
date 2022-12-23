@@ -55,6 +55,10 @@ export default () => {
     navigation.navigate(t('navigation.createFood') as never);
   };
 
+  const _handleNavigateChat = () => {
+    navigation.navigate(t('navigation.chatList') as never);
+  };
+
   const CreateCard = () => (
     <TouchableOpacity
       onPressIn={_handleOpenCreateCard}
@@ -131,7 +135,9 @@ export default () => {
                 screen: 'Pro',
               } as never,
             )
-          }>
+          }
+        />
+        <TouchableOpacity onPress={_handleNavigateChat}>
           <FontAwesome
             name={icons.chat}
             color={colors.icon}
