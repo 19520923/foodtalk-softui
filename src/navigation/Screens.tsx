@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import {
@@ -10,15 +10,18 @@ import {
   Map,
   AttachFood,
   UserList,
+  Profile,
   Chat,
 } from '../screens';
-import {useMst, useScreenOptions, useTranslation} from '../hooks';
+import {Storage, useMst, useScreenOptions, useTranslation} from '../hooks';
 import BottomBar from './BottomBar';
 import CreateFood from '../screens/CreateFood';
 import PostDetail from '../screens/PostDetail';
 import {observer} from 'mobx-react-lite';
 import {ForgotPassword} from '../screens';
 import FoodDetail from './FoodDetail';
+import {ACCESS_TOKEN, BASE_URL} from '../constants/constants';
+import {io, Socket} from 'socket.io-client';
 import ChatList from '../screens/ChatList';
 
 const Stack = createStackNavigator();
@@ -26,10 +29,66 @@ const Stack = createStackNavigator();
 export default observer(() => {
   const {t} = useTranslation();
   const screenOptions = useScreenOptions();
+  const [socket, setSocket] = useState<Socket>();
   const {
     isLoggedIn,
-    user: {profile},
+    user: {
+      profile: {_id},
+    },
+    posts: {getPostById},
+    notifications: {addNoti},
+    searchFoods: {getFoodById},
   } = useMst();
+
+  const _initSocket = async () => {
+    const token = await Storage.getItem(ACCESS_TOKEN);
+    const socketio = io(BASE_URL, {
+      transports: ['websocket'],
+      extraHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    setSocket(socketio);
+
+    socketio.on('connect', () => {
+      console.log('connected');
+    });
+
+    socketio.on('post-reactions:likeDislike', ({post_id, user_id}) => {
+      const post = getPostById(post_id);
+      post?.like(user_id);
+    });
+
+    socketio.on('post-comment:create', (comment) => {
+      const post = getPostById(comment.post);
+      if (post) {
+        post.addComment(comment);
+      }
+    });
+
+    socketio.on('notification:create', (noti) => {
+      addNoti(noti);
+    });
+
+    socketio.on('food-rate:create', (rate) => {
+      const food = getFoodById(rate.food);
+      food?.addRate(rate);
+    });
+  };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      _initSocket();
+    } else {
+      socket?.disconnect();
+    }
+
+    return () => {
+      socket?.disconnect();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoggedIn]);
 
   const main = () => {
     return (
@@ -81,6 +140,11 @@ export default observer(() => {
           options={screenOptions.back}
         />
         <Stack.Screen
+          name={t('screens.profileScreen')}
+          component={Profile}
+          options={screenOptions.back}
+        />
+        <Stack.Screen
           name={t('screens.chatList')}
           component={ChatList}
           options={screenOptions.back}
@@ -118,7 +182,7 @@ export default observer(() => {
     );
   };
 
-  if (isLoggedIn && profile._id !== '') {
+  if (isLoggedIn && _id !== '') {
     return main();
   } else {
     return auth();

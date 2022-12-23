@@ -7,6 +7,7 @@ import {Block, Text} from '../components/atoms';
 import {useTheme} from '../hooks';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {IParamList} from '../constants/types';
+import {observer} from 'mobx-react-lite';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -22,13 +23,17 @@ const FoodDetail = () => {
       headerRight: () => (
         <Block align="center" justify="center" row marginRight={16}>
           <Text marginRight={5} size={sizes.sm}>
-            {food.score}
+            {(food.score / food.num_rate).toFixed(0)}
           </Text>
           <FontAwesome name="star" size={20} color={'#FFCE31'} />
         </Block>
       ),
     });
   }, [food, navigation, sizes.sm]);
+
+  useEffect(() => {
+    food.setRates();
+  }, [food]);
 
   return (
     <Tab.Navigator>
@@ -46,4 +51,4 @@ const FoodDetail = () => {
   );
 };
 
-export default FoodDetail;
+export default observer(FoodDetail);

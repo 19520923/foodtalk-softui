@@ -1,30 +1,28 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList} from 'react-native';
+import {FlatList, ListRenderItem, TouchableOpacity} from 'react-native';
 import {Block, Input, Text} from '../components/atoms';
 import {Card} from '../components/molecules';
 import {useMst, useTheme, useTranslation} from '../hooks';
 import {observer} from 'mobx-react-lite';
+import {Food} from '../components/organisms';
+import {useNavigation} from '@react-navigation/native';
+import {TFoodModel} from '../stores/models/FoodModel';
+import {TProfileStore} from '../stores/RootStore';
 
 const Search = () => {
   const {t} = useTranslation();
-  const {sizes, assets} = useTheme();
+  const {sizes} = useTheme();
   const {searchUsers, searchFoods} = useMst();
   const [key, setKey] = useState('');
+  const navigation = useNavigation();
 
   useEffect(() => {
     searchUsers.setUsers(key);
     searchFoods.setFoods(key);
   }, [key, searchFoods, searchUsers]);
 
-  const _renderFoodItem = ({item}) => (
-    <Card
-      inline
-      description={item.about}
-      image={{uri: item.photo}}
-      title={item.name}
-      subcription={item.score}
-      marginRight={sizes.s}
-    />
+  const _renderFoodItem: ListRenderItem<TFoodModel> = ({item}) => (
+    <Food inline food={item} />
   );
 
   const _handleLoadMoreFoods = () => {
@@ -32,15 +30,25 @@ const Search = () => {
       searchFoods.loadFoods(key);
     }
   };
+  const _navigateToProfile = (user: any) => {
+    navigation.navigate(
+      t('navigation.profileScreen') as never,
+      {user: user} as never,
+    );
+  };
 
-  const _renderUserItem = ({item}) => (
-    <Card
-      description={item.about}
-      image={{uri: item.avatar_url}}
-      title={item.name}
-      subcription={`${item.follower.length} followers - ${item.following.length} following`}
-      marginBottom={sizes.s}
-    />
+  const _renderUserItem: ListRenderItem<TProfileStore> = ({item}) => (
+    <TouchableOpacity
+      onPress={() => _navigateToProfile(item)}
+      activeOpacity={1}>
+      <Card
+        description={item.profile.about}
+        image={{uri: item.profile.avatar_url}}
+        title={item.profile.name}
+        subcription={`${item.profile.follower.length} followers - ${item.profile.following.length} following`}
+        marginBottom={sizes.s}
+      />
+    </TouchableOpacity>
   );
 
   const _handleLoadMoreUsers = () => {
@@ -81,7 +89,7 @@ const Search = () => {
           // refreshing={loader}
           data={searchUsers.rows}
           renderItem={_renderUserItem}
-          keyExtractor={(item) => item._id}
+          keyExtractor={(item) => item.profile._id}
           showsVerticalScrollIndicator={false}
           // ListFooterComponent={loader ? <MoreLoader /> : null}
           // ItemSeparatorComponent={ListSeparator}

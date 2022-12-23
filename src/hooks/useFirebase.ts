@@ -9,7 +9,7 @@ const metadata = {
 export const upload = async (file: string, photo: any) => {
   try {
     const filename = `${file}/${file}-${Date.now()}-${random()}`;
-    const imageRef = ref(storage, `image/${filename}`);
+    const imageRef = ref(storage, `images/${filename}`);
     const img = await fetch(photo);
     const blob = await img.blob();
 

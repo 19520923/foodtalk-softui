@@ -7,18 +7,24 @@ import {observer} from 'mobx-react-lite';
 import {RouteProp, useRoute} from '@react-navigation/native';
 import {IComment, IParamList} from '../constants/types';
 import API from '../services/axiosClient';
+import {FlatList} from 'react-native';
 
 const Comment = () => {
   const route = useRoute<RouteProp<IParamList, 'Comment'>>();
   const {post} = route.params;
+  const {
+    comments: {rows},
+    addComment,
+    setComments,
+  } = post;
   const [commentData, setCommentData] = useState<IComment>({
     post: post._id,
     content: '',
   });
 
   useEffect(() => {
-    post.setComments();
-  }, [post]);
+    setComments();
+  }, [setComments]);
 
   const _handleChange = useCallback((value) => {
     setCommentData((state) => ({...state, ...value}));
@@ -27,30 +33,39 @@ const Comment = () => {
   const _handleSubmit = async () => {
     _handleChange({content: ''});
     const data = await API.addComment(commentData);
-    post.addComment(data);
+    addComment(data);
+  };
+
+  const _renderItem = ({item}) => {
+    return (
+      <ImageDesc
+        size={sizes.xl}
+        image={{uri: item.author?.avatar_url}}
+        title={item.author?.name}
+        description={item.content}
+        info={{
+          created_at: item.created_at,
+          likes: 4,
+        }}
+      />
+    );
   };
 
   const {sizes, colors, icons} = useTheme();
   return (
     <Block safe position="relative">
-      <Block scroll showsVerticalScrollIndicator={false}>
-        <Block paddingTop={sizes.s} marginBottom={sizes.xxl}>
-          {post.comments.rows.map((comment) => (
-            <Block paddingVertical={sizes.s}>
-              <ImageDesc
-                key={comment._id}
-                size={sizes.xl}
-                image={{uri: comment.author?.avatar_url}}
-                title={comment.author?.name}
-                description={comment.content}
-                info={{
-                  created_at: comment.created_at,
-                  likes: 4,
-                }}
-              />
-            </Block>
-          ))}
-        </Block>
+      <Block paddingTop={sizes.s} marginBottom={sizes.xxl}>
+        <FlatList
+          // refreshing={loader}
+          data={rows}
+          renderItem={_renderItem}
+          keyExtractor={(item) => item._id}
+          showsVerticalScrollIndicator={false}
+          // ListFooterComponent={loader ? <MoreLoader /> : null}
+          // ItemSeparatorComponent={ListSeparator}
+          onEndReachedThreshold={0.5}
+          // onEndReached={_handleScrollBottom}
+        />
       </Block>
       <Block
         row

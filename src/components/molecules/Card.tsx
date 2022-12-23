@@ -130,13 +130,14 @@ const Card = ({
   const InlineCard = () => {
     const width = CARD_WIDTH - 1.5 * sizes.s;
     return (
-      <Block
-        color={colors.white}
-        card
-        width={width}
-        height={width * 1.25}
-        disabled={disabled}>
-        <Image resizeMode="cover" source={image} width={width} />
+      <Block card width={width} height={width * 1.25} disabled={disabled}>
+        <Image
+          resizeMode="cover"
+          source={image}
+          // eslint-disable-next-line react-native/no-inline-styles
+          style={{width: '100%'}}
+          height={(width * 2) / 3}
+        />
         <Block marginTop={sizes.s} justify="space-between">
           <Text color={colors.text} numberOfLines={3} marginBottom={sizes.s}>
             {description}

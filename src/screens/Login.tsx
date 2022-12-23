@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useState, useEffect} from 'react';
 import {Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
@@ -186,7 +187,7 @@ const Login = () => {
               <Text
                 color={colors.blueText}
                 onPress={() =>
-                  navigation.navigate(t('navigation.forgotPassword'))
+                  navigation.navigate(t('navigation.forgotPassword') as never)
                 }
                 align="right"
                 marginRight={15}>
@@ -208,7 +209,9 @@ const Login = () => {
                 shadow={!isAndroid}
                 marginVertical={sizes.s}
                 marginHorizontal={sizes.sm}
-                onPress={() => navigation.navigate(t('navigation.register'))}>
+                onPress={() =>
+                  navigation.navigate(t('navigation.register') as never)
+              }>
                 <Text bold primary transform="uppercase">
                   {t('common.signup')}
                 </Text>

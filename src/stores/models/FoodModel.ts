@@ -13,6 +13,7 @@ export const DEFAULT_STATE_FOOD = {
   num_rate: 0,
   created_at: '',
   rates: [],
+  about: '',
 };
 
 const FoodRateModel = types.model({
@@ -37,6 +38,7 @@ const FoodModel = types
     recipe: types.array(types.string),
     score: types.number,
     author: ProfileModel,
+    about: types.string,
     photo: types.string,
     num_rate: types.number,
     created_at: types.string,
@@ -45,6 +47,7 @@ const FoodModel = types
       count: 0,
       currentPage: 1,
     }),
+    isOpenning: types.optional(types.boolean, false),
   })
   .actions((self) => ({
     setRates: flow(function* () {
@@ -58,6 +61,15 @@ const FoodModel = types
       self.rates.rows = cast(rows);
       self.rates.currentPage++;
     }),
+    addRate: (rate: TFoodRateModel) => {
+      self.rates.rows.unshift(rate);
+      self.rates.count++;
+      self.score += rate.score;
+      self.num_rate++;
+    },
+    toggleOpenning: (status: boolean) => {
+      self.isOpenning = status;
+    },
   }));
 
 export default FoodModel;

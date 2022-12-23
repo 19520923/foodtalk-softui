@@ -344,6 +344,10 @@ class AxiosClient {
   register(payload: IRegistration) {
     return this.axios.post('/users', {...payload, access_token: MASTER_KEY});
   }
+
+  seenNoti(noti: string) {
+    return this.axios.post(`notifications/${noti}/seen`);
+  }
 }
 
 export default new AxiosClient();

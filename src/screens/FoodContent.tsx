@@ -24,17 +24,17 @@ const FoodContent = () => {
           radius={0}
           resizeMode="cover"
           source={{uri: food.photo}}
+          // eslint-disable-next-line react-native/no-inline-styles
           style={{width: '100%', height: 220}}
           marginTop={sizes.s}
         />
         <Block marginLeft={sizes.s} paddingTop={sizes.s}>
-          <Text
-            semibold
-            color={'blue'}
-            marginBottom={sizes.m}
-            h4
-            paddingTop={sizes.s}>
+          <Text semibold primary h4 paddingVertical={sizes.s}>
             {food.name}
+          </Text>
+
+          <Text semibold secondary marginBottom={sizes.m}>
+            {food.about}
           </Text>
 
           <Block marginBottom={sizes.m}>
@@ -42,10 +42,10 @@ const FoodContent = () => {
               Ingredients
             </Text>
 
-            {food.ingredients.map((ingredient) => {
+            {food.ingredients.map((ingredient, index) => {
               return (
-                <Text p left={sizes.s} marginBottom={sizes.s}>
-                  {ingredient}
+                <Text key={index} p left={sizes.s} marginBottom={sizes.s}>
+                  - {ingredient}
                 </Text>
               );
             })}
@@ -56,10 +56,10 @@ const FoodContent = () => {
               Process
             </Text>
 
-            {food.recipe.map((pro) => {
+            {food.recipe.map((proc, index) => {
               return (
-                <Text p left={sizes.s} marginBottom={sizes.s}>
-                  {pro}
+                <Text key={index} p left={sizes.s} marginBottom={sizes.s}>
+                  {index + 1}. {proc}
                 </Text>
               );
             })}

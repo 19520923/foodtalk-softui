@@ -49,3 +49,9 @@ export const starImgFilled =
   'https://github.com/tranhonghan/images/blob/main/star_filled.png?raw=true';
 export const starImgCorner =
   'https://github.com/tranhonghan/images/blob/main/star_corner.png?raw=true';
+
+export const appConfig = {
+  appID: '1863617896', // Fill in the AppID you get.
+  serverSecret:
+    '636ff5e70710975554e3fe05d2b4c970f5d8e7f5ef1d8bda5dbe3d35b0f77fc0', // Fill in the ServerSecret you get.
+};

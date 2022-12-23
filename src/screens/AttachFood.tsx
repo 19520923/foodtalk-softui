@@ -1,7 +1,7 @@
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import _ from 'lodash';
 import React, {useCallback, useState, useEffect} from 'react';
-import {FlatList, TouchableOpacity} from 'react-native';
+import {FlatList, ListRenderItem, TouchableOpacity} from 'react-native';
 import {Block, Button, Input, Text} from '../components/atoms';
 import {Card} from '../components/molecules';
 import {IFood, IParamList} from '../constants/types';
@@ -78,7 +78,7 @@ const AttachFood = () => {
     }
   }, [rows, count, loadFoods, key]);
 
-  const _renderListFoodItem = ({item}) => {
+  const _renderListFoodItem: ListRenderItem<IFood> = ({item}) => {
     const isSelected = _.findIndex(selected, (e) => e._id === item._id) !== -1;
     return (
       <TouchableOpacity
@@ -96,7 +96,7 @@ const AttachFood = () => {
     );
   };
 
-  const _renderSelectedList = ({item}) => {
+  const _renderSelectedList: ListRenderItem<IFood> = ({item}) => {
     return (
       <TouchableOpacity activeOpacity={1} onPress={() => _handleRemoved(item)}>
         <Card

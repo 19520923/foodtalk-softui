@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useCallback, useEffect, useState} from 'react';
 import {Block, Button, Image, Input, Switch, Text} from '../components/atoms';
 import {ImageDesc} from '../components/molecules';
@@ -54,20 +55,29 @@ const CreatePost = () => {
   ];
 
   const _handleChoosePhotos = () => {
-    navigation.navigate(t('navigation.imagePicker'), {
-      onCallback: (array: Array<any>) => _handleSetPhotos(array),
-    });
+    navigation.navigate(
+      t('navigation.imagePicker') as never,
+      {
+        onCallback: (array: Array<any>) => _handleSetPhotos(array),
+      } as never,
+    );
   };
 
   const _handleCheckin = () => {
-    navigation.navigate(t('navigation.checkin'), {onDone: _handleSetLocation});
+    navigation.navigate(
+      t('navigation.checkin') as never,
+      {onDone: _handleSetLocation} as never,
+    );
   };
 
   const _handleChooseFoods = () => {
-    navigation.navigate(t('navigation.attachFoods'), {
-      foods: chosenFood,
-      onDone: (array: Array<IFood>) => _handleSetFoods(array),
-    });
+    navigation.navigate(
+      t('navigation.attachFoods') as never,
+      {
+        foods: chosenFood,
+        onDone: (array: Array<IFood>) => _handleSetFoods(array),
+      } as never,
+    );
   };
 
   const _handleSetPhotos = (array: Array<any>) => {
