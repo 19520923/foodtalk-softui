@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback} from 'react';
 import {useMst, useTheme, useTranslation} from '../../hooks';
 import {Block, Image} from '../atoms';
 import {ImageDesc, Carousel} from '../molecules';
@@ -102,6 +102,7 @@ const Post = ({post}: Props) => {
       <Block row scroll horizontal>
         {foods?.map((food) => (
           <TouchableOpacity
+            key={food._id}
             onPress={() => _handleNavigateToFood(food)}
             activeOpacity={1}>
             <Image source={{uri: food.photo}} avatar marginRight={sizes.s} />
@@ -112,7 +113,7 @@ const Post = ({post}: Props) => {
   };
 
   return (
-    <Block key={_id} marginBottom={sizes.m}>
+    <Block marginBottom={sizes.m}>
       <TouchableOpacity onPress={_handleNavigateToProfile} activeOpacity={1}>
         <ImageDesc
           image={{uri: author.avatar_url}}

@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import {FontAwesome} from '@expo/vector-icons';
 import {Block, Button, Image, Text} from '../components/atoms';
-import {useData, useMst, useTheme, useTranslation} from '../hooks/';
+import {useMst, useTheme, useTranslation} from '../hooks/';
 import {Post} from '../components/organisms';
 import {observer} from 'mobx-react-lite';
 import {Card} from '../components/molecules';
@@ -37,7 +37,7 @@ const Profile = observer(() => {
     () => _.includes(store.user.profile.following, profile._id),
     [profile._id, store.user.profile.following],
   );
-  const {isDark} = useData();
+  // const {isDark} = useData();
 
   const IMAGE_SIZE = (sizes.width - (sizes.padding + sizes.sm) * 2) / 3;
   const IMAGE_VERTICAL_SIZE =

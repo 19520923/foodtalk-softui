@@ -23,7 +23,7 @@ const Home = () => {
   }, [count, loadPosts, rows.length]);
 
   const _renderItem: ListRenderItem<TPostModel> = ({item}) => {
-    return <Post key={item._id} post={item} />;
+    return <Post post={item} />;
   };
   // const handleProducts = useCallback(
   //   (tab: number) => {

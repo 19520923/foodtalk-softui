@@ -59,11 +59,10 @@ export default observer(() => {
     });
 
     socketio.on('post-comment:create', (comment) => {
-      if (comment.author._id === _id) {
-        return;
-      }
       const post = getPostById(comment.post);
-      post?.addComment(comment);
+      if (post) {
+        post.addComment(comment);
+      }
     });
 
     socketio.on('notification:create', (noti) => {
@@ -71,9 +70,6 @@ export default observer(() => {
     });
 
     socketio.on('food-rate:create', (rate) => {
-      if (rate.author._id !== _id) {
-        return;
-      }
       const food = getFoodById(rate.food);
       food?.addRate(rate);
     });
