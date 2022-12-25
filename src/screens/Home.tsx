@@ -44,7 +44,7 @@ const Home = () => {
           keyExtractor={(item) => item._id}
           showsVerticalScrollIndicator={false}
           // ListFooterComponent={loader ? <MoreLoader /> : null}
-          // ItemSeparatorComponent={ListSeparator}
+          //ItemSeparatorComponent={ListSeparator}
           onEndReachedThreshold={0.5}
           onEndReached={_handleScrollBottom}
         />

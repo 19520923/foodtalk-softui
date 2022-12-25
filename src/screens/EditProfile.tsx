@@ -1,5 +1,5 @@
 import React from 'react';
-import {Block, Image, Input, Text} from '../components/atoms';
+import {Block, Image, Input} from '../components/atoms';
 import {IInputProps} from '../constants/types';
 import {useTheme} from '../hooks';
 
@@ -10,7 +10,11 @@ const EditProfile = () => {
     const {...rest} = props;
     return (
       <Block marginBottom={sizes.sm}>
-        <Input noBorder style={{borderBottomWidth: 0.5}} {...rest} />
+        <Input
+          noBorder
+          style={{borderBottomWidth: 0.5, borderBottomColor: colors.black}}
+          {...rest}
+        />
       </Block>
     );
   };
