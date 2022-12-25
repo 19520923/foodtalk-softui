@@ -88,7 +88,8 @@
     "userList": "User list",
     "profileScreen": "User's Profile",
     "chat": "Chat",
-    "chatList": "Chat List"
+    "chatList": "Chat List",
+    "editProfile": "Edit Profile"
   },
   "navigation": {
     "home": "Soft UI",
@@ -120,7 +121,8 @@
     "userList": "User list",
     "profileScreen": "User's Profile",
     "chat": "Chat",
-    "chatList": "Chat List"
+    "chatList": "Chat List",
+    "editProfile": "Edit Profile"
   },
   "menu": {
     "started": "Getting Started",

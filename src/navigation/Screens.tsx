@@ -12,6 +12,8 @@ import {
   UserList,
   Profile,
   Chat,
+  EditProfile,
+  ChatList,
 } from '../screens';
 import {Storage, useMst, useScreenOptions, useTranslation} from '../hooks';
 import BottomBar from './BottomBar';
@@ -22,7 +24,6 @@ import {ForgotPassword} from '../screens';
 import FoodDetail from './FoodDetail';
 import {ACCESS_TOKEN, BASE_URL} from '../constants/constants';
 import {io, Socket} from 'socket.io-client';
-import ChatList from '../screens/ChatList';
 
 const Stack = createStackNavigator();
 
@@ -152,6 +153,11 @@ export default observer(() => {
         <Stack.Screen
           name={t('screens.chat')}
           component={Chat}
+          options={screenOptions.back}
+        />
+        <Stack.Screen
+          name={t('screens.editProfile')}
+          component={EditProfile}
           options={screenOptions.back}
         />
       </Stack.Navigator>

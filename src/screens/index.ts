@@ -26,3 +26,5 @@ export {default as FoodContent} from './FoodContent';
 export {default as FoodEvaluate} from './FoodEvaluate';
 export {default as ForgotPassword} from './ForgotPassword';
 export {default as Chat} from './Chat';
+export {default as ChatList} from './ChatList';
+export {default as EditProfile} from './EditProfile';

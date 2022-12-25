@@ -160,6 +160,10 @@ const Profile = observer(() => {
     );
   };
 
+  const navigateEditProfile = () => {
+    navigation.navigate(t('navigation.editProfile') as never);
+  };
+
   return (
     <Block safe>
       <Block
@@ -189,23 +193,37 @@ const Profile = observer(() => {
                 {profile.username}
               </Text>
               <Block row marginVertical={sizes.m}>
-                <Button white outlined shadow={false} radius={sizes.m}>
-                  <Block
-                    justify="center"
-                    radius={sizes.m}
-                    paddingHorizontal={sizes.m}
-                    color="rgba(255,255,255,0.2)">
-                    <Text white bold transform="uppercase">
-                      {t(
-                        isCurrentUser
-                          ? 'common.editProfile'
-                          : isFollowed
-                          ? 'common.followed'
-                          : 'common.follow',
-                      )}
-                    </Text>
-                  </Block>
-                </Button>
+                {isCurrentUser ? (
+                  <Button
+                    onPress={navigateEditProfile}
+                    white
+                    outlined
+                    shadow={false}
+                    radius={sizes.m}>
+                    <Block
+                      justify="center"
+                      radius={sizes.m}
+                      paddingHorizontal={sizes.m}
+                      color="rgba(255,255,255,0.2)">
+                      <Text white bold transform="uppercase">
+                        {t('common.editProfile')}
+                      </Text>
+                    </Block>
+                  </Button>
+                ) : (
+                  <Button white outlined shadow={false} radius={sizes.m}>
+                    <Block
+                      justify="center"
+                      radius={sizes.m}
+                      paddingHorizontal={sizes.m}
+                      color="rgba(255,255,255,0.2)">
+                      <Text white bold transform="uppercase">
+                        {t(isFollowed ? 'common.followed' : 'common.follow')}
+                      </Text>
+                    </Block>
+                  </Button>
+                )}
+
                 {isCurrentUser && (
                   <Button
                     shadow={false}
