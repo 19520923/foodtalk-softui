@@ -16,7 +16,7 @@ import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {IParamList} from '../constants/types';
 
 const locationDelta = {latitudeDelta: 0.0922, longitudeDelta: 0.0421};
-const googleApiKey = 'AIzaSyDc7PnOq3Hxzq6dxeUVaY8WGLHIePl0swY';
+const googleApiKey = 'AIzaSyDWTx7bREpM5B6JKdbzOvMW-RRlhkukmVE';
 
 function IMLocationSelectorModal() {
   const navigation = useNavigation();

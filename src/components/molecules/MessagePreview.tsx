@@ -44,7 +44,7 @@ const MessagePreview = (props: ILastMessage) => {
   const {sizes, colors} = useTheme();
 
   const _handleNavigateChatWithUser = () => {
-    navigation.navigate(t('navigation.chat'));
+    navigation.navigate(t('navigation.chat') as never);
   };
 
   return (

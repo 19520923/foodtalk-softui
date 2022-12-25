@@ -277,6 +277,21 @@ export const RootStore = types
     setIsLoggedIn: (isLoggedIn: boolean) => {
       self.isLoggedIn = isLoggedIn;
     },
+    logout: () => {
+      self.user = cast({
+        profile: DEFAULT_STATE_PROFILE,
+        foods: DEFAULT_LIST_STATE,
+        posts: DEFAULT_LIST_STATE,
+        following: [],
+        follower: [],
+      });
+      self.searchUsers = cast(DEFAULT_LIST_STATE);
+      self.recentUsers = cast(DEFAULT_LIST_STATE);
+      self.searchFoods = cast(DEFAULT_LIST_STATE);
+      self.posts = cast(DEFAULT_LIST_STATE);
+      self.notifications = cast(DEFAULT_LIST_STATE);
+      self.isLoggedIn = false;
+    },
   }))
   .create({
     user: {
@@ -295,16 +310,16 @@ export const RootStore = types
   });
 
 /* Persisting the root store. */
-// persist(
-//   '@rootStore',
-//   RootStore,
-//   {
-//     jsonify: true,
-//   },
-//   {
-//     fetching: true,
-//   },
-// );
+persist(
+  '@rootStore',
+  RootStore,
+  {
+    jsonify: true,
+  },
+  {
+    fetching: true,
+  },
+);
 
 export type TRootStore = Instance<typeof RootStore>;
 export type TProfileStore = Instance<typeof ProfileStore>;

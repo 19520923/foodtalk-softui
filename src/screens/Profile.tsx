@@ -160,6 +160,70 @@ const Profile = observer(() => {
     );
   };
 
+  const _handleFollow = async () => {
+    if (isFollowed) {
+      store.user.profile.unfollow(profile._id);
+    } else {
+      store.user.profile.follow(profile._id);
+    }
+  };
+
+  const FollowButton = () => (
+    <Button
+      white
+      outlined
+      shadow={false}
+      radius={sizes.m}
+      onPressOut={_handleFollow}>
+      <Block
+        justify="center"
+        radius={sizes.m}
+        paddingHorizontal={sizes.m}
+        color="rgba(255,255,255,0.2)">
+        <Text white bold transform="uppercase">
+          {t(isFollowed ? 'common.unfollow' : 'common.follow')}
+        </Text>
+      </Block>
+    </Button>
+  );
+
+  const Actions = () => (
+    <>
+      <Button white outlined shadow={false} radius={sizes.m}>
+        <Block
+          justify="center"
+          radius={sizes.m}
+          paddingHorizontal={sizes.m}
+          color="rgba(255,255,255,0.2)">
+          <Text white bold transform="uppercase">
+            {t('common.editProfile')}
+          </Text>
+        </Block>
+      </Button>
+
+      <Button
+        shadow={false}
+        radius={sizes.m}
+        marginHorizontal={sizes.sm}
+        color="rgba(255,255,255,0.2)"
+        outlined={String(colors.white)}
+        // onPress={() => handleSocialLink('twitter')}
+      >
+        <FontAwesome size={18} name={icons.photo} color={colors.white} />
+      </Button>
+
+      <Button
+        shadow={false}
+        radius={sizes.m}
+        color="rgba(255,255,255,0.2)"
+        outlined={String(colors.white)}
+        // onPress={() => handleSocialLink('dribbble')}
+      >
+        <FontAwesome size={18} name={icons.edit} color={colors.white} />
+      </Button>
+    </>
+  );
+
   return (
     <Block safe>
       <Block
@@ -189,54 +253,7 @@ const Profile = observer(() => {
                 {profile.username}
               </Text>
               <Block row marginVertical={sizes.m}>
-                <Button white outlined shadow={false} radius={sizes.m}>
-                  <Block
-                    justify="center"
-                    radius={sizes.m}
-                    paddingHorizontal={sizes.m}
-                    color="rgba(255,255,255,0.2)">
-                    <Text white bold transform="uppercase">
-                      {t(
-                        isCurrentUser
-                          ? 'common.editProfile'
-                          : isFollowed
-                          ? 'common.followed'
-                          : 'common.follow',
-                      )}
-                    </Text>
-                  </Block>
-                </Button>
-                {isCurrentUser && (
-                  <Button
-                    shadow={false}
-                    radius={sizes.m}
-                    marginHorizontal={sizes.sm}
-                    color="rgba(255,255,255,0.2)"
-                    outlined={String(colors.white)}
-                    // onPress={() => handleSocialLink('twitter')}
-                  >
-                    <FontAwesome
-                      size={18}
-                      name={icons.photo}
-                      color={colors.white}
-                    />
-                  </Button>
-                )}
-                {isCurrentUser && (
-                  <Button
-                    shadow={false}
-                    radius={sizes.m}
-                    color="rgba(255,255,255,0.2)"
-                    outlined={String(colors.white)}
-                    // onPress={() => handleSocialLink('dribbble')}
-                  >
-                    <FontAwesome
-                      size={18}
-                      name={icons.edit}
-                      color={colors.white}
-                    />
-                  </Button>
-                )}
+                {isCurrentUser ? Actions() : FollowButton()}
               </Block>
             </Block>
           </Image>
@@ -402,4 +419,4 @@ const Profile = observer(() => {
   );
 });
 
-export default Profile;
+export default observer(Profile);

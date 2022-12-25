@@ -7,11 +7,16 @@ export interface ILocation {
 }
 
 export interface IComment {
-  _id?: string;
+  _id: string;
   content?: string;
   author?: IUser;
   created_at?: string;
   parent?: string;
+  post?: string;
+}
+
+export interface ICComment {
+  content?: string;
   post?: string;
 }
 

@@ -13,8 +13,8 @@ import {
 } from '../constants/constants';
 import {Storage} from '../hooks';
 import {
+  ICComment,
   ICFood,
-  IComment,
   IPost,
   IRate,
   IRegistration,
@@ -329,7 +329,7 @@ class AxiosClient {
     return this.axios.get(`/users/${user_id}/follower`);
   }
 
-  addComment(payload: IComment) {
+  addComment(payload: ICComment) {
     return this.axios.post('/post-comments', payload);
   }
 
@@ -347,6 +347,14 @@ class AxiosClient {
 
   seenNoti(noti: string) {
     return this.axios.post(`notifications/${noti}/seen`);
+  }
+
+  follow(user_id: string) {
+    return this.axios.post(`/users/follow/${user_id}`);
+  }
+
+  unfollow(user_id: string) {
+    return this.axios.post(`/users/unfollow/${user_id}`);
   }
 }
 

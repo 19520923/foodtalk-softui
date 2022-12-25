@@ -5,19 +5,19 @@ import {useTheme} from '../hooks';
 import {FontAwesome} from '@expo/vector-icons';
 import {observer} from 'mobx-react-lite';
 import {RouteProp, useRoute} from '@react-navigation/native';
-import {IComment, IParamList} from '../constants/types';
+import {ICComment, IParamList} from '../constants/types';
 import API from '../services/axiosClient';
-import {FlatList} from 'react-native';
 
 const Comment = () => {
   const route = useRoute<RouteProp<IParamList, 'Comment'>>();
   const {post} = route.params;
+  const {sizes, colors, icons} = useTheme();
+
   const {
     comments: {rows},
-    addComment,
     setComments,
   } = post;
-  const [commentData, setCommentData] = useState<IComment>({
+  const [commentData, setCommentData] = useState<ICComment>({
     post: post._id,
     content: '',
   });
@@ -32,40 +32,27 @@ const Comment = () => {
 
   const _handleSubmit = async () => {
     _handleChange({content: ''});
-    const data = await API.addComment(commentData);
-    addComment(data);
+    await API.addComment(commentData);
   };
 
-  const _renderItem = ({item}) => {
-    return (
-      <ImageDesc
-        size={sizes.xl}
-        image={{uri: item.author?.avatar_url}}
-        title={item.author?.name}
-        description={item.content}
-        info={{
-          created_at: item.created_at,
-          likes: 4,
-        }}
-      />
-    );
-  };
-
-  const {sizes, colors, icons} = useTheme();
   return (
     <Block safe position="relative">
       <Block paddingTop={sizes.s} marginBottom={sizes.xxl}>
-        <FlatList
-          // refreshing={loader}
-          data={rows}
-          renderItem={_renderItem}
-          keyExtractor={(item) => item._id}
-          showsVerticalScrollIndicator={false}
-          // ListFooterComponent={loader ? <MoreLoader /> : null}
-          // ItemSeparatorComponent={ListSeparator}
-          onEndReachedThreshold={0.5}
-          // onEndReached={_handleScrollBottom}
-        />
+        <Block scroll>
+          {rows.map((item) => (
+            <ImageDesc
+              key={item._id}
+              size={sizes.xl}
+              image={{uri: item.author?.avatar_url}}
+              title={item.author?.name}
+              description={item.content}
+              info={{
+                created_at: item.created_at,
+                likes: 4,
+              }}
+            />
+          ))}
+        </Block>
       </Block>
       <Block
         row

@@ -12,7 +12,7 @@ import {
 
 import Screens from './Screens';
 import {Block, Text, Switch, Button, Image} from '../components/atoms';
-import {useData, useTheme, useTranslation} from '../hooks';
+import {Storage, useData, useMst, useTheme, useTranslation} from '../hooks';
 
 const Drawer = createDrawerNavigator();
 
@@ -72,6 +72,7 @@ const DrawerContent = (
   const [active, setActive] = useState('Home');
   const {assets, colors, gradients, sizes} = useTheme();
   const labelColor = colors.text;
+  const {logout} = useMst();
 
   const handleNavigation = useCallback(
     (to) => {
@@ -92,6 +93,11 @@ const DrawerContent = (
   //     icon: assets.settings,
   //   },
   // ];
+
+  const _logout = async () => {
+    await Storage.clear();
+    logout();
+  };
 
   return (
     <DrawerContentScrollView
@@ -197,7 +203,7 @@ const DrawerContent = (
           justify="flex-start"
           marginTop={sizes.sm}
           marginBottom={sizes.sm}
-          onPress={() => handleWebLink('https://google.com')}>
+          onPress={_logout}>
           <Block
             flex={0}
             radius={6}

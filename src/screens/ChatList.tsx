@@ -1,5 +1,5 @@
 import React from 'react';
-import {Block, Text} from '../components/atoms';
+import {Block} from '../components/atoms';
 import {MessagePreview} from '../components/molecules';
 
 const chatListData = [
