@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React from 'react';
 import {Platform} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useMst, useTheme} from '../hooks';
@@ -103,9 +103,10 @@ export default observer(() => {
     notifications: {rows},
   } = useMst();
 
-  const numNotiNotSeen = useMemo(() => {
+  const numNotiNotSeen = () => {
     return _.filter(rows, (e) => e.is_seen === false).length;
-  }, [rows]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  };
 
   return (
     <Tab.Navigator
@@ -118,7 +119,7 @@ export default observer(() => {
       <Tab.Screen
         name="News"
         component={Notifications}
-        options={{tabBarBadge: numNotiNotSeen}}
+        options={{tabBarBadge: numNotiNotSeen()}}
       />
       <Tab.Screen
         name="Profile"

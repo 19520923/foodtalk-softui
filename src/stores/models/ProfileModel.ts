@@ -33,6 +33,7 @@ export const ProfileModel = types
       yield API.follow(user_id);
     }),
     unfollow: flow(function* (user_id: string) {
+      self.following.remove(user_id);
       yield API.unfollow(user_id);
     }),
   }));

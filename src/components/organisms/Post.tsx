@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React from 'react';
 import {useMst, useTheme, useTranslation} from '../../hooks';
 import {Block, Image} from '../atoms';
 import {ImageDesc, Carousel} from '../molecules';
@@ -56,9 +56,9 @@ const Post = ({post}: Props) => {
     );
   };
 
-  const _handleLike = useCallback(async () => {
+  const _handleLike = async () => {
     await API.likePost(_id);
-  }, [_id]);
+  };
 
   const actionsLeft = () => (
     <Block row>

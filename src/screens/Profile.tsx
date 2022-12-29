@@ -1,10 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {
-  Platform,
-  FlatList,
-  TouchableOpacity,
-  ListRenderItem,
-} from 'react-native';
+import {Platform, FlatList, ListRenderItem} from 'react-native';
 import {FontAwesome} from '@expo/vector-icons';
 import {Block, Button, Image, Text} from '../components/atoms';
 import {useMst, useTheme, useTranslation} from '../hooks/';
@@ -16,10 +11,12 @@ import {IParamList} from '../constants/types';
 import _ from 'lodash';
 import {TPostModel} from '../stores/models/PostModel';
 import {TFoodModel} from '../stores/models/FoodModel';
+import {USER_LIST_SCREEN_NAME} from '../constants/constants';
+import API from '../services/axiosClient';
 
 const isAndroid = Platform.OS === 'android';
 
-const Profile = observer(() => {
+const Profile = () => {
   const {t} = useTranslation();
   const navigation = useNavigation();
   const route = useRoute<RouteProp<IParamList, 'Profile'>>();
@@ -33,10 +30,9 @@ const Profile = observer(() => {
     () => store.user.profile._id === profile._id,
     [profile._id, store.user.profile._id],
   );
-  const isFollowed = useMemo(
-    () => _.includes(store.user.profile.following, profile._id),
-    [profile._id, store.user.profile.following],
-  );
+  const isFollowed = () =>
+    _.includes(store.user.profile.following, profile._id);
+
   // const {isDark} = useData();
 
   const IMAGE_SIZE = (sizes.width - (sizes.padding + sizes.sm) * 2) / 3;
@@ -74,13 +70,27 @@ const Profile = observer(() => {
       t('navigation.userList') as never,
       {
         name: name,
-        user_id: profile._id,
+        user: route.params.user,
       } as never,
     );
   };
 
+  const _handleCreateChat = async () => {
+    const chat = await API.createChat(profile._id);
+    store.chats.addChat(chat);
+    const chatModel = store.chats.getChatById(chat._id);
+    navigation.navigate(
+      t('navigation.chat') as never,
+      {chat: chatModel} as never,
+    );
+  };
+
   const _handleFollowingPress = () => {
-    _handleNavigateUserList('Following');
+    _handleNavigateUserList(USER_LIST_SCREEN_NAME.following);
+  };
+
+  const _handleFollowedPress = () => {
+    _handleNavigateUserList(USER_LIST_SCREEN_NAME.follower);
   };
 
   const Carories = () => {
@@ -161,7 +171,7 @@ const Profile = observer(() => {
   };
 
   const _handleFollow = async () => {
-    if (isFollowed) {
+    if (isFollowed()) {
       store.user.profile.unfollow(profile._id);
     } else {
       store.user.profile.follow(profile._id);
@@ -169,22 +179,33 @@ const Profile = observer(() => {
   };
 
   const FollowButton = () => (
-    <Button
-      white
-      outlined
-      shadow={false}
-      radius={sizes.m}
-      onPressOut={_handleFollow}>
-      <Block
-        justify="center"
+    <>
+      <Button
+        white
+        outlined
+        shadow={false}
         radius={sizes.m}
-        paddingHorizontal={sizes.m}
-        color="rgba(255,255,255,0.2)">
-        <Text white bold transform="uppercase">
-          {t(isFollowed ? 'common.unfollow' : 'common.follow')}
-        </Text>
-      </Block>
-    </Button>
+        onPressOut={_handleFollow}>
+        <Block
+          justify="center"
+          radius={sizes.m}
+          paddingHorizontal={sizes.m}
+          color="rgba(255,255,255,0.2)">
+          <Text white bold transform="uppercase">
+            {t(isFollowed() ? 'common.unfollow' : 'common.follow')}
+          </Text>
+        </Block>
+      </Button>
+      <Button
+        shadow={false}
+        radius={sizes.m}
+        marginHorizontal={sizes.sm}
+        color="rgba(255,255,255,0.2)"
+        outlined={String(colors.white)}
+        onPress={_handleCreateChat}>
+        <FontAwesome size={18} name={icons.chat} color={colors.white} />
+      </Button>
+    </>
   );
 
   const Actions = () => (
@@ -269,7 +290,7 @@ const Profile = observer(() => {
             <Block
               color={colors.white}
               row
-              //blur
+              blur
               flex={0}
               intensity={100}
               radius={sizes.sm}
@@ -279,26 +300,26 @@ const Profile = observer(() => {
               paddingVertical={sizes.sm}
               paddingHorizontal={sizes.s}
               renderToHardwareTextureAndroid>
-              <Block width="20%" align="center">
+              <Block align="center">
                 <Text h5>{_formatNum(posts.count)}</Text>
                 <Text color={colors.text}>{t('profile.posts')}</Text>
               </Block>
-              <Block width="20%" align="center">
+              <Block align="center">
                 <Text h5>{_formatNum(foods.count)}</Text>
                 <Text color={colors.text}>{t('profile.foods')}</Text>
               </Block>
-              <Block width="30%" align="center">
-                <Text h5>{_formatNum(profile.follower.length)}</Text>
-                <Text color={colors.text}>{t('profile.followers')}</Text>
+              <Block align="center">
+                <Button onPress={_handleFollowedPress}>
+                  <Text h5>{_formatNum(profile.follower.length)}</Text>
+                  <Text color={colors.text}>{t('profile.followers')}</Text>
+                </Button>
               </Block>
-              <TouchableOpacity
-                onPress={_handleFollowingPress}
-                activeOpacity={1}>
-                <Block align="center">
+              <Block align="center">
+                <Button onPress={_handleFollowingPress}>
                   <Text h5>{_formatNum(profile.following.length)}</Text>
                   <Text color={colors.text}>{t('profile.following')}</Text>
-                </Block>
-              </TouchableOpacity>
+                </Button>
+              </Block>
             </Block>
           </Block>
 
@@ -417,6 +438,6 @@ const Profile = observer(() => {
       </Block>
     </Block>
   );
-});
+};
 
 export default observer(Profile);

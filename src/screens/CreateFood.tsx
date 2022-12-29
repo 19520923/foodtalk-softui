@@ -87,7 +87,7 @@ const CreateFood = () => {
 
   const _handleRemoveProcess = (proc: string) => {
     const removedProc = _.remove(food.recipe, (r) => r !== proc);
-    _handleChange({ingredients: removedProc});
+    _handleChange({recipe: removedProc});
   };
 
   const _handleDone = useCallback(async () => {

@@ -13,6 +13,7 @@ import {IPost} from '../constants/types';
 import NotificationModel, {
   TNotificationModel,
 } from './models/NotificationModel';
+import ChatModel, {TChatModel} from './models/ChatModel';
 
 const DEFAULT_LIST_STATE = {
   rows: [],
@@ -262,12 +263,46 @@ const NotificationStore = types
     },
   }));
 
+const ChatStore = types
+  .model({
+    rows: types.optional(types.array(ChatModel), []),
+    count: types.optional(types.number, 0),
+    currentPage: types.optional(types.number, 1),
+  })
+  .views((self) => ({
+    getChatById: (chat_id: string) => {
+      const index = _.findIndex(self.rows, (e) => e._id === chat_id);
+      return self.rows[index];
+    },
+  }))
+  .actions((self) => ({
+    setChats: flow(function* () {
+      const {rows, count} = yield API.getChat(1);
+      self.rows = cast(rows);
+      self.count = count;
+      self.currentPage = 2;
+    }),
+
+    loadChats: flow(function* () {
+      const {rows} = yield API.getChat(self.currentPage);
+      self.rows.push(rows);
+      self.currentPage++;
+    }),
+  }))
+  .actions((self) => ({
+    addChat(chat: TChatModel) {
+      self.rows.unshift(chat);
+      self.count++;
+    },
+  }));
+
 export const RootStore = types
   .model({
     user: ProfileStore,
     searchUsers: UserStore,
     recentUsers: UserStore,
     searchFoods: FoodStore,
+    chats: ChatStore,
     posts: PostStore,
     notifications: NotificationStore,
     isLoggedIn: types.optional(types.boolean, false),
@@ -290,6 +325,7 @@ export const RootStore = types
       self.searchFoods = cast(DEFAULT_LIST_STATE);
       self.posts = cast(DEFAULT_LIST_STATE);
       self.notifications = cast(DEFAULT_LIST_STATE);
+      self.chats = cast(DEFAULT_LIST_STATE);
       self.isLoggedIn = false;
     },
   }))
@@ -307,6 +343,7 @@ export const RootStore = types
     posts: DEFAULT_LIST_STATE,
     notifications: DEFAULT_LIST_STATE,
     isLoggedIn: false,
+    chats: DEFAULT_LIST_STATE,
   });
 
 /* Persisting the root store. */

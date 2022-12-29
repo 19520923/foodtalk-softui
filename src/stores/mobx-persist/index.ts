@@ -23,7 +23,7 @@ export const persist = (
       return;
     }
     const snapshot = {..._snapshot};
-    /* Used to remove the keys that are not needed to be saved in the storage. */
+    // /* Used to remove the keys that are not needed to be saved in the storage. */
     Object.keys(snapshot).forEach((key) => {
       if (blacklist[key]) {
         delete snapshot[key];

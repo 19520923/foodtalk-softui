@@ -356,6 +356,18 @@ class AxiosClient {
   unfollow(user_id: string) {
     return this.axios.post(`/users/unfollow/${user_id}`);
   }
+
+  getChat(page = 1) {
+    return this.axios.get(`/chats?page=${page}&limit=${LIMIT}`);
+  }
+
+  getMessage(chat_id: string, page = 1) {
+    return this.axios.get(`/messages/${chat_id}page=${page}&limit=${LIMIT}`);
+  }
+
+  createChat(user_id: string) {
+    return this.axios.post(`/chats/${user_id}`);
+  }
 }
 
 export default new AxiosClient();
