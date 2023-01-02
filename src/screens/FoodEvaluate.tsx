@@ -33,8 +33,7 @@ const FoodEvaluate = () => {
 
   const _handleSubmit = async () => {
     _handleChange({score: 10, content: ''});
-    const data = await API.addRate(payload);
-    food.addRate(data);
+    await API.addRate(payload);
   };
 
   const CustomRatingBar = () => {

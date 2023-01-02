@@ -1,4 +1,5 @@
 import i18n from 'i18n-js';
+import {TChatModel} from '../../stores/models/ChatModel';
 import {TFoodModel} from '../../stores/models/FoodModel';
 import {TPostModel} from '../../stores/models/PostModel';
 import {TProfileStore} from '../../stores/RootStore';
@@ -36,7 +37,7 @@ export type IParamList = {
     onDone: (food: Array<IFood>) => void;
   };
   UserList: {
-    user_id: string;
+    user: TProfileStore;
     name: string;
   };
   PostDetail: {
@@ -47,5 +48,8 @@ export type IParamList = {
   };
   Profile: {
     user: TProfileStore;
+  };
+  Chat: {
+    chat: TChatModel;
   };
 };

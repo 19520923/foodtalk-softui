@@ -1,8 +1,10 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {Block, Image, Text} from '../components/atoms';
+import {Block} from '../components/atoms';
 import {useTheme} from '../hooks';
 import {GiftedChat, Send} from 'react-native-gifted-chat';
 import {FontAwesome} from '@expo/vector-icons';
+import {RouteProp, useRoute} from '@react-navigation/native';
+import {IParamList} from '../constants/types';
 export interface IMessage {
   _id: string | number;
   text: string;
@@ -22,6 +24,15 @@ const Chat = () => {
   const {colors, icons, sizes} = useTheme();
 
   const [messages, setMessages] = useState<IMessage[]>([]);
+
+  const route = useRoute<RouteProp<IParamList, 'Chat'>>();
+  const {
+    chat: {
+      setMessage,
+      loadMessage,
+      messages: {rows, count},
+    },
+  } = route.params;
 
   useEffect(() => {
     setMessages([

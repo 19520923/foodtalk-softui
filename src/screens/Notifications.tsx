@@ -1,4 +1,4 @@
-import {observer} from 'mobx-react-lite';
+import {Observer, observer} from 'mobx-react-lite';
 import React, {useCallback, useEffect} from 'react';
 import {FlatList, ListRenderItem, TouchableOpacity} from 'react-native';
 import {Block} from '../components/atoms';
@@ -51,20 +51,26 @@ const Notifications = () => {
 
   const _renderItem: ListRenderItem<TNotificationModel> = ({item}) => {
     return (
-      <TouchableOpacity activeOpacity={1} onPress={() => _handlePress(item)}>
-        <Block padding={sizes.xs} white={!item.is_seen}>
-          <ImageDesc
-            key={item._id}
-            size={sizes.xl}
-            image={{uri: item.author.avatar_url}}
-            title={item.author.name}
-            description={item.content}
-            info={{
-              created_at: item.created_at,
-            }}
-          />
-        </Block>
-      </TouchableOpacity>
+      <Observer>
+        {() => (
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => _handlePress(item)}>
+            <Block padding={sizes.xs} white={!item.is_seen}>
+              <ImageDesc
+                key={item._id}
+                size={sizes.xl}
+                image={{uri: item.author.avatar_url}}
+                title={item.author.name}
+                description={item.content}
+                info={{
+                  created_at: item.created_at,
+                }}
+              />
+            </Block>
+          </TouchableOpacity>
+        )}
+      </Observer>
     );
   };
 

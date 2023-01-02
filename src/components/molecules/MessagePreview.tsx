@@ -1,28 +1,26 @@
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useMemo} from 'react';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import {Ionicons} from '@expo/vector-icons';
 import {useNavigation} from '@react-navigation/native';
 import {t} from 'i18n-js';
-import {useTheme} from '../../hooks';
+import {useMst, useTheme} from '../../hooks';
 import {Block, Image, Text} from '../atoms';
+import {TChatModel} from '../../stores/models/ChatModel';
 //import moment from 'moment';
 
-export interface IPropsMessagePreview {
-  avatar: string;
-  username: string;
-  content: string;
-  created_at: string;
-  is_current: boolean;
-}
-
 export type ILastMessage = {
-  lastMessage: IPropsMessagePreview;
+  chat: TChatModel;
 };
 
-const MessagePreview = (props: ILastMessage) => {
-  const {lastMessage} = props;
-
+const MessagePreview = ({chat}: ILastMessage) => {
+  const {
+    user: {profile},
+  } = useMst();
+  const user = useMemo(
+    () => (chat.user_1._id === profile._id ? chat.user_2 : chat.user_1),
+    [chat.user_1, chat.user_2, profile._id],
+  );
   //   let lastMessage: IPropsMessagePreview = {
   //     avatar: avatar,
   //     username: username,
@@ -44,7 +42,7 @@ const MessagePreview = (props: ILastMessage) => {
   const {sizes, colors} = useTheme();
 
   const _handleNavigateChatWithUser = () => {
-    navigation.navigate(t('navigation.chat'));
+    navigation.navigate(t('navigation.chat') as never, {chat: chat} as never);
   };
 
   return (
@@ -56,8 +54,8 @@ const MessagePreview = (props: ILastMessage) => {
           row
           style={{borderBottomWidth: 0.2}}>
           <Block row>
-            <Image width={50} height={50} source={{uri: lastMessage.avatar}} />
-            {lastMessage.is_current ? (
+            <Image width={50} height={50} source={{uri: user.avatar_url}} />
+            {user.is_current ? (
               <Text
                 size={sizes.m + 4}
                 color={'#00B555'}
@@ -69,14 +67,14 @@ const MessagePreview = (props: ILastMessage) => {
             ) : null}
             <Block justify="center" marginLeft={sizes.s}>
               <Text bold color={colors.black} size={sizes.sm}>
-                {lastMessage.username}
+                {user.username}
               </Text>
               {/* {user().is_current ? ( */}
               <Block row justify="space-between" align="center">
                 <Block row>
                   <Block row align="center">
                     <Text color={colors.text} numberOfLines={1}>
-                      {lastMessage.content}
+                      {chat.lastMessage?.content}
                       {/* {props.data.lastMessage &&
                         (props.data.lastMessage.content.length < 26
                           ? `${props.data.lastMessage.content}`
@@ -95,7 +93,7 @@ const MessagePreview = (props: ILastMessage) => {
                       size={sizes.s + 5}
                       color={colors.text}
                       marginLeft={sizes.s}>
-                      {lastMessage.created_at}
+                      {chat.lastMessage?.created_at}
                       {/* {props.data.lastMessage &&
                         moment(props.data.lastMessage.created_at).fromNow()} */}
                     </Text>
@@ -105,7 +103,7 @@ const MessagePreview = (props: ILastMessage) => {
                   width={16}
                   height={16}
                   source={{
-                    uri: lastMessage.avatar,
+                    uri: user.avatar_url,
                   }}
                 />
                 {/* <Ionicons name='checkmark-circle-outline' size={16} color={color.textIconSmall} /> */}
