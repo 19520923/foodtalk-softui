@@ -63,9 +63,7 @@ export default observer(() => {
 
     socketio.on('post-comment:create', (comment) => {
       const post = getPostById(comment.post);
-      if (post) {
-        post.addComment(comment);
-      }
+      post?.addComment(comment);
     });
 
     socketio.on('notification:create', (noti) => {

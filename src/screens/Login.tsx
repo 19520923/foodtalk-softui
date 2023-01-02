@@ -4,7 +4,7 @@ import {Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 import * as regex from '../constants/regex';
 
-import {Storage, useData, useMst, useTheme, useTranslation} from '../hooks/';
+import {Storage, useMst, useTheme, useTranslation} from '../hooks/';
 import {Block, Button, Input, Image, Text} from '../components/atoms';
 import {FontAwesome} from '@expo/vector-icons';
 import _ from 'lodash';
@@ -24,7 +24,6 @@ interface ILoginValidation {
 }
 
 const Login = () => {
-  const {isDark} = useData();
   const {t} = useTranslation();
   const navigation = useNavigation();
   const [isValid, setIsValid] = useState<ILoginValidation>({
@@ -211,7 +210,7 @@ const Login = () => {
                 marginHorizontal={sizes.sm}
                 onPress={() =>
                   navigation.navigate(t('navigation.register') as never)
-              }>
+                }>
                 <Text bold primary transform="uppercase">
                   {t('common.signup')}
                 </Text>

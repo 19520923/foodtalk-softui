@@ -13,6 +13,7 @@
     "more": "More",
     "follow": "Follow",
     "followed": "Followed",
+    "unfollow": "Unfollow",
     "search": "Search",
     "night": "night",
     "day": "day",
@@ -152,6 +153,7 @@
     "foods": "Foods",
     "followers": "Followers",
     "following": "Following",
+    "unFollow": "Unfollow",
     "aboutMe": "About me"
   },
   "forgot": {

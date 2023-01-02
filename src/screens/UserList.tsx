@@ -1,10 +1,10 @@
 import React, {useEffect, useMemo} from 'react';
 import {IParamList} from '../constants/types';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
-import {useMst, useTheme} from '../hooks';
+import {useTheme} from '../hooks';
 import {Card} from '../components/molecules';
 import {Block} from '../components/atoms';
-import {FlatList, ListRenderItem} from 'react-native';
+import {FlatList, ListRenderItem, TouchableOpacity} from 'react-native';
 import {USER_LIST_SCREEN_NAME} from '../constants/constants';
 import {observer} from 'mobx-react-lite';
 import {TProfileModel} from '../stores/models/ProfileModel';
@@ -13,10 +13,8 @@ const UserList = () => {
   const navigation = useNavigation();
   const route = useRoute<RouteProp<IParamList, 'UserList'>>();
   const {sizes} = useTheme();
-  const {
-    user: {following, follower, setFollowing, setFollower},
-  } = useMst();
-  const {name} = route.params;
+  const {name, user} = route.params;
+  const {following, follower, setFollowing, setFollower} = user;
 
   useEffect(() => {
     switch (name) {
@@ -32,7 +30,8 @@ const UserList = () => {
       default:
         break;
     }
-  }, [name, setFollower, setFollowing]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const data = useMemo(() => {
     switch (name) {
@@ -46,7 +45,8 @@ const UserList = () => {
       default:
         return [];
     }
-  }, [follower, following, name]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [follower.length, following.length, name]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -54,15 +54,21 @@ const UserList = () => {
     });
   }, [name, navigation]);
 
+  const _handleNavigateToProfile = () => {
+    //
+  };
+
   const _renderItem: ListRenderItem<TProfileModel> = ({item}) => {
     return (
-      <Card
-        image={{uri: item.avatar_url}}
-        title={item.name}
-        description={item.about}
-        subcription={`${item.follower.length} followers - ${item.following.length} following`}
-        marginBottom={sizes.s}
-      />
+      <TouchableOpacity onPressOut={_handleNavigateToProfile} activeOpacity={1}>
+        <Card
+          image={{uri: item.avatar_url}}
+          title={item.name}
+          description={item.about}
+          subcription={`${item.follower.length} followers - ${item.following.length} following`}
+          marginBottom={sizes.s}
+        />
+      </TouchableOpacity>
     );
   };
 
@@ -73,7 +79,7 @@ const UserList = () => {
   //   }, [count, loadFollowing, rows.length, user_id]);
 
   return (
-    <Block paddingTop={sizes.s}>
+    <Block safe paddingHorizontal={sizes.s}>
       <FlatList
         // refreshing={loader}
         data={data}

@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React from 'react';
 import {useMst, useTheme, useTranslation} from '../../hooks';
 import {Block, Image} from '../atoms';
 import {ImageDesc, Carousel} from '../molecules';
@@ -31,16 +31,15 @@ const Post = ({post}: Props) => {
     num_comment,
     created_at,
     foods,
-    like,
     getIsLiked,
   } = post;
 
-  const _handleNavigateComment = useCallback(() => {
+  const _handleNavigateComment = () => {
     navigation.navigate(
       t('navigation.comment') as never,
       {post: post} as never,
     );
-  }, [navigation, post, t]);
+  };
 
   const _handleNavigateToProfile = () => {
     // addUser(author);
@@ -57,10 +56,9 @@ const Post = ({post}: Props) => {
     );
   };
 
-  const _handleLike = useCallback(async () => {
-    like(profile._id);
+  const _handleLike = async () => {
     await API.likePost(_id);
-  }, [_id, like, profile._id]);
+  };
 
   const actionsLeft = () => (
     <Block row>

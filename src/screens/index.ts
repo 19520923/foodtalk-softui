@@ -1,7 +1,5 @@
 export {default as About} from './Pro';
 export {default as Agreement} from './Pro';
-export {default as Articles} from './Articles';
-export {default as Components} from './Components';
 export {default as Extras} from './Pro';
 export {default as Home} from './Home';
 export {default as Notifications} from './Notifications';

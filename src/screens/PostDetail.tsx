@@ -1,60 +1,60 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Block, Button, Input} from '../components/atoms';
 import {ImageDesc} from '../components/molecules';
 import {Post} from '../components/organisms';
 import {useTheme} from '../hooks';
 import {FontAwesome} from '@expo/vector-icons';
 import {observer} from 'mobx-react-lite';
-import {FlatList, Platform} from 'react-native';
 import {RouteProp, useRoute} from '@react-navigation/native';
-import {IParamList} from '../constants/types';
-
-const isAndroid = Platform.OS === 'android';
+import {ICComment, IParamList} from '../constants/types';
+import API from '../services/axiosClient';
 
 const PostDetail = () => {
   const {sizes, colors, icons} = useTheme();
   const route = useRoute<RouteProp<IParamList, 'PostDetail'>>();
   const {post} = route.params;
+  const [commentData, setCommentData] = useState<ICComment>({
+    post: post._id,
+    content: '',
+  });
 
   useEffect(() => {
     post.setComments();
   }, [post]);
 
-  const _renderItem = ({item}) => {
-    return (
-      <ImageDesc
-        key={item._id}
-        size={sizes.xl}
-        image={{uri: item.author.avatar_url}}
-        title={item.author.name}
-        description={item.content}
-        info={{
-          created_at: item.created_at,
-          likes: 4,
-        }}
-      />
-    );
+  const _handleChange = useCallback((value) => {
+    setCommentData((state) => ({...state, ...value}));
+  }, []);
+
+  const _handleSubmit = async () => {
+    _handleChange({content: ''});
+    await API.addComment(commentData);
   };
 
   return (
     <Block safe paddingVertical={sizes.s} position="relative">
       {/* mapping o day */}
-      <Block
-        scroll
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: sizes.l}}>
-        <Post post={post} />
-        <FlatList
-          // refreshing={loader}
-          data={post.comments.rows}
-          renderItem={_renderItem}
-          keyExtractor={(item) => item._id}
+      <Block>
+        <Block
+          scroll
           showsVerticalScrollIndicator={false}
-          // ListFooterComponent={loader ? <MoreLoader /> : null}
-          // ItemSeparatorComponent={ListSeparator}
-          onEndReachedThreshold={0.5}
-          onEndReached={post.loadCommnets}
-        />
+          contentContainerStyle={{paddingBottom: sizes.l}}
+          load={post.loadCommnets}>
+          <Post post={post} />
+          {post.comments.rows.map((item) => (
+            <ImageDesc
+              key={item._id}
+              size={sizes.xl}
+              image={{uri: item.author.avatar_url}}
+              title={item.author.name}
+              description={item.content}
+              info={{
+                created_at: item.created_at,
+                likes: 4,
+              }}
+            />
+          ))}
+        </Block>
       </Block>
 
       <Block
@@ -63,13 +63,15 @@ const PostDetail = () => {
         width={'100%'}
         bottom={sizes.s}
         padding={sizes.s}
-        color={colors.white}
-        keyboard
-        behavior={!isAndroid ? 'padding' : 'height'}>
+        color={colors.background}>
         <Block>
-          <Input placeholder="Write your comment" />
+          <Input
+            placeholder="Write your comment"
+            value={commentData.content}
+            onChangeText={(text) => _handleChange({content: text})}
+          />
         </Block>
-        <Button paddingLeft={sizes.s}>
+        <Button paddingLeft={sizes.s} onPressOut={_handleSubmit}>
           <FontAwesome
             name={icons.send}
             color={colors.icon}
