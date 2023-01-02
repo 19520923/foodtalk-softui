@@ -5,6 +5,7 @@ import {Post} from '../components/organisms';
 import {observer} from 'mobx-react-lite';
 import {FlatList, ListRenderItem} from 'react-native';
 import {TPostModel} from '../stores/models/PostModel';
+import {Loading} from '../components/commons';
 
 const Home = () => {
   const {sizes} = useTheme();
@@ -35,17 +36,21 @@ const Home = () => {
 
   return (
     <Block paddingTop={sizes.s}>
-      <FlatList
-        // refreshing={loader}
-        data={rows}
-        renderItem={_renderItem}
-        keyExtractor={(item) => item._id}
-        showsVerticalScrollIndicator={false}
-        // ListFooterComponent={loader ? <MoreLoader /> : null}
-        // ItemSeparatorComponent={ListSeparator}
-        onEndReachedThreshold={0.5}
-        onEndReached={_handleScrollBottom}
-      />
+      {rows.length > 0 ? (
+        <FlatList
+          // refreshing={loader}
+          data={rows}
+          renderItem={_renderItem}
+          keyExtractor={(item) => item._id}
+          showsVerticalScrollIndicator={false}
+          // ListFooterComponent={loader ? <MoreLoader /> : null}
+          //ItemSeparatorComponent={ListSeparator}
+          onEndReachedThreshold={0.5}
+          onEndReached={_handleScrollBottom}
+        />
+      ) : (
+        <Loading />
+      )}
     </Block>
   );
 };

@@ -1,7 +1,7 @@
 import {Observer, observer} from 'mobx-react-lite';
 import React, {useCallback, useEffect} from 'react';
 import {FlatList, ListRenderItem, TouchableOpacity} from 'react-native';
-import {Block} from '../components/atoms';
+import {Block, Text} from '../components/atoms';
 import {ImageDesc} from '../components/molecules';
 import {useMst, useTheme, useTranslation} from '../hooks';
 import {NOTIFICATION_TYPES} from '../constants/constants';
@@ -76,17 +76,23 @@ const Notifications = () => {
 
   return (
     <Block>
-      <FlatList
-        // refreshing={loader}
-        data={rows}
-        renderItem={_renderItem}
-        keyExtractor={(item) => item._id}
-        showsVerticalScrollIndicator={false}
-        // ListFooterComponent={loader ? <MoreLoader /> : null}
-        // ItemSeparatorComponent={ListSeparator}
-        onEndReachedThreshold={0.5}
-        onEndReached={_handleLoadMoreNoti}
-      />
+      {rows.length > 0 ? (
+        <FlatList
+          // refreshing={loader}
+          data={rows}
+          renderItem={_renderItem}
+          keyExtractor={(item) => item._id}
+          showsVerticalScrollIndicator={false}
+          // ListFooterComponent={loader ? <MoreLoader /> : null}
+          // ItemSeparatorComponent={ListSeparator}
+          onEndReachedThreshold={0.5}
+          onEndReached={_handleLoadMoreNoti}
+        />
+      ) : (
+        <Text marginTop={sizes.sm} h5 center>
+          Don't have notification recently
+        </Text>
+      )}
     </Block>
   );
 };

@@ -110,7 +110,7 @@ const Input = ({
       zIndex: 2,
       height: '100%',
       fontSize: sizes.p,
-      color: colors.input,
+      color: colors.black,
       paddingHorizontal: sizes.inputPadding,
     },
   ]) as TextStyle;
@@ -122,7 +122,7 @@ const Input = ({
   return (
     <Block flex={0} style={inputBoxStyles}>
       {label && (
-        <Text color={colors.boldText} bold marginBottom={sizes.s}>
+        <Text color={colors.black} bold marginBottom={sizes.s}>
           {label}
         </Text>
       )}

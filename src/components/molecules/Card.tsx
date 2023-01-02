@@ -130,7 +130,12 @@ const Card = ({
   const InlineCard = () => {
     const width = CARD_WIDTH - 1.5 * sizes.s;
     return (
-      <Block card width={width} height={width * 1.25} disabled={disabled}>
+      <Block
+        color={colors.white}
+        card
+        width={width}
+        height={width * 1.25}
+        disabled={disabled}>
         <Image
           resizeMode="cover"
           source={image}

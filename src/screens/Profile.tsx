@@ -210,7 +210,12 @@ const Profile = () => {
 
   const Actions = () => (
     <>
-      <Button white outlined shadow={false} radius={sizes.m}>
+      <Button
+        white
+        outlined
+        shadow={false}
+        radius={sizes.m}
+        onPressOut={navigateEditProfile}>
         <Block
           justify="center"
           radius={sizes.m}
@@ -244,6 +249,10 @@ const Profile = () => {
       </Button>
     </>
   );
+
+  const navigateEditProfile = () => {
+    navigation.navigate(t('navigation.editProfile') as never);
+  };
 
   return (
     <Block safe>
@@ -410,18 +419,24 @@ const Profile = () => {
             gradient={gradients.menu}
           />
           {selected === 'POST' ? (
-            <FlatList
-              // refreshing={loader}
-              data={posts.rows}
-              renderItem={_renderPostItem}
-              keyExtractor={(item) => item._id}
-              showsVerticalScrollIndicator={false}
-              // ListFooterComponent={loader ? <MoreLoader /> : null}
-              // ItemSeparatorComponent={ListSeparator}
-              onEndReachedThreshold={0.5}
-              onEndReached={_handleLoadMorePosts}
-            />
-          ) : (
+            posts.rows.length > 0 ? (
+              <FlatList
+                // refreshing={loader}
+                data={posts.rows}
+                renderItem={_renderPostItem}
+                keyExtractor={(item) => item._id}
+                showsVerticalScrollIndicator={false}
+                // ListFooterComponent={loader ? <MoreLoader /> : null}
+                // ItemSeparatorComponent={ListSeparator}
+                onEndReachedThreshold={0.5}
+                onEndReached={_handleLoadMorePosts}
+              />
+            ) : (
+              <Text marginTop={sizes.sm} h5 center>
+                Don't have post recently
+              </Text>
+            )
+          ) : foods.rows.length > 0 ? (
             <FlatList
               // refreshing={loader}
               data={foods.rows}
@@ -433,6 +448,10 @@ const Profile = () => {
               onEndReachedThreshold={0.5}
               onEndReached={_handleLoadMoreFoods}
             />
+          ) : (
+            <Text marginTop={sizes.sm} h5 center>
+              Don't have food recently
+            </Text>
           )}
         </Block>
       </Block>

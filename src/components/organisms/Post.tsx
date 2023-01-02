@@ -111,7 +111,7 @@ const Post = ({post}: Props) => {
   };
 
   return (
-    <Block marginBottom={sizes.m}>
+    <Block white marginBottom={sizes.s} paddingVertical={sizes.sm}>
       <TouchableOpacity onPress={_handleNavigateToProfile} activeOpacity={1}>
         <ImageDesc
           image={{uri: author.avatar_url}}

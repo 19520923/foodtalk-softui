@@ -12,7 +12,7 @@ const isAndroid = Platform.OS === 'android';
 
 const CreateFood = () => {
   const {t} = useTranslation();
-  const {sizes} = useTheme();
+  const {sizes, colors} = useTheme();
   const navigation = useNavigation();
   const [ingredient, setIngredient] = useState({
     amount: '',
@@ -177,7 +177,9 @@ const CreateFood = () => {
           <Block left={sizes.s} marginBottom={sizes.s}>
             {food.ingredients.map((ingr) => (
               <TouchableOpacity onPress={() => _handleRemoveIngredient(ingr)}>
-                <Text p>- {ingr}</Text>
+                <Text color={colors.text} p>
+                  - {ingr}
+                </Text>
               </TouchableOpacity>
             ))}
           </Block>
