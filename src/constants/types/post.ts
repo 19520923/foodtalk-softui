@@ -18,6 +18,7 @@ export interface IComment {
 export interface ICComment {
   content?: string;
   post?: string;
+  parent?: string;
 }
 
 export interface IPost {

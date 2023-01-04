@@ -23,7 +23,7 @@ export const IMAGE_HEIGHT = WIDTH / 1.5;
 /* This is a constant that is used to set the width of the card. */
 export const CARD_WIDTH = WIDTH / 2;
 
-export const APIKEY = 'AIzaSyA5Rbxpmu498VGSzJLrQ-ix_BM6EN5nfLo';
+export const APIKEY = 'AIzaSyDaOulQACiJzBfqumbsqg_-vKha8fCnL-s';
 export const AUTH_DOMAIN = 'login-183fb.firebaseapp.com';
 export const PROJECT_ID = 'login-183fb';
 export const STORAGE_BUCKET = 'login-183fb.appspot.com';

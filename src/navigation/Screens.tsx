@@ -63,7 +63,12 @@ export default observer(() => {
 
     socketio.on('post-comment:create', (comment) => {
       const post = getPostById(comment.post);
-      post?.addComment(comment);
+      if (comment.parent) {
+        const cmt = post?.comments.getCommentById(comment.parent);
+        cmt?.addChild(comment);
+      } else {
+        post?.addComment(comment);
+      }
     });
 
     socketio.on('notification:create', (noti) => {

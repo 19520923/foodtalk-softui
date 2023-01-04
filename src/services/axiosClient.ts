@@ -18,6 +18,7 @@ import {
   IPost,
   IRate,
   IRegistration,
+  IUser,
 } from '../constants/types';
 
 class AxiosClient {
@@ -367,6 +368,10 @@ class AxiosClient {
 
   createChat(user_id: string) {
     return this.axios.post(`/chats/${user_id}`);
+  }
+
+  updateProfile(payload: IUser) {
+    return this.axios.put('/users/me', payload);
   }
 }
 
