@@ -1,62 +1,125 @@
-import React from 'react';
-import {Block, Image, Input} from '../components/atoms';
-import {IInputProps} from '../constants/types';
-import {useTheme} from '../hooks';
+/* eslint-disable react-native/no-inline-styles */
+import {useNavigation} from '@react-navigation/native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Block, Button, Image, Input, Text} from '../components/atoms';
+import {IUser} from '../constants/types';
+import {upload, useMst, useTheme, useTranslation} from '../hooks';
+import API from '../services/axiosClient';
+import {TouchableOpacity} from 'react-native';
 
 const EditProfile = () => {
   const {sizes, colors} = useTheme();
+  const navigation = useNavigation();
+  const {t} = useTranslation();
+  const {
+    user: {
+      profile: {name, username, email, about, avatar_url},
+      setProfile,
+    },
+  } = useMst();
+  const [profileData, setProfileData] = useState<IUser>({
+    name: name,
+    username: username,
+    about: about,
+  });
 
-  const InfoEdit = (props: IInputProps) => {
-    const {...rest} = props;
-    return (
-      <Block marginBottom={sizes.sm}>
-        <Input
-          noBorder
-          style={{borderBottomWidth: 0.5, borderBottomColor: colors.black}}
-          {...rest}
-        />
-      </Block>
+  const [avat, setAvat] = useState(avatar_url);
+
+  const _handleChange = useCallback(
+    (value) => {
+      setProfileData((state) => ({...state, ...value}));
+    },
+    [setProfileData],
+  );
+
+  const _handleDone = useCallback(async () => {
+    let data = {};
+    if (avat !== avatar_url) {
+      const a = await upload('avatar', avat);
+      data = {...profileData, avatar_url: a};
+    } else {
+      data = {...profileData};
+    }
+    const user = await API.updateProfile(data);
+    if (user) {
+      setProfile(user);
+      navigation.goBack();
+    }
+  }, [avat, avatar_url, navigation, profileData, setProfile]);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button minHeight={sizes.l} onPress={_handleDone}>
+          <Text semibold primary>
+            Done
+          </Text>
+        </Button>
+      ),
+    });
+  }, [_handleDone, navigation, sizes.l]);
+
+  const _handleChoosePhotos = () => {
+    navigation.navigate(
+      t('navigation.imagePicker') as never,
+      {
+        onCallback: (array: Array<any>) => setAvat(array[0]),
+      } as never,
     );
   };
 
   return (
     <Block scroll>
-      <Block>
-        <Image
-          background
-          resizeMode="cover"
-          padding={sizes.sm}
-          paddingBottom={sizes.l}
-          paddingTop={sizes.xxl}
-          radius={sizes.cardRadius}
-          style={{opacity: 0.7}}
-          source={{
-            uri: 'https://i.pinimg.com/736x/91/ab/35/91ab351e0ca4bc826cde2683b1de7759.jpg',
-          }}>
-          <Block flex={0} align="center">
-            <Image
-              width={80}
-              height={80}
-              marginBottom={sizes.sm}
-              style={{opacity: 0.7}}
-              source={{
-                uri: 'https://i.pinimg.com/736x/b7/3f/91/b73f919a279300b951d6d19d6b1d7173.jpg',
-              }}
-            />
-          </Block>
-        </Image>
+      <Block flex={0} align="center">
+        <TouchableOpacity onPress={_handleChoosePhotos}>
+          <Image
+            width={80}
+            height={80}
+            marginBottom={sizes.sm}
+            style={{opacity: 0.7}}
+            source={{
+              uri: avat,
+            }}
+          />
+        </TouchableOpacity>
       </Block>
-
       <Block paddingHorizontal={sizes.m} paddingTop={sizes.sm}>
-        <InfoEdit label="Name" placeholder="Dang Duy Bang" />
-        <InfoEdit label="Username" placeholder="bangdd_119" />
-        <InfoEdit
+        <Input
+          label="Name"
+          value={profileData.name}
+          onChangeText={(text) => _handleChange({name: text})}
+          noBorder
+          marginBottom={sizes.sm}
+          style={{borderBottomWidth: 0.5, borderBottomColor: colors.black}}
+          selectTextOnFocus
+        />
+        <Input
+          label="Username"
+          value={profileData.username}
+          onChangeText={(text) => _handleChange({username: text})}
+          marginBottom={sizes.sm}
+          noBorder
+          style={{borderBottomWidth: 0.5, borderBottomColor: colors.black}}
+          selectTextOnFocus
+        />
+        <Input
           color={colors.black}
           disabled
+          value={email}
           label="Email"
-          placeholder="dangbang0001@gmail.com"
+          marginBottom={sizes.sm}
+          noBorder
+          style={{borderBottomWidth: 0.5, borderBottomColor: colors.black}}
         />
-        <InfoEdit label="About" placeholder="This is description for me" />
+        <Input
+          label="About"
+          value={profileData.about}
+          onChangeText={(text) => _handleChange({about: text})}
+          marginBottom={sizes.sm}
+          noBorder
+          style={{borderBottomWidth: 0.5, borderBottomColor: colors.black}}
+          selectTextOnFocus
+        />
       </Block>
     </Block>
   );

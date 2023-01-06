@@ -39,6 +39,7 @@ export default observer(() => {
     posts: {getPostById},
     notifications: {addNoti},
     searchFoods: {getFoodById},
+    chats: {getChatById},
   } = useMst();
 
   const _initSocket = async () => {
@@ -63,7 +64,12 @@ export default observer(() => {
 
     socketio.on('post-comment:create', (comment) => {
       const post = getPostById(comment.post);
-      post?.addComment(comment);
+      if (comment.parent) {
+        const cmt = post?.comments.getCommentById(comment.parent);
+        cmt?.addChild(comment);
+      } else {
+        post?.addComment(comment);
+      }
     });
 
     socketio.on('notification:create', (noti) => {
@@ -73,6 +79,12 @@ export default observer(() => {
     socketio.on('food-rate:create', (rate) => {
       const food = getFoodById(rate.food);
       food?.addRate(rate);
+    });
+
+    socketio.on('message:create', (mess) => {
+      console.log(mess);
+      const chat = getChatById(mess.chat);
+      chat.addMessage(mess);
     });
   };
 

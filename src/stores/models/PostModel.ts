@@ -27,18 +27,42 @@ const LocationModel = types.model({
   lng: types.string,
 });
 
-const CommentModel = types.model({
-  _id: types.identifier,
-  author: ProfileModel,
-  content: types.string,
-  created_at: types.string,
-});
+const CommentModel = types
+  .model({
+    _id: types.identifier,
+    author: ProfileModel,
+    content: types.string,
+    created_at: types.string,
+    children: types.optional(
+      types.array(
+        types.model({
+          _id: types.identifier,
+          author: ProfileModel,
+          content: types.string,
+          created_at: types.string,
+        }),
+      ),
+      [],
+    ),
+  })
+  .actions((self) => ({
+    addChild: (child: any) => {
+      self.children.unshift(child);
+    },
+  }));
 
-const CommnetStore = types.model({
-  rows: types.array(CommentModel),
-  count: types.number,
-  currentPage: types.number,
-});
+const CommnetStore = types
+  .model({
+    rows: types.array(CommentModel),
+    count: types.number,
+    currentPage: types.number,
+  })
+  .views((self) => ({
+    getCommentById: (id: string) => {
+      const index = _.findIndex(self.rows, (e) => e._id === id);
+      return self.rows[index];
+    },
+  }));
 
 export const PostModel = types
   .model({
@@ -67,7 +91,8 @@ export const PostModel = types
   .actions((self) => ({
     setComments: flow(function* () {
       const {rows, count} = yield API.getPostComments(1, self._id);
-      self.comments.rows = cast(rows);
+      const cmts = _.filter(rows, (e) => !e.parent);
+      self.comments.rows = cast(cmts);
       self.comments.count = count;
       self.comments.currentPage = 2;
     }),
@@ -82,6 +107,12 @@ export const PostModel = types
     }),
 
     addComment: (comment: TPostComment) => {
+      self.comments.rows.unshift(comment);
+      self.comments.count++;
+      self.num_comment++;
+    },
+
+    addChildComment: (comment: TPostComment) => {
       self.comments.rows.unshift(comment);
       self.comments.count++;
       self.num_comment++;
