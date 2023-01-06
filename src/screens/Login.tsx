@@ -11,6 +11,7 @@ import _ from 'lodash';
 import API from '../services/axiosClient';
 import {ACCESS_TOKEN, ACCOUNT} from '../constants/constants';
 import {Loading} from '../components/commons';
+import {showMessage} from 'react-native-flash-message';
 
 const isAndroid = Platform.OS === 'android';
 
@@ -31,8 +32,8 @@ const Login = () => {
     password: false,
   });
   const [userData, setUserData] = useState<ILogin>({
-    email: 'dangbang0001@gmail.com',
-    password: '123456789',
+    email: '',
+    password: '',
   });
   const {assets, colors, gradients, sizes} = useTheme();
   const {user, setIsLoggedIn} = useMst();
@@ -55,10 +56,23 @@ const Login = () => {
 
   const _handleLogin = async () => {
     setIsLoading(true);
+    if (userData.email === '' && userData.password === '') {
+      showMessage({
+        message: 'Login Fail',
+        description: 'Please fill information fully',
+        type: 'danger',
+      });
+      setIsLoading(false);
+    }
     try {
       const data = await API.login(userData);
       user.setProfile(data.user);
       setIsLoggedIn(true);
+      showMessage({
+        message: 'Login Successfully',
+        description: 'Welcome to Food World!',
+        type: 'success',
+      });
       await Storage.setItem(ACCESS_TOKEN, data.token);
       await Storage.setItem(ACCOUNT, JSON.stringify(data.user));
     } catch (err) {
@@ -66,6 +80,11 @@ const Login = () => {
       const message = _.get(err, 'message', JSON.stringify(err));
       console.log('Login error: ', message);
       // display error message to toask here
+      showMessage({
+        message: 'Login Fail',
+        description: 'Email or Password was wrong!',
+        type: 'danger',
+      });
     } finally {
     }
   };

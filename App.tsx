@@ -5,6 +5,7 @@ import {DataProvider, Provider} from './src/hooks';
 import AppNavigation from './src/navigation/App';
 import {decode, encode} from 'base-64';
 import {RootStore} from './src/stores/RootStore';
+import FlashMessage from 'react-native-flash-message';
 
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();
@@ -22,6 +23,8 @@ export default function App() {
     <DataProvider>
       <Provider value={RootStore}>
         <AppNavigation />
+        {/* GLOBAL FLASH MESSAGE COMPONENT INSTANCE */}
+        <FlashMessage position="top" />
       </Provider>
     </DataProvider>
   );

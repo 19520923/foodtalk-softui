@@ -38,7 +38,7 @@ const EditProfile = () => {
       const a = await upload('avatar', avat);
       data = {...profileData, avatar_url: a};
     } else {
-      data = {...profileData};
+      data = {...profileData, avatar_url: avatar_url};
     }
     const user = await API.updateProfile(data);
     if (user) {

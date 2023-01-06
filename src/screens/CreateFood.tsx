@@ -7,6 +7,8 @@ import {ImageDesc} from '../components/molecules';
 import {ICFood} from '../constants/types';
 import {upload, useMst, useTheme, useTranslation} from '../hooks';
 import API from '../services/axiosClient';
+import {showMessage} from 'react-native-flash-message';
+import {Loading} from '../components/commons';
 
 const isAndroid = Platform.OS === 'android';
 
@@ -19,6 +21,7 @@ const CreateFood = () => {
     name: '',
   });
   const [process, setProcess] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [photo, setPhoto] = useState<Array<any>>([]);
   const [food, setFood] = useState<ICFood>({
     name: '',
@@ -91,9 +94,15 @@ const CreateFood = () => {
   };
 
   const _handleDone = useCallback(async () => {
+    setIsLoading(true);
     const url = await upload('food', photo);
     const data = {...food, photo: url};
     await API.createFood(data);
+    setIsLoading(false);
+    showMessage({
+      message: 'Create Food Successfully',
+      type: 'success',
+    });
     navigation.goBack();
   }, [food, navigation, photo]);
 
@@ -240,6 +249,7 @@ const CreateFood = () => {
           </Block>
         </Block>
       </Block>
+      {isLoading && <Loading />}
     </Block>
   );
 };

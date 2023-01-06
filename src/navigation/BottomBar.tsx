@@ -62,7 +62,7 @@ const BottomBarContent = (props: any) => {
                 />
               </Block>
               {isFocused && (
-                <Text semibold secondary>
+                <Text size={sizes.s + 5} semibold secondary>
                   {route.name}
                 </Text>
               )}
