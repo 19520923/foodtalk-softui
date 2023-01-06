@@ -232,9 +232,7 @@ const Profile = () => {
         radius={sizes.m}
         marginHorizontal={sizes.sm}
         color="rgba(255,255,255,0.2)"
-        outlined={String(colors.white)}
-        // onPress={() => handleSocialLink('twitter')}
-      >
+        outlined={String(colors.white)}>
         <FontAwesome size={18} name={icons.photo} color={colors.white} />
       </Button>
 

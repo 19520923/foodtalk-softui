@@ -1,5 +1,5 @@
 import {cast, flow, Instance, types} from 'mobx-state-tree';
-import MessageModel from './MessageModel';
+import MessageModel, {TMessageModel} from './MessageModel';
 import {ProfileModel} from './ProfileModel';
 import API from '../../services/axiosClient';
 
@@ -37,6 +37,11 @@ const ChatModel = types
       self.messages.rows.push(rows);
       self.messages.currentPage++;
     }),
+
+    addMessage: (message: TMessageModel) => {
+      self.messages.rows.unshift(message);
+      self.messages.count++;
+    },
   }));
 
 export default ChatModel;

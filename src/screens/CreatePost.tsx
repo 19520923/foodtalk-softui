@@ -109,7 +109,6 @@ const CreatePost = () => {
   const _handleDone = useCallback(async () => {
     const urls = await uploadMultiple(photoUris, 'post');
     const data = {...postData, photos: urls};
-    console.log(data);
     post(data);
     navigation.goBack();
   }, [navigation, photoUris, post, postData]);

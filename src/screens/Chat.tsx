@@ -1,79 +1,49 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Block} from '../components/atoms';
-import {useTheme} from '../hooks';
+import {useMst, useTheme} from '../hooks';
 import {GiftedChat, Send} from 'react-native-gifted-chat';
 import {FontAwesome} from '@expo/vector-icons';
 import {RouteProp, useRoute} from '@react-navigation/native';
 import {IParamList} from '../constants/types';
-export interface IMessage {
-  _id: string | number;
-  text: string;
-  createdAt: Date | number;
-  user: User;
-  image?: string;
-  video?: string;
-  audio?: string;
-  system?: boolean;
-  sent?: boolean;
-  received?: boolean;
-  pending?: boolean;
-  quickReplies?: QuickReplies;
-}
+import {mappingMessageChat} from '../services/mapping';
+import {observer} from 'mobx-react-lite';
+import API from '../services/axiosClient';
 
 const Chat = () => {
   const {colors, icons, sizes} = useTheme();
 
-  const [messages, setMessages] = useState<IMessage[]>([]);
-
   const route = useRoute<RouteProp<IParamList, 'Chat'>>();
+  const {chat} = route.params;
+
+  const [data, setData] = useState({
+    chat: route.params.chat._id,
+    content: '',
+  });
+
   const {
-    chat: {
-      setMessage,
-      loadMessage,
-      messages: {rows, count},
+    user: {
+      profile: {_id},
     },
-  } = route.params;
+    chats: {getChatById},
+  } = useMst();
+
+  const c = getChatById(chat._id);
 
   useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: 'Reply me ! Please',
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'BangDD',
-          avatar:
-            'https://thuvienanime.com/wp-content/uploads/2022/04/Naruto.jpg',
-        },
-      },
-      {
-        _id: 2,
-        text: 'Do you like to eat hamburger ?',
-        createdAt: new Date(Date.UTC(2016, 5, 11, 17, 20, 0)),
-        user: {
-          _id: 2,
-          name: 'BangDD',
-          avatar:
-            'https://thuvienanime.com/wp-content/uploads/2022/04/Naruto.jpg',
-        },
-        image:
-          'https://i.bloganchoi.com/bloganchoi.com/wp-content/uploads/2021/08/tu-lam-hamburger-696x389.jpg?fit=700%2C20000&quality=95&ssl=1',
-        // Mark the message as sent, using one tick
-        sent: true,
-        // Mark the message as received, using two tick
-        received: true,
-        // Mark the message as pending with a clock loader
-        pending: true,
-      },
-    ]);
-  }, []);
+    c.setMessage();
+  }, [c]);
 
-  const onSend = useCallback((messages = []) => {
-    setMessages((previousMessages) =>
-      GiftedChat.append(previousMessages, messages),
-    );
-  }, []);
+  useEffect(() => {
+    console.log(c.messages.rows.length);
+  }, [c.messages.rows.length]);
+
+  const onSend = async () => {
+    // setMessages((previousMessages) =>
+    //   GiftedChat.append(previousMessages, messages),
+    // );
+    const mess = await API.addChat(data);
+    c.addMessage(mess);
+  };
 
   const renderSend = (props) => {
     const sendStylesCustom = {
@@ -102,14 +72,17 @@ const Chat = () => {
         placeholder={'Write message ...'}
         renderSend={renderSend}
         alignTop={true}
-        messages={messages}
-        onSend={(messages) => onSend(messages)}
+        messages={c.messages.rows.map((row) => mappingMessageChat(row))}
+        onSend={onSend}
         user={{
-          _id: 1,
+          _id: _id,
         }}
+        onInputTextChanged={(text) =>
+          setData((state) => ({...state, content: text}))
+        }
       />
     </Block>
   );
 };
 
-export default Chat;
+export default observer(Chat);

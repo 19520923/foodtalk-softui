@@ -6,7 +6,7 @@ const MessageModel = types.model({
   author: ProfileModel,
   content: types.string,
   chat: types.string,
-  type: types.enumeration(['TEXT', 'PICTURE', 'HTML']),
+  // type: types.enumeration(['TEXT', 'PICTURE', 'HTML']),
   created_at: types.string,
 });
 

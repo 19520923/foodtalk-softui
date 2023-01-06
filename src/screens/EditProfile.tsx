@@ -1,17 +1,19 @@
 /* eslint-disable react-native/no-inline-styles */
 import {useNavigation} from '@react-navigation/native';
 import React, {useCallback, useEffect, useState} from 'react';
-import {Block, Button, Input, Text} from '../components/atoms';
+import {Block, Button, Image, Input, Text} from '../components/atoms';
 import {IUser} from '../constants/types';
-import {useMst, useTheme} from '../hooks';
+import {upload, useMst, useTheme, useTranslation} from '../hooks';
 import API from '../services/axiosClient';
+import {TouchableOpacity} from 'react-native';
 
 const EditProfile = () => {
   const {sizes, colors} = useTheme();
   const navigation = useNavigation();
+  const {t} = useTranslation();
   const {
     user: {
-      profile: {name, username, email, about},
+      profile: {name, username, email, about, avatar_url},
       setProfile,
     },
   } = useMst();
@@ -21,6 +23,8 @@ const EditProfile = () => {
     about: about,
   });
 
+  const [avat, setAvat] = useState(avatar_url);
+
   const _handleChange = useCallback(
     (value) => {
       setProfileData((state) => ({...state, ...value}));
@@ -29,13 +33,19 @@ const EditProfile = () => {
   );
 
   const _handleDone = useCallback(async () => {
-    console.log(profileData);
-    const user = await API.updateProfile(profileData);
+    let data = {};
+    if (avat !== avatar_url) {
+      const a = await upload('avatar', avat);
+      data = {...profileData, avatar_url: a};
+    } else {
+      data = {...profileData};
+    }
+    const user = await API.updateProfile(data);
     if (user) {
       setProfile(user);
       navigation.goBack();
     }
-  }, [navigation, profileData, setProfile]);
+  }, [avat, avatar_url, navigation, profileData, setProfile]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -49,8 +59,30 @@ const EditProfile = () => {
     });
   }, [_handleDone, navigation, sizes.l]);
 
+  const _handleChoosePhotos = () => {
+    navigation.navigate(
+      t('navigation.imagePicker') as never,
+      {
+        onCallback: (array: Array<any>) => setAvat(array[0]),
+      } as never,
+    );
+  };
+
   return (
     <Block scroll>
+      <Block flex={0} align="center">
+        <TouchableOpacity onPress={_handleChoosePhotos}>
+          <Image
+            width={80}
+            height={80}
+            marginBottom={sizes.sm}
+            style={{opacity: 0.7}}
+            source={{
+              uri: avat,
+            }}
+          />
+        </TouchableOpacity>
+      </Block>
       <Block paddingHorizontal={sizes.m} paddingTop={sizes.sm}>
         <Input
           label="Name"

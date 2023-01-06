@@ -363,7 +363,7 @@ class AxiosClient {
   }
 
   getMessage(chat_id: string, page = 1) {
-    return this.axios.get(`/messages/${chat_id}page=${page}&limit=${LIMIT}`);
+    return this.axios.get(`/messages/${chat_id}?page=${page}&limit=${LIMIT}`);
   }
 
   createChat(user_id: string) {
@@ -372,6 +372,10 @@ class AxiosClient {
 
   updateProfile(payload: IUser) {
     return this.axios.put('/users/me', payload);
+  }
+
+  addChat(payload: any) {
+    return this.axios.post('/messages', payload);
   }
 }
 
