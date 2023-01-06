@@ -8,6 +8,8 @@ import {FontAwesome} from '@expo/vector-icons';
 import API from '../services/axiosClient';
 import {IRegistration} from '../constants/types';
 import _ from 'lodash';
+import {showMessage} from 'react-native-flash-message';
+import {Loading} from '../components/commons';
 
 const isAndroid = Platform.OS === 'android';
 
@@ -37,6 +39,7 @@ const Register = () => {
     password: '',
   });
   const {assets, colors, gradients, sizes, icons} = useTheme();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = useCallback(
     (value) => {
@@ -46,14 +49,27 @@ const Register = () => {
   );
 
   const handleSignUp = useCallback(async () => {
+    setIsLoading(true);
     if (!Object.values(isValid).includes(false)) {
       try {
         await API.register(registration);
+        setIsLoading(false);
+        showMessage({
+          message: 'Register Successfully',
+          description: 'Let login now',
+          type: 'success',
+        });
         navigation.goBack();
       } catch (err) {
+        setIsLoading(false);
         const message = _.get(err, 'message', JSON.stringify(err));
         console.log(message);
         // display error message to toask here
+        showMessage({
+          message: 'Login Fail',
+          description: 'Incorrect Information! Please Check ',
+          type: 'danger',
+        });
       } finally {
       }
     }
@@ -247,6 +263,7 @@ const Register = () => {
           </Block>
         </Block>
       </Block>
+      {isLoading && <Loading />}
     </Block>
   );
 };

@@ -9,6 +9,8 @@ import {Platform, TouchableOpacity} from 'react-native';
 import {FontAwesome} from '@expo/vector-icons';
 import {IFood, IPost} from '../constants/types';
 import {useNavigation} from '@react-navigation/native';
+import {showMessage} from 'react-native-flash-message';
+import {Loading} from '../components/commons';
 
 const CreatePost = () => {
   const {colors, sizes, icons} = useTheme();
@@ -19,6 +21,7 @@ const CreatePost = () => {
   const {t} = useTranslation();
   const navigation = useNavigation();
   const [showModal, setModal] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [chosenFood, setChosenFood] = useState<Array<IFood>>([]);
   const [photoUris, setPhotoUri] = useState<Array<any>>([]);
   const [postData, setPostData] = useState<IPost>({
@@ -107,9 +110,15 @@ const CreatePost = () => {
   };
 
   const _handleDone = useCallback(async () => {
+    setIsLoading(true);
     const urls = await uploadMultiple(photoUris, 'post');
     const data = {...postData, photos: urls};
     post(data);
+    setIsLoading(false);
+    showMessage({
+      message: 'Create  Successfully',
+      type: 'success',
+    });
     navigation.goBack();
   }, [navigation, photoUris, post, postData]);
 
@@ -254,6 +263,7 @@ const CreatePost = () => {
           </TouchableOpacity>
         )}
       </Block>
+      {isLoading && <Loading />}
     </Block>
   );
 };

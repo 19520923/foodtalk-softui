@@ -23,13 +23,13 @@ export const IMAGE_HEIGHT = WIDTH / 1.5;
 /* This is a constant that is used to set the width of the card. */
 export const CARD_WIDTH = WIDTH / 2;
 
-export const APIKEY = 'AIzaSyA5Rbxpmu498VGSzJLrQ-ix_BM6EN5nfLo';
-export const AUTH_DOMAIN = 'login-183fb.firebaseapp.com';
-export const PROJECT_ID = 'login-183fb';
-export const STORAGE_BUCKET = 'login-183fb.appspot.com';
-export const MESSAGING_SENDER_ID = '494465272082';
-export const APP_ID = '1:494465272082:web:5d13db61f31d3e514ccbcb';
-export const MEASUREMENT_ID = 'G-Q3R4CM267X';
+export const APIKEY = 'AIzaSyB0UBNsIcIB4Yin36ssHzuUoktsRqn1ZJQ';
+export const AUTH_DOMAIN = 'foodtalk-987a2.firebaseapp.com';
+export const PROJECT_ID = 'foodtalk-987a2';
+export const STORAGE_BUCKET = 'foodtalk-987a2.appspot.com';
+export const MESSAGING_SENDER_ID = '713059928978';
+export const APP_ID = '1:713059928978:web:c8ab3ec2a2e17d389dcf4b';
+export const MEASUREMENT_ID = 'G-SWCYQ4Q9CT';
 
 export const USER_LIST_SCREEN_NAME = {
   following: 'Following',
